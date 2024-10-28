@@ -1,4 +1,4 @@
-import { db } from "@/lib/db"; // Ensure db is correctly instantiated with PrismaClient
+import  db  from "@/lib/db"; // Ensure db is correctly instantiated with PrismaClient
 
 export const getVerificationTokenByToken = async (token: string) => {
     try {
