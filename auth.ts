@@ -1,7 +1,7 @@
 import NextAuth, { type DefaultSession } from "next-auth"
 import authConfig from "./auth.config"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { db } from "./lib/db"
+import db  from "./lib/db"
 import { getUserById } from "./data/user"
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation"
 import { getAccountByUserId } from "./data/account"
