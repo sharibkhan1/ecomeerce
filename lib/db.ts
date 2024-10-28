@@ -1,13 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 
-// Declare the prisma client globally to avoid reinitializing it in development mode
+// Extend the NodeJS Global interface to include the 'prisma' property
 declare global {
-    // This is necessary for TypeScript to recognize 'globalThis.prisma'
-    var prisma: PrismaClient | undefined;
+  // Add a custom Prisma property to the NodeJS Global interface
+  namespace NodeJS {
+    interface Global {
+      prisma: PrismaClient | undefined;
+    }
+  }
 }
 
-// Use 'const' to define the database client
-export const db = globalThis.prisma || new PrismaClient();
+const globalForPrisma = global as typeof global & { prisma?: PrismaClient };
 
-// Assign the Prisma client to the global object in development mode to avoid multiple instances
-if (process.env.NODE_ENV !== "production") globalThis.prisma = db;
+export const db = globalForPrisma.prisma || new PrismaClient();
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = db;
+}
