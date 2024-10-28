@@ -1,12 +1,13 @@
-import { LoginButton } from "@/components/auth/login-button";
+"use client"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // Import the useRouter hook
 
-interface HomeP {
-  children : React.ReactNode;
-}
-
-export default function Home({children}:HomeP) {
+export default function Home() {
+  const router = useRouter(); // Initialize the router
+  const handleSignIn = () => {
+    router.push('/auth/login'); // Navigate to /auth/login
+  };
   return (
 <div className='h-screen flex w-full justify-center' >
         <div className='w-[600px] ld:w-full flex flex-col items-center p-6 ' >
@@ -21,12 +22,9 @@ export default function Home({children}:HomeP) {
             width={0}
             height={0}
             />
-            <LoginButton mode="modal" asChild >
-
-           <Button variant="secondary" >
-            Sign In
+        <Button variant="secondary" onClick={handleSignIn}> {/* Add onClick event */}
+        Sign In
            </Button>
-            </LoginButton>
         </div>
         <div className='hidden lg:flex flex-1 w-full max-h-full max-w-4000px overflow-hidden
         relative bg-cream flex-col pt-10 pl-24 gap-3 ' >

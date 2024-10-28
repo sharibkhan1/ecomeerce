@@ -33,12 +33,12 @@ export const { handlers:{ GET, POST }, auth,signIn,signOut } = NextAuth({
     async signIn({user,account}){
       if(account?.provider !== "credentials") return true;
 
-      const existingUser = await getUserById(user.id);
+      const existingUser = await getUserById(user.id??"");
 
       if(!existingUser?.emailVerified) return false;
 
       if(existingUser.isTwoFactorEnabled){
-        const existingUser = await getUserById(user.id);
+        const existingUser = await getUserById(user.id??"");
 
         if(!existingUser?.emailVerified) return false;
         if(existingUser.isTwoFactorEnabled){
@@ -72,7 +72,7 @@ export const { handlers:{ GET, POST }, auth,signIn,signOut } = NextAuth({
 
       if(session.user ){
         session.user.name = token.name;
-        session.user.email = token.email;
+        session.user.email = token.email??"";
         session.user.isOAuth = token.isOAuth as boolean; 
       }
 
