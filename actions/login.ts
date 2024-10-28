@@ -9,8 +9,8 @@ import * as z from "zod";
 import { error } from "console";
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
-import { db } from "@/lib/db";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
+import db from "@/lib/db";
 
 export const login = async (values: z.infer<typeof LoginSchema>,callbackUrl?:string | null) => {
     const validatedFields = LoginSchema.safeParse(values);
