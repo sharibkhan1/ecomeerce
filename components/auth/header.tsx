@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { Weight } from "lucide-react"
 import {Poppins} from "next/font/google"
 
 const font = Poppins({

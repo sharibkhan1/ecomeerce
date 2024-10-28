@@ -10,10 +10,7 @@ import { Form,FormControl, FormField, FormItem, FormLabel, FormMessage, } from "
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
-import { login } from "@/actions/login";
 import { FormSuccess } from "../form-success";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { newPassword } from "@/actions/new-password";
 

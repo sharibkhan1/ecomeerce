@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { login } from "@/actions/login";
 import { FormSuccess } from "../form-success";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 

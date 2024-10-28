@@ -1,13 +1,11 @@
 "use client";
 
 import * as z from "zod";
-import { logout } from '@/actions/logout';
 import { settings } from '@/actions/settings';
-import { auth } from '@/auth'
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import React, { useState, useTransition } from 'react'
 import { useForm } from "react-hook-form";
 import { SettingsSchema } from "@/schemas";
