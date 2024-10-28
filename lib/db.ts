@@ -1,10 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
-// Augment the global namespace directly instead of using a namespace
-declare global {
-  var prisma: PrismaClient | undefined; // Declare the prisma property on the global object
+const prismaClientSingleton = () => {
+  return new PrismaClient()
 }
 
-const globalForPrisma = global as typeof global & { prisma?: PrismaClient };
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
 
-export const db = globalForPrisma.prisma || new PrismaClient();
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+
+export default prisma
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma
