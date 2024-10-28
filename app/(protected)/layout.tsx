@@ -3,10 +3,6 @@ import { Navbar } from "./_components/navbar";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 
-interface ProtectedLayoutProps {
-  children: ReactNode;
-}
-
 const ProtectedLayout = ({ session, children }: { session: any, children: ReactNode }) => {
   return (
     <SessionProvider session={session}>
