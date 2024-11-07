@@ -16,10 +16,170 @@ datasource db {
 enum UserRole{
   ADMIN
   USER
+  MAINADMIN
+}
+
+model Store{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  userId         String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  billboard Billboard[] @relation("StoreToBillboard")
+  categories Category[] @relation("StoreToCategory")
+  sizes Size[] @relation("StoreToSize")
+  colors Color[] @relation("StoreToColor")
+  products Product[] @relation("StoreToProduct")
+  orders Order[] @relation("StoreToOrder")
+}
+
+model Product{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToProduct",fields: [storeId], references: [id], onDelete: Cascade)
+  categoryId String
+  category   Category   @relation("CategoryToProduct",fields: [categoryId], references: [id], onDelete: Cascade)
+  name String
+  price Float
+  salesPrice Float
+  stocks Float
+  isFeatured Boolean @default(false)
+  isArchived Boolean @default(false)
+  discription String
+  details     Detail[]    @relation("ProductDetails") // New relation to the Detail model
+  sizeId String
+  size Size @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+  colorId String
+  color Color @relation(fields: [colorId], references: [id], onDelete: Cascade)
+  images Image[]
+  orderItems OrderItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  reviews     Review[] @relation("ProductReviews")
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([sizeId])
+  @@index([colorId])
+}
+
+model Review {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String
+  product   Product  @relation("ProductReviews", fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  rating    Int      @default(0)  // Rating between 0 to 5
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+  @@index([userId])
+}
+model Detail {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId   String
+  product     Product  @relation("ProductDetails", fields: [productId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Order{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId String
+  store   Store   @relation("StoreToOrder",fields: [storeId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+  isPaid Boolean @default(false)
+  phone String @default("")
+  address String @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId String 
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Image{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Size{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToSize",fields: [storeId], references: [id], onDelete: Cascade)
+  name String
+  value String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+  @@index([storeId])
+}
+
+model Color{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToColor",fields: [storeId], references: [id], onDelete: Cascade)
+  name String
+  value String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+
+  @@index([storeId])
+}
+
+model Billboard{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToBillboard",fields: [storeId], references: [id], onDelete: Cascade)
+  label String
+  imageUrl String
+  categories Category[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model Category{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToCategory",fields: [storeId], references: [id], onDelete: Cascade)
+  billboardId String
+  billboard Billboard  @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  products Product[] @relation("CategoryToProduct")
+
+  @@index([storeId])
+  @@index([billboardId])
 }
 
 model User{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId         String?
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -27,8 +187,10 @@ model User{
   password      String?
   role          UserRole @default(USER)
   accounts      Account[]
+  reviews       Review[]
   isTwoFactorEnabled Boolean @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+    stores                Store[]              // Relation to Store model
 }
 
 model Account {
