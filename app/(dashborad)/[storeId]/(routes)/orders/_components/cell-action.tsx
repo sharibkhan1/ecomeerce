@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { BillboardColumn } from './columns'
+import { OrderColumn } from './columns'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { CopyIcon ,DotsHorizontalIcon, TrashIcon } from '@radix-ui/react-icons';
@@ -12,7 +12,7 @@ import axios from 'axios';
 import { AlertModal } from '@/components/alert-modal';
 
 interface CellActionProps{
-    data:BillboardColumn;
+    data:OrderColumn;
 }
 
 const CellAction:React.FC<CellActionProps> = ({data}) => {
@@ -62,17 +62,9 @@ const CellAction:React.FC<CellActionProps> = ({data}) => {
             <DropdownMenuLabel>
                 Actions
             </DropdownMenuLabel>
-            <DropdownMenuItem onClick={()=>onCopy(data.id)} >
-                <CopyIcon className='mr-2 h-4 w-4'/>
-                Copy Id
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>router.push(`/${params.storeId}/billboards/${data.id}`)} >
+            <DropdownMenuItem onClick={()=>router.push(`/${params.storeId}/orders/${data.id}`)} >
                 <FaEdit className='mr-2 h-4 w-4'/>
                 Update
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>setOpen(true)} >
-                <TrashIcon className='mr-2 h-4 w-4'/>
-                Delete
             </DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>

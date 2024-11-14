@@ -13,9 +13,15 @@ const getProduct = async (productId: string): Promise<Product | null> => {
             },
             size: true,
             color: true,
+            color1:true,
+            color2:true,
+            color3:true,
             images: true,
             details: true,
-            reviews: true,    
+            reviews: true, 
+            size1:true,
+            size2:true,
+            size3:true,   
         },
     });
 

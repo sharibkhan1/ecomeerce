@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Buttons from './ui/Buttons'
-import { FaShoppingBag } from 'react-icons/fa'
+import { FaFirstOrder, FaShoppingBag } from 'react-icons/fa'
 import useCart from '@/hooks/use-cart'
 import { useRouter } from 'next/navigation'
 
@@ -25,6 +25,11 @@ const NavbarAction = () => {
             <FaShoppingBag size={20} color='white' />
             <span className='ml-2 text-sm font-medium text-white ' >
                 {cart.items.length}</span>
+        </Buttons>
+        <Buttons onClick={()=>router.push("/myorder")} className='flex items-center rounded-full bg-black px-4 py-2 ' >
+            <FaFirstOrder size={20} color='white' />
+            <span className='ml-2 text-sm font-medium text-white ' >
+                Orders</span>
         </Buttons>
     </div>
   )

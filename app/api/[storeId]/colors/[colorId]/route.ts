@@ -16,7 +16,22 @@ export async function GET(
                 id:params.colorId,
             },
         });
-        return NextResponse.json(color);
+        const color1= await db.color1.findUnique({
+            where:{
+                id:params.colorId,
+            },
+        });
+        const color2= await db.color2.findUnique({
+            where:{
+                id:params.colorId,
+            },
+        });
+        const color3= await db.color3.findUnique({
+            where:{
+                id:params.colorId,
+            },
+        });
+        return NextResponse.json({color,color1,color2,color3});
     }catch(e){
         console.log("[color_GET]",e);
         return new NextResponse("Internal error",{status:500});
@@ -68,7 +83,34 @@ export async function PATCH(
                 value,
             }
         });
-        return NextResponse.json(color);
+        const color1= await db.color1.updateMany({
+            where:{
+                id:params.colorId,
+            },
+            data:{
+                name,
+                value,
+            }
+        });
+        const color2= await db.color2.updateMany({
+            where:{
+                id:params.colorId,
+            },
+            data:{
+                name,
+                value,
+            }
+        });
+        const color3= await db.color3.updateMany({
+            where:{
+                id:params.colorId,
+            },
+            data:{
+                name,
+                value,
+            }
+        });
+        return NextResponse.json({color,color1,color2,color3});
     }catch(e){
         console.log("[color_PATCH]",e);
         return new NextResponse("Internal error",{status:500});
@@ -100,12 +142,13 @@ export async function DELETE(
             return new NextResponse("Unauthorized", { status: 403 });
         }
 
-        const color= await db.color.deleteMany({
-            where:{
-                id:params.colorId,
-            },
-        });
-        return NextResponse.json(color);
+        await db.$transaction([
+            db.color.deleteMany({ where: { id: params.colorId } }),
+            db.color1.deleteMany({ where: { id: params.colorId } }),
+            db.color2.deleteMany({ where: { id: params.colorId } }),
+            db.color3.deleteMany({ where: { id: params.colorId } }),
+        ]);
+        return new NextResponse("Colors deleted successfully");
     }catch(e){
         console.log("[color_DELETE]",e);
         return new NextResponse("Internal error",{status:500});

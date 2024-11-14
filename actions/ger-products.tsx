@@ -28,7 +28,13 @@ const getProducts = async (query: Query): Promise<Product[]> => {
                 },
             },
             size: true,
+            size1: true,
+            size2: true,
+            size3: true,
             color: true,
+            color1:true,
+            color2:true,
+            color3:true,
             images: true,
         },
     });
@@ -37,3 +43,4 @@ const getProducts = async (query: Query): Promise<Product[]> => {
 };
 
 export default getProducts;
+

@@ -20,7 +20,7 @@ const OrderClient:React.FC<BillBoardClientProps> = ({
                 description="Manage orders for your store"
         />
         <Separator/>
-        <DataTable searchKey="products" columns={columns} data={data} />
+        <DataTable searchKey2='status' searchKey="products" columns={columns} data={data} />
     </>
   )
 }

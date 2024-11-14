@@ -23,19 +23,24 @@ const ProductPage:React.FC<ProductPageProps> = async ({params}) => {
 
     return (
     <div className='bg-white' >
-        <Cont>
+        
             <div className='px-4 py-10 sm:px-6 lg:px-8' >
+            <Cont>
                 <div className='lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 ' >
+                
                     <Gallery images={product?.images || []}/>
+                    
                     <div className='mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0 ' >
                     {product ? <Info data={product} /> : <NoResult/>}
                     </div>
                 </div>
+                </Cont>
                 <hr className='my-10' />
                 <ProductList title='Related Items' items={suggestedProducts} />
+                <hr className='my-10' />
                 <ReviewRating productId={product?.id} existingReviews={product?.reviews}  />
             </div>
-        </Cont>
+ 
     </div>
   )
 }

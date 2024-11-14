@@ -18,12 +18,19 @@ export interface Product{
     isFeatured:boolean;
     size:Size;
     color:Color;
+    size1:Size;
+    color1:Color;
+    size2:Size;
+    color2:Color;
+    size3:Size;
+    color3:Color;
     salesPrice: number;
     images:Image[];
     details: Detail[];  // Include the details array
     stocks: number;    // Stocks as a string (or number if you prefer)
     discription: string; 
     reviews: Review[]; // Added reviews array
+    dilevery:string;
 }
 
 export interface Review {

@@ -21,7 +21,7 @@ import ImageUpload from "@/components/ui/iamge-ypload";
 
 
 const formSchema = z.object({
-    label:z.string().min(1),
+    label:z.string(),
     imageUrl:z.string().min(1),
 });
 

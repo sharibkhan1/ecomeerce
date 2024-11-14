@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { useParams, useRouter } from 'next/navigation';
 import { ProductColumn, columns } from './columns';
 import { DataTable } from '@/components/ui/data-table';
-import ApiList from '@/components/ui/api-list';
 
 interface ProductClientProps{
   data:ProductColumn[]
@@ -27,19 +26,21 @@ const ProductClient:React.FC<ProductClientProps> = ({
                 title={`Products (${data.length})`}
                 description="Manage products for your store"
         />
-        <Button onClick={()=> router.push(`/${params.storeId}/products/6725fde91242b35561f2727f`)} >
+        <Button onClick={()=> router.push(`/${params.storeId}/products/673136c6efefd5ac6745b9f6`)} >
             <PlusIcon className='mr-2 h-4 w-4' />
             Add New
         </Button>
         </div>
         <Separator/>
-        <DataTable searchKey="label" columns={columns} data={data} />
-        <Heading
+        <DataTable searchKey="name" columns={columns} data={data} >
+          
+        </DataTable>
+        {/* <Heading
                 title="API"
                 description="API call for products"
         />
         <Separator/>
-        <ApiList entityName="products" entityIdName="productId" />
+        <ApiList entityName="products" entityIdName="productId" /> */}
     </>
   )
 }

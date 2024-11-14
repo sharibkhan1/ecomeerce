@@ -26,10 +26,6 @@ const ProductCard:React.FC<ProductCard>=({
         previewModal.onOpen(data);
     }
 
-    const AddToCart:MouseEventHandler<HTMLButtonElement> = (event)=>{
-        event.stopPropagation();
-        cart.addItem(data);
-    }
 
     const handleClick = ()=>{
         router.push(`/product/${data?.id}`);
@@ -49,10 +45,6 @@ const ProductCard:React.FC<ProductCard>=({
                         onClick={onPreview}
                         icon={<FaExpand size={20} className="text-gray-600" />}
                         />
-                         <IconButton
-                        onClick={AddToCart}
-                        icon={<FaShoppingBag size={20} className="text-gray-600" />}
-                        />
                     </div>
                 </div>
             </div>
@@ -65,7 +57,12 @@ const ProductCard:React.FC<ProductCard>=({
                 </p>
             </div>
             <div className="flex items-center justify-between " >
+                <span className="text-red-400 line-through" >
                 <Currency value={data?.price}/>
+                </span>
+                <span className="font-extrabold text-2xl" >
+                <Currency value={data?.salesPrice}/>
+                </span>
             </div>
         </div>
     )

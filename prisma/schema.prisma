@@ -18,53 +18,95 @@ enum UserRole{
   USER
   MAINADMIN
 }
-
+enum OrderStatus{
+  Cancel
+  Ordered
+}
+enum OrderDet{
+  Packing
+  Shipped
+  Delivered
+  CancelOrder
+}
 model Store{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   userId         String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
   billboard Billboard[] @relation("StoreToBillboard")
   categories Category[] @relation("StoreToCategory")
   sizes Size[] @relation("StoreToSize")
   colors Color[] @relation("StoreToColor")
+  sizes1 Size1[] @relation("StoreToSize1")
+  colors1 Color1[] @relation("StoreToColor1")
+  sizes2 Size2[] @relation("StoreToSize2")
+  colors2 Color2[] @relation("StoreToColor2")
+  sizes3 Size3[] @relation("StoreToSize3")
+  colors3 Color3[] @relation("StoreToColor3")
   products Product[] @relation("StoreToProduct")
   orders Order[] @relation("StoreToOrder")
 }
 
-model Product{
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-  storeId         String
-  store   Store   @relation("StoreToProduct",fields: [storeId], references: [id], onDelete: Cascade)
-  categoryId String
-  category   Category   @relation("CategoryToProduct",fields: [categoryId], references: [id], onDelete: Cascade)
-  name String
-  price Float
-  salesPrice Float
-  stocks Float
-  isFeatured Boolean @default(false)
-  isArchived Boolean @default(false)
+model Product {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId     String
+  store       Store    @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name        String
+  price       Float
+  salesPrice  Float
+  stocks      Float
+  isFeatured  Boolean  @default(false)
+  isArchived  Boolean  @default(false)
   discription String
-  details     Detail[]    @relation("ProductDetails") // New relation to the Detail model
-  sizeId String
-  size Size @relation(fields: [sizeId], references: [id], onDelete: Cascade)
-  colorId String
-  color Color @relation(fields: [colorId], references: [id], onDelete: Cascade)
-  images Image[]
-  orderItems OrderItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  rating      Float?   @default(0.0) // New field to store average rating
+  details     Detail[] @relation("ProductDetails") // New relation to the Detail model
+  sizeId1     String?  // Optional sizeId1
+  size1       Size1?   @relation(fields: [sizeId1], references: [id] ) // Optional relation to Size1
+  colorId1    String?  // Optional colorId1
+  color1      Color1?  @relation(fields: [colorId1], references: [id]) // Optional relation to Color1
+  sizeId      String
+  size        Size     @relation(fields: [sizeId], references: [id]) // Required relation to Size
+  colorId     String
+  color       Color    @relation(fields: [colorId], references: [id]) // Required relation to Color
+  
+  // Additional size and color fields
+  sizeId2     String?  // Optional sizeId2
+  size2       Size2?   @relation(fields: [sizeId2], references: [id]) // Optional relation to Size2
+  colorId2    String?  // Optional colorId2
+  color2      Color2?  @relation(fields: [colorId2], references: [id]) // Optional relation to Color2
+  
+  sizeId3     String?  // Optional sizeId3
+  size3       Size3?   @relation(fields: [sizeId3], references: [id]) // Optional relation to Size3
+  colorId3    String?  // Optional colorId3
+  color3      Color3?  @relation(fields: [colorId3], references: [id]) // Optional relation to Color3
+
+  dilevery    String?
+
+  images      Image[]
+  orderItems  OrderItem[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   reviews     Review[] @relation("ProductReviews")
+  // carts  Cart[]
   @@index([storeId])
   @@index([categoryId])
   @@index([sizeId])
   @@index([colorId])
+  @@index([sizeId2])
+  @@index([colorId2])
+  @@index([sizeId3])
+  @@index([colorId3])
+  @@index([sizeId1])
+  @@index([colorId1])
 }
+
 
 model Review {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   productId String
-  product   Product  @relation("ProductReviews", fields: [productId], references: [id], onDelete: Cascade)
+  product   Product  @relation("ProductReviews", fields: [productId], references: [id])
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   rating    Int      @default(0)  // Rating between 0 to 5
@@ -78,7 +120,7 @@ model Review {
 model Detail {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   productId   String
-  product     Product  @relation("ProductDetails", fields: [productId], references: [id], onDelete: Cascade)
+  product     Product  @relation("ProductDetails", fields: [productId], references: [id])
   title       String
   description String
 
@@ -87,28 +129,81 @@ model Detail {
 
   @@index([productId])
 }
+// model Cart {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id])
+//   productId String
+//   product   Product  @relation(fields: [productId], references: [id])
+//   color     String   // Color selected for the product
+//   size      String   // Size selected for the product
+//   quantity  Int      // Quantity of the product in the cart
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
 
-model Order{
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-  storeId String
-  store   Store   @relation("StoreToOrder",fields: [storeId], references: [id], onDelete: Cascade)
-  orderItems OrderItem[]
-  isPaid Boolean @default(false)
-  phone String @default("")
-  address String @default("")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+//   @@index([userId])
+//   @@index([productId])
+// }
+model Order {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId        String
+  store          Store    @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems     OrderItem[]
+  isPaid         Boolean  @default(false)
+  phone          String   @default("")
+  address        String   @default("")
+  status         OrderStatus @default(Ordered)  
+  orderState     OrderDet @default(Packing)
+  invoice         String?
+  razorpayOrderId String?  // Store Razorpay order ID here
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+     color      String?  // Color of the item
+  size       String?  // Size of the item
+  quantity   Int?   // Quantity of the item
+  userId         String  // Reference to User
+  user           User    @relation(fields: [userId], references: [id])
 
   @@index([storeId])
+  @@index([userId]) // Optionally, create an index on userId
 }
 
+model User{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId         String?
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  address  String?
+  phoneno  String?
+  role          UserRole @default(USER)
+  accounts      Account[]
+  reviews       Review[]
+  isTwoFactorEnabled Boolean @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+  stores                Store[]              // Relation to Store model
+  orders             Order[]  // A User can have many Orders
+}
 model OrderItem{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   orderId String 
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order   Order   @relation(fields: [orderId], references: [id])
   productId String
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
+  product Product @relation(fields: [productId], references: [id] )
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  color      String?  // Color of the item
+  size       String?  // Size of the item
+  quantity   Int?  
+  status         OrderStatus @default(Ordered)  
+  orderState     OrderDet @default(Packing)
+  Price   Int?
+  username          String?
+  productname          String?
+  dilevery  String?
+  image    String?
   @@index([orderId])
   @@index([productId])
 }
@@ -116,7 +211,7 @@ model OrderItem{
 model Image{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   productId String
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
   url String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -127,9 +222,9 @@ model Image{
 model Size{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   storeId         String
-  store   Store   @relation("StoreToSize",fields: [storeId], references: [id], onDelete: Cascade)
-  name String
-  value String
+  store   Store   @relation("StoreToSize",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("n/a")  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 products Product[]
@@ -139,20 +234,91 @@ products Product[]
 model Color{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   storeId         String
-  store   Store   @relation("StoreToColor",fields: [storeId], references: [id], onDelete: Cascade)
-  name String
-  value String
+  store   Store   @relation("StoreToColor",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("#00000000")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 products Product[]
 
   @@index([storeId])
 }
+model Size2{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToSize2",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("n/a")  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+  @@index([storeId])
+}
 
+model Color2{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToColor2",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("#00000000")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+
+  @@index([storeId])
+}
+model Size3{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToSize3",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("n/a")  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+  @@index([storeId])
+}
+
+model Color3{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToColor3",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("#00000000")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+
+  @@index([storeId])
+}
+model Size1{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToSize1",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("n/a")  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+  @@index([storeId])
+}
+
+model Color1{
+  id    String   @id @default(auto()) @map("_id") @db.ObjectId
+  storeId         String
+  store   Store   @relation("StoreToColor1",fields: [storeId], references: [id])
+  name      String   @default("n/a")       // Default value "n/a"
+  value     String   @default("#00000000")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+products Product[]
+
+  @@index([storeId])
+}
 model Billboard{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   storeId         String
-  store   Store   @relation("StoreToBillboard",fields: [storeId], references: [id], onDelete: Cascade)
+  store   Store   @relation("StoreToBillboard",fields: [storeId], references: [id])
   label String
   imageUrl String
   categories Category[]
@@ -165,9 +331,9 @@ model Billboard{
 model Category{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   storeId         String
-  store   Store   @relation("StoreToCategory",fields: [storeId], references: [id], onDelete: Cascade)
+  store   Store   @relation("StoreToCategory",fields: [storeId], references: [id])
   billboardId String
-  billboard Billboard  @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+  billboard Billboard  @relation(fields: [billboardId], references: [id])
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -177,21 +343,7 @@ model Category{
   @@index([billboardId])
 }
 
-model User{
-  id    String   @id @default(auto()) @map("_id") @db.ObjectId
-    userId         String?
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          UserRole @default(USER)
-  accounts      Account[]
-  reviews       Review[]
-  isTwoFactorEnabled Boolean @default(false)
-  twoFactorConfirmation TwoFactorConfirmation?
-    stores                Store[]              // Relation to Store model
-}
+
 
 model Account {
   id                 String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -207,7 +359,7 @@ model Account {
   id_token           String?
   session_state      String?
  
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
  
   @@unique([provider, providerAccountId])
 }
@@ -242,7 +394,7 @@ model TwoFactorToken {
 model TwoFactorConfirmation {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
 
   @@unique([userId])
 }

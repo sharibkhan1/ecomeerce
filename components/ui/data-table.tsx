@@ -1,8 +1,11 @@
 "use client"
+import * as React from "react"
 
 import {
   ColumnDef,
   flexRender,
+  SortingState,
+  getSortedRowModel,
   getCoreRowModel,
   useReactTable,
   ColumnFiltersState,
@@ -20,19 +23,24 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   searchKey:string
+  children?: ReactNode;
+  searchKey2?: string 
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  children,
   searchKey,
+  searchKey2,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([])
 
 const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
@@ -44,9 +52,12 @@ const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     state: {
         columnFilters,
+        sorting,
       },
   })
 
@@ -61,6 +72,18 @@ const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
           }
           className="max-w-sm"
         />
+           {searchKey2 && (
+          <Input
+            placeholder="Search by Second Field"
+            value={(table.getColumn(searchKey2)?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn(searchKey2)?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+        )}
+        
+        {children}
     </div>
     <div className="rounded-md border">
       <Table>

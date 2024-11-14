@@ -20,7 +20,13 @@ export async function GET(
                 category:true,
                 color:true,
                 size:true,
+                size1:true,
+                size2:true,
+                size3:true,
                 details:true,
+                color1:true,
+                color2:true,
+                color3:true,
             },
         });
         return NextResponse.json(product);
@@ -37,7 +43,7 @@ export async function PATCH(
     try{
         const userId =  await currentUserId();
         const body = await req.json();
-        const { name, price,isFeatured,isArchived,categoryId,colorId,sizeId,images, salesPrice, stocks, discription, details } = body;
+        const { colorId1, dilevery,sizeId1, colorId2, sizeId2, colorId3, sizeId3,name, price,isFeatured,isArchived,categoryId,colorId,sizeId,images, salesPrice, stocks, discription, details } = body;
 
         if(!userId){
             return new NextResponse("Unauthticared",{status:401});
@@ -84,10 +90,17 @@ export async function PATCH(
             },
             data: {
                 name,
+                dilevery,
                 price,
                 categoryId,
                 colorId,
                 sizeId,
+                colorId1,
+                sizeId1,
+                colorId2,
+                sizeId2,
+                colorId3,
+                sizeId3,
                 discription,
                 salesPrice,
                 stocks: Number(stocks), // Convert stocks to number

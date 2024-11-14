@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { useParams, useRouter } from 'next/navigation';
 import { CategoryColumn, columns } from './columns';
 import { DataTable } from '@/components/ui/data-table';
-import ApiList from '@/components/ui/api-list';
 
 interface CategoryClientProps{
   data:CategoryColumn[]
@@ -27,19 +26,19 @@ const CategoryClient:React.FC<CategoryClientProps> = ({
                 title={`Categories (${data.length})`}
                 description="Manage categories for your store"
         />
-        <Button onClick={()=> router.push(`/${params.storeId}/categories/6725fde91242b35561f2727f`)} >
+        <Button onClick={()=> router.push(`/${params.storeId}/categories/673136c6efefd5ac6745b9f6`)} >
             <PlusIcon className='mr-2 h-4 w-4' />
             Add New
         </Button>
         </div>
         <Separator/>
         <DataTable searchKey="name" columns={columns} data={data} />
-        <Heading
+        {/* <Heading
                 title="API"
                 description="API call for categories"
         />
         <Separator/>
-        <ApiList entityName="categories" entityIdName="categoryId" />
+        <ApiList entityName="categories" entityIdName="categoryId" /> */}
     </>
   )
 }

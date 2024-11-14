@@ -16,6 +16,21 @@ export async function GET(
                 id:params.sizeId,
             },
         });
+        const size1= await db.size1.findUnique({
+            where:{
+                id:params.sizeId,
+            },
+        });
+        const size2= await db.size2.findUnique({
+            where:{
+                id:params.sizeId,
+            },
+        });
+        const size3= await db.size3.findUnique({
+            where:{
+                id:params.sizeId,
+            },
+        });
         return NextResponse.json(size);
     }catch(e){
         console.log("[size_GET]",e);
@@ -68,6 +83,33 @@ export async function PATCH(
                 value,
             }
         });
+        const size1= await db.size1.updateMany({
+            where:{
+                id:params.sizeId,
+            },
+            data:{
+                name,
+                value,
+            }
+        });
+        const size2= await db.size2.updateMany({
+            where:{
+                id:params.sizeId,
+            },
+            data:{
+                name,
+                value,
+            }
+        });
+        const size3= await db.size3.updateMany({
+            where:{
+                id:params.sizeId,
+            },
+            data:{
+                name,
+                value,
+            }
+        });
         return NextResponse.json(size);
     }catch(e){
         console.log("[size_PATCH]",e);
@@ -101,6 +143,21 @@ export async function DELETE(
         }
 
         const size= await db.size.deleteMany({
+            where:{
+                id:params.sizeId,
+            },
+        });
+        const size1= await db.size1.deleteMany({
+            where:{
+                id:params.sizeId,
+            },
+        });
+        const size2= await db.size2.deleteMany({
+            where:{
+                id:params.sizeId,
+            },
+        });
+        const size3= await db.size3.deleteMany({
             where:{
                 id:params.sizeId,
             },

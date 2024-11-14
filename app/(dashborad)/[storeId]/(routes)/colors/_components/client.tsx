@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { useParams, useRouter } from 'next/navigation';
 import { ColorColumn, columns } from './columns';
 import { DataTable } from '@/components/ui/data-table';
-import ApiList from '@/components/ui/api-list';
 
 interface ColorClientProps{
   data:ColorColumn[]
@@ -27,19 +26,19 @@ const ColorClient:React.FC<ColorClientProps> = ({
                 title={`Color (${data.length})`}
                 description="Manage colora for your store"
         />
-        <Button onClick={()=> router.push(`/${params.storeId}/colors/6725fde91242b35561f2727f`)} >
+        <Button onClick={()=> router.push(`/${params.storeId}/colors/673136c6efefd5ac6745b9f6`)} >
             <PlusIcon className='mr-2 h-4 w-4' />
             Add New
         </Button>
         </div>
         <Separator/>
         <DataTable searchKey="name" columns={columns} data={data} />
-        <Heading
+        {/* <Heading
                 title="API"
                 description="API call for colors"
         />
         <Separator/>
-        <ApiList entityName="colors" entityIdName="colorId" />
+        <ApiList entityName="colors" entityIdName="colorId" /> */}
     </>
   )
 }

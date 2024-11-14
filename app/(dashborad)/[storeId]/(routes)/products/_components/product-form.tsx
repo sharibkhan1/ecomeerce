@@ -3,7 +3,7 @@
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
-import { Category, Color, Detail, Image, Product, Size } from "@prisma/client"
+import { Category, Color, Color1, Color2, Color3, Detail, Image, Product, Size, Size1, Size2, Size3 } from "@prisma/client"
 import { TrashIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -30,8 +30,15 @@ import { Textarea } from "@/components/ui/textarea"
         categoryId:z.string().min(1),
         colorId:z.string().min(1),
         sizeId:z.string().min(1),
+        sizeId1: z.string().min(1), // Size1 is nullable
+        colorId1: z.string().min(1), // Color1 is nullable
+        sizeId2: z.string().min(1), // Size2 is nullable
+        colorId2: z.string().min(1), // Color2 is nullable
+        sizeId3: z.string().min(1), // Size3 is nullable
+        colorId3: z.string().min(1),
         isFeatured:z.boolean().optional(),
         isArchived:z.boolean().optional(),
+        dilevery:z.string().min(1),
         discription:z.string().min(10, "Description is required"),
         salesPrice:z.coerce.number().min(1),
         stocks:z.string().min(1),
@@ -55,9 +62,15 @@ interface ProductFormProps{
     colors:Color[];
     sizes:Size[];
     details:Detail[];
+    sizes1:Size1[];
+    sizes2:Size2[];
+    sizes3:Size3[];
+    colors1:Color1[];
+    colors2:Color2[];
+    colors3:Color3[];
 }
 export const ProductForm:React.FC<ProductFormProps>=({
-    initialData,categories,colors,sizes
+    initialData,categories,colors,sizes,sizes1, colors1, sizes2, colors2, sizes3, colors3
 })=>{
     const params = useParams();
     const router = useRouter();
@@ -79,11 +92,18 @@ export const ProductForm:React.FC<ProductFormProps>=({
             stocks:String(initialData?.stocks),
         }:{
             name:"",
+            dilevery:"",
             images:[],
             price:0,
             categoryId:'',
             colorId:'',
             sizeId:'',
+            sizeId1: '',
+            colorId1: '',
+            sizeId2: '',
+            colorId2: '',
+            sizeId3: '',
+            colorId3: '',
             isFeatured:false,
             isArchived:false,
             discription:'',
@@ -214,6 +234,19 @@ export const ProductForm:React.FC<ProductFormProps>=({
                     />
                     <FormField
                         control={form.control}
+                        name="dilevery"
+                        render={({field})=>(
+                            <FormItem>
+                                <FormLabel>dilevery time</FormLabel>
+                                <FormControl>
+                                    <Input disabled={loading} placeholder="7 days" {...field} />
+                                </FormControl>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
                         name="price"
                         render={({field})=>(
                             <FormItem>
@@ -318,7 +351,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
                                                 key={size.id}
                                                 value={size.id}
                                             >
-                                                {size.name}
+                                                {size.value}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -358,6 +391,132 @@ export const ProductForm:React.FC<ProductFormProps>=({
                             </FormItem>
                         )}
                     />
+                    <FormField control={form.control} name="sizeId1" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Size 1 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Size 1" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {sizes1.map((size) => (
+                                <SelectItem key={size.id} value={size.id}>
+                                    {size.value}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
+
+            {/* Color1 Field (Optional) */}
+            <FormField control={form.control} name="colorId1" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Color 1 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Color 1" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {colors1.map((color) => (
+                                <SelectItem key={color.id} value={color.id}>
+                                    {color.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
+            <FormField control={form.control} name="sizeId2" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Size 1 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Size 1" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {sizes2.map((size) => (
+                                <SelectItem key={size.id} value={size.id}>
+                                    {size.value}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
+
+            {/* Color1 Field (Optional) */}
+            <FormField control={form.control} name="colorId2" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Color 1 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Color 1" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {colors2.map((color) => (
+                                <SelectItem key={color.id} value={color.id}>
+                                    {color.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
+            <FormField control={form.control} name="sizeId3" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Size 1 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Size 1" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {sizes3.map((size) => (
+                                <SelectItem key={size.id} value={size.id}>
+                                    {size.value}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
+
+            {/* Color1 Field (Optional) */}
+            <FormField control={form.control} name="colorId3" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Color 1 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Color 1" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {colors3.map((color) => (
+                                <SelectItem key={color.id} value={color.id}>
+                                    {color.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
                                         <FormField
                         control={form.control}
                         name="isFeatured"

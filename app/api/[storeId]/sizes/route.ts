@@ -38,9 +38,62 @@ export async function POST(req: Request,{params}:{params:{storeId:string}}) {
         if(!storeByUserId){
             return new NextResponse("Unauthorized", { status: 403 });
         }
+        const defaultSize = await db.size1.findFirst({
+            where: {
+                storeId: params.storeId,
+                value: "n/a", // Transparent color value
+            },
+        });
+        if (!defaultSize) {
 
+            // Similarly create default colors in other models (color1, color2, color3)
+            await db.size1.create({
+                data: {
+                    name: "N/A", // Default name for transparent color
+                    value: "n/a", // Transparent hex value
+                    storeId: params.storeId,
+                },
+            });
+
+            await db.size2.create({
+                data: {
+                    name: "N/A", // Default name for transparent color
+                    value: "n/a", // Transparent hex value
+                    storeId: params.storeId,
+                },
+            });
+
+            await db.size3.create({
+                data: {
+                    name: "N/A", // Default name for transparent color
+                    value: "n/a", // Transparent hex value
+                    storeId: params.storeId,
+                },
+            });
+        }
         // Create a new store in the database
         const size = await db.size.create({
+            data: {
+                name,
+                value,
+                storeId:params.storeId,
+            },
+        });
+        const size1 = await db.size1.create({
+            data: {
+                name,
+                value,
+                storeId:params.storeId,
+            },
+        });
+        const size2 = await db.size2.create({
+            data: {
+                name,
+                value,
+                storeId:params.storeId,
+            },
+        });
+        const size3 = await db.size3.create({
             data: {
                 name,
                 value,
@@ -63,6 +116,21 @@ export async function GET(req: Request,{params}:{params:{storeId:string}}) {
         }
         // Create a new store in the database
         const size = await db.size.findMany({
+            where: {
+                storeId:params.storeId,
+            },
+        });
+        const size2 = await db.size2.findMany({
+            where: {
+                storeId:params.storeId,
+            },
+        });
+        const size1 = await db.size1.findMany({
+            where: {
+                storeId:params.storeId,
+            },
+        });
+        const size3 = await db.size3.findMany({
             where: {
                 storeId:params.storeId,
             },

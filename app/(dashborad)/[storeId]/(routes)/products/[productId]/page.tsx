@@ -30,8 +30,35 @@ const ProductPage = async({
             storeId: params.storeId
         }
     });
-
+    const sizes1 = await db.size1.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    });const sizes2 = await db.size2.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    });const sizes3 = await db.size3.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    });
     const colors = await db.color.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    });
+    const colors1 = await db.color1.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    });
+    const colors2 = await db.color2.findMany({
+        where: {
+            storeId: params.storeId
+        }
+    });
+    const colors3 = await db.color3.findMany({
         where: {
             storeId: params.storeId
         }
@@ -47,6 +74,12 @@ const ProductPage = async({
                     categories={categories}
                     colors={colors}
                     sizes={sizes}
+                    sizes1={sizes1}
+                    sizes2={sizes2}
+                    sizes3={sizes3}
+                    colors1={colors1}
+                    colors2={colors2}
+                    colors3={colors3}
                     initialData={initialData}  // Will be null if no product is found
                     details={details}  // Will be empty if no product is found
                 />

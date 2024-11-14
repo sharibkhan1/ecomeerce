@@ -8,7 +8,7 @@ export async function POST(req: Request,{params}:{params:{storeId:string}}) {
         const userId = await currentUserId(); // Ensure this is awaited
 
         const body = await req.json();
-        const { name, price,categoryId,colorId,sizeId,images ,isFeatured,isArchived,discription,salesPrice,stocks,details} = body;
+        const {colorId1,dilevery, colorId2, colorId3, sizeId1, sizeId2, sizeId3, name, price,categoryId,colorId,sizeId,images ,isFeatured,isArchived,discription,salesPrice,stocks,details} = body;
 
         // Check if userId is available
         if (!userId) {
@@ -57,12 +57,19 @@ export async function POST(req: Request,{params}:{params:{storeId:string}}) {
         const product = await db.product.create({
             data: {
                 name,
+                dilevery,
                 price,
                 isFeatured,
                 isArchived,
                 categoryId,
                 colorId,
                 sizeId,
+                sizeId1,
+                sizeId2,
+                sizeId3,
+                colorId1,
+                colorId2,
+                colorId3,
                 salesPrice,
                 stocks: Number(stocks),
                 discription,
@@ -100,6 +107,12 @@ export async function GET(req: Request,{params}:{params:{storeId:string}}) {
         const categoryId = searchParams.get("categoryId")|| undefined;
         const colorId = searchParams.get("colorId")|| undefined;
         const sizeId = searchParams.get("sizeId")|| undefined;
+        const colorId1 = searchParams.get("colorId1") || undefined;
+        const colorId2 = searchParams.get("colorId2") || undefined;
+        const colorId3 = searchParams.get("colorId3") || undefined;
+        const sizeId1 = searchParams.get("sizeId1") || undefined;
+        const sizeId2 = searchParams.get("sizeId2") || undefined;
+        const sizeId3 = searchParams.get("sizeId3") || undefined;
         const isFeatured = searchParams.get("isFeatured");
         if (!params.storeId) {
             return new NextResponse("storeId is required", { status: 400 });
@@ -111,6 +124,12 @@ export async function GET(req: Request,{params}:{params:{storeId:string}}) {
                 categoryId,
                 colorId,
                 sizeId,
+                sizeId1,
+                sizeId2,
+                sizeId3,
+                colorId1,
+                colorId2,
+                colorId3,
                 isFeatured: isFeatured? true: undefined,
                 isArchived: false,
             },
