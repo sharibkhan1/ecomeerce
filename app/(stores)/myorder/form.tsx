@@ -117,7 +117,21 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
             <p className="text-lg text-gray-600"><strong>Store Status:</strong> {item.orderState}</p>
               <h4 className="text-xl font-semibold text-gray-800">{item.productname || "Unnamed Product"}</h4>
               <p className="text-lg text-gray-600"><strong>Owner Name:</strong> {item.username || "Anonymous"}</p>
-              <p className="text-lg text-gray-600"><strong>Color:</strong> {item.color || "N/A"}</p>
+{/* Color */}
+<p className="text-lg text-gray-600 flex items-center space-x-2">
+  <strong>Color:</strong> 
+  {item.color ? (
+    <>
+      <span
+        style={{ backgroundColor: item.color }}
+        className="w-6 h-6 inline-block rounded-full border border-gray-300"
+        title={item.color} // Tooltip for accessibility
+      ></span>
+    </>
+  ) : (
+    <span>N/A</span>
+  )}
+</p>
               <p className="text-lg text-gray-600"><strong>Size:</strong> {item.size || "N/A"}</p>
               <p className="text-lg text-gray-600"><strong>Quantity:</strong> {item.quantity || 1}</p>
               <p className="text-lg text-gray-600"><strong>Price:</strong> ₹{item.Price}</p>

@@ -62,18 +62,12 @@ const CellAction:React.FC<CellActionProps> = ({data}) => {
             <DropdownMenuLabel>
                 Actions
             </DropdownMenuLabel>
-            <DropdownMenuItem onClick={()=>onCopy(data.id)} >
-                <CopyIcon className='mr-2 h-4 w-4'/>
-                Copy Id
-            </DropdownMenuItem>
+           
             <DropdownMenuItem onClick={()=>router.push(`/${params.storeId}/products/${data.id}`)} >
                 <FaEdit className='mr-2 h-4 w-4'/>
                 Update
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>setOpen(true)} >
-                <TrashIcon className='mr-2 h-4 w-4'/>
-                Delete
-            </DropdownMenuItem>
+          
         </DropdownMenuContent>
     </DropdownMenu>
     </>

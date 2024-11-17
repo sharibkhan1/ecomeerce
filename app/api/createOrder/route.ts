@@ -5,6 +5,7 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 import db from "@/lib/db";
 import { currentUser } from "@/lib/auth";
+import { pusherServer } from "@/lib/pusher"; // import your pusherServer
 
 const instance = new Razorpay({
   key_id: process.env.RAZOR_KEY!,
@@ -64,7 +65,17 @@ export async function POST(req: Request) {
             where: { id: product.id },
             data: {
               stocks: updatedStock, // Decrease the stock by the ordered quantity
+              CartItem: {
+                deleteMany: {}, // Clear all cart items associated with this product
+              },
             },
+          });
+
+
+
+          pusherServer.trigger('product-channel', 'stock-updated', {
+            productId: product.id,
+            newStock: updatedStock,
           });
         }
       }

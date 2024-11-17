@@ -58,7 +58,6 @@ export const SizeForm:React.FC<BillboardFormProps>=({
                 await axios.post(`/api/${params.storeId}/sizes`,data);
             }
             router.refresh();
-            router.push(`/${params.storeId}/sizes`)
             toast.success(toastMessage)
         }catch(e){
             toast.error("Something went wrong");

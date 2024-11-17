@@ -89,7 +89,7 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   reviews     Review[] @relation("ProductReviews")
-  // carts  Cart[]
+  CartItem CartItem[]
   @@index([storeId])
   @@index([categoryId])
   @@index([sizeId])
@@ -100,13 +100,14 @@ model Product {
   @@index([colorId3])
   @@index([sizeId1])
   @@index([colorId1])
+  
 }
 
 
 model Review {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   productId String
-  product   Product  @relation("ProductReviews", fields: [productId], references: [id])
+  product   Product  @relation("ProductReviews", fields: [productId], references: [id], onDelete: Cascade)
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   rating    Int      @default(0)  // Rating between 0 to 5
@@ -120,7 +121,7 @@ model Review {
 model Detail {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   productId   String
-  product     Product  @relation("ProductDetails", fields: [productId], references: [id])
+  product     Product  @relation("ProductDetails", fields: [productId], references: [id], onDelete: Cascade)
   title       String
   description String
 
@@ -185,7 +186,36 @@ model User{
   twoFactorConfirmation TwoFactorConfirmation?
   stores                Store[]              // Relation to Store model
   orders             Order[]  // A User can have many Orders
+  cart      Cart[]
 }
+
+model Cart {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String
+  user       User         @relation(fields: [userId], references: [id])
+  cartItems  CartItem[]    
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model CartItem {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  cartId      String
+
+  cart        Cart     @relation(fields: [cartId], references: [id]) // Relate to Cart
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id]) // Relate to Product
+  quantity    Int      @default(1) // The quantity of the product in the cart
+  size        String?  // Optional field for size
+  color       String?  // Optional field for color
+  price       Int?    // Price of the product at the time of adding to the cart
+  Image       String?
+  name String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
 model OrderItem{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   orderId String 
@@ -211,7 +241,7 @@ model OrderItem{
 model Image{
   id    String   @id @default(auto()) @map("_id") @db.ObjectId
   productId String
-  product Product @relation(fields: [productId], references: [id])
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   url String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

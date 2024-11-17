@@ -75,6 +75,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
             const newState = selectedStates[orderItemId];
             await updateOrderState(orderItemId, newState);
             toast.success("Order item state updated successfully!");
+            if (newState === "CancelOrder") {
+                toast.success("Stock updated for canceled item!");
+              }
             router.refresh();
         } catch (err) {
             toast.error("Failed to update order item state.");
@@ -122,8 +125,20 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
                             <h4 className="text-2xl font-semibold text-gray-900">{item.productname || "Unnamed Product"}</h4>
                             <p className="text-xl"><strong className="text-gray-900 text-xl">Total Price:</strong> ₹{(item.Price || 0) * (item.quantity || 1)}</p>
                             <p className="text-lg"><strong className="text-gray-900">Customer Name:</strong> {item.username || "Anonymous"}</p>
-                            <p className="text-lg"><strong className="text-gray-900">Color:</strong> {item.color || "N/A"}</p>
-                            <p className="text-lg"><strong className="text-gray-900">Size:</strong> {item.size || "N/A"}</p>
+                            <p className="text-lg text-gray-600 flex items-center space-x-2">
+  <strong>Color:</strong> 
+  {item.color ? (
+    <>
+      <span
+        style={{ backgroundColor: item.color }}
+        className="w-6 h-6 inline-block rounded-full border border-gray-300"
+        title={item.color} // Tooltip for accessibility
+      ></span>
+    </>
+  ) : (
+    <span>N/A</span>
+  )}
+</p>                            <p className="text-lg"><strong className="text-gray-900">Size:</strong> {item.size || "N/A"}</p>
                             <p className="text-lg"><strong className="text-gray-900">Quantity:</strong> {item.quantity || 1}</p>
                             <p className="text-lg"><strong className="text-gray-900">Price:</strong> ₹{item.Price}</p>
                             <p className="text-lg"><strong className="text-gray-900">Delivery Time:</strong> {item.dilevery || "N/A"}</p>

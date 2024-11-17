@@ -1,54 +1,114 @@
-import useCart from "@/hooks/use-cart"; // Importing the Zustand store
-import db from "@/lib/db";
+"use server"
+import db from '@/lib/db';
+import { currentUserId } from '@/lib/auth';
 
-export async function updateOrderDetails(orderId: string) {
+export const addToCart = async ({
+  productId,
+  color,
+  size,
+  quantity,
+  price,
+  name,
+  image,
+}: {
+  productId: string;
+  color: string;
+  size: string;
+  quantity: number;
+  price: number;
+  name:string;
+  image: string;
+}) => {
   try {
-    // Fetch the cart data from Zustand store
-    const cartItems = useCart.getState().items;
+    // Get the current user session
 
-    // Log the cart items to ensure data is available
-    console.log("Cart Items:", cartItems);
+ const userId = await currentUserId();
 
-    // Initialize variables for aggregated values
-    let color = "";
-    let size = "";
-    let quantity = 0;
-
-    // Iterate through each item in the cart
-    cartItems.forEach(item => {
-      console.log("Item details:", item);  // Log individual item details
-
-      // Accumulate color, size, and quantity values
-      if (item.color?.value) {
-        color += item.color.value + ", "; // Append color to the string
-      }
-      if (item.size?.value) {
-        size += item.size.value + ", "; // Append size to the string
-      }
-
-      quantity += item.quantity; // Sum the quantity of each item
+    // Check if the user already has a cart
+    let cart = await db.cart.findFirst({
+      where: {
+        userId,  // Find the cart for the current user
+      },
     });
+    
+    // If the user doesn't have a cart, create one
+    if (!cart) {
+      cart = await db.cart.create({
+        data: {
+          userId:userId,
+        },
+      });
+    }
 
-    // Trim the last comma and space
-    color = color.slice(0, -2); // Remove the last comma and space
-    size = size.slice(0, -2);   // Remove the last comma and space
+    // Check if the product already exists in the user's cart (same color, size, etc.)
 
-    // Log the final aggregated values
-    console.log("Aggregated Order Details:", { color, size, quantity });
-
-    // Update the order in the database with the aggregated color, size, and quantity
-    await db.order.update({
-      where: { id: orderId },
-      data: {
-        color: color || null,  // Set to null if no color exists
-        size: size || null,    // Set to null if no size exists
-        quantity,              // Total quantity of items in the cart
+    const existingCartItems = await db.cartItem.findMany({
+      where: {
+        cartId: cart.id, // Check if the product is already in the cart
+        productId,
       },
     });
 
-    return { success: true };
+    // Sum the total quantity of the existing cart items
+    const totalExistingQuantity = existingCartItems.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    // Fetch the product's stock from the database
+    const product = await db.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return { success: false, message: "Product not found." };
+    }
+
+    const currentStock = product.stocks;
+    const newTotalQuantity = totalExistingQuantity + quantity;
+
+    // Check if the total quantity exceeds the product stock
+    if (newTotalQuantity > currentStock) {
+      return { success: false, message: "Cannot add more items than available stock." };
+    }
+
+    const existingCartItem = await db.cartItem.findFirst({
+      where: {
+        cartId: cart.id, // Check if the product is already in the cart
+        productId,
+        color,
+        name,
+        size,
+      },
+    });
+    
+    if (existingCartItem) {
+      // If it exists, update the quantity
+      await db.cartItem.update({
+        where: { id: existingCartItem.id },
+        data: {
+          quantity: existingCartItem.quantity + quantity, // Add the new quantity
+        },
+      });
+      return { success: true, message: 'Updated cart item quantity.' };
+    } else {
+      // Otherwise, create a new cart item
+      await db.cartItem.create({
+        data: {
+          cartId: cart.id,  // Link the cart item to the cart
+          productId,
+          color,
+          size,
+          name,
+          quantity,
+          price,
+          Image: image,
+        },
+      });
+      return { success: true, message: 'Item added to cart successfully' };
+    }
   } catch (error) {
-    console.error("Error updating order details:", error);
-    throw new Error("Failed to update order details.");
+    console.error('Error adding item to cart:', error);
+    return { success: false, message: error || 'An error occurred while adding the item to the cart' };
   }
-}
+};

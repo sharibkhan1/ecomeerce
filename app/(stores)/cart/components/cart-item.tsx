@@ -1,36 +1,75 @@
 "use client";
 
+import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/actions/cartcount";
 import Currency from "@/components/ui/currency";
 import IconButton from "@/components/ui/IconButton";
-import useCart from "@/hooks/use-cart";
-import { Product } from "@/lib/types";
 import { Cross, MinusCircle, PlusCircle } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface CartItemProps {
-    data: Product & { quantity: number; color?: { value: string }; size?: { value: string } };
+    data: {
+        id: string;
+        name: string;
+        quantity: number;
+        color?: string;
+        size?: string;
+        salesPrice: number;
+        image?: string;
+    };
 }
 
 const CartItem: React.FC<CartItemProps> = ({ data }) => {
-    const cart = useCart();
+    const [quantity, setQuantity] = useState(data.quantity);
+    const [loading, setLoading] = useState(false);
 
-    const onRemove = () => {
-        cart.removeItem(data.id);
+    const handleRemove = async () => {
+      const response = await removeFromCart(data.id);
+      if (response.success) {
+        // Optionally update the UI or notify the user
+        toast.error("Item remove successfully")
+      } else {
+        console.error(response.message);
+      }
+    };
+  
+    const handleIncrease = async () => {
+      const response = await increaseQuantity(data.id);
+      if (response.success) {
+        
+        setQuantity(prevQuantity => prevQuantity + 1);
+      } else {
+        console.error(response.message);
+        toast.error("Max number of item avaible ")
+      }
+    };
+  
+    const handleDecrease = async () => {
+      const response = await decreaseQuantity(data.id);
+      if (response.success) {
+        setQuantity(prevQuantity => prevQuantity - 1);
+      } else {
+        console.error(response.message);
+        toast.error("Cannot decrease less than 1")
+      }
     };
 
     return (
-        <li className="flex py-6 border-b bg-white shadow-md rounded-lg hover:shadow-xl transition-all">
+        <li className="flex mb-5 py-6 border-b bg-white shadow-md rounded-lg hover:shadow-xl transition-all">
             <div className="relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48">
-                <Image
-                    fill
-                    src={data.images[0].url}
-                    alt=""
-                    className="object-cover object-center"
-                />
+            {data.image && (
+                    <Image
+                        fill
+                        src={data.image}
+                        alt={data.name}
+                        className="object-cover object-center"
+                    />
+                )}
             </div>
             <div className="relative ml-4 flex-1 flex-col justify-between sm:ml-6">
                 <div className="absolute z-10 right-5 top-0">
-                    <IconButton onClick={onRemove} icon={<Cross className="rotate-45" color="black" size={15} />} />
+                    <IconButton onClick={handleRemove} icon={<Cross className="rotate-45" color="black" size={15} />} />
                 </div>
                 <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                     <div className="flex justify-between">
@@ -43,13 +82,13 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
                         {data.color && (
                             <p
                                 className={`h-6 w-6 rounded-full cursor-pointer border ring-2 ring-offset-2 ring-black`}
-                                style={{ backgroundColor: data.color.value }}
+                                style={{ backgroundColor: data.color }}
                             ></p>
                         )}
                         {/* Displaying the selected size */}
                         {data.size && (
                             <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">
-                                Size: {data.size.value}
+                                Size: {data.size}
                             </p>
                         )}
                     </div>
@@ -58,12 +97,12 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
                 <div className="flex gap-4 items-center mt-4">
                     <MinusCircle
                         className="hover:text-red-500 cursor-pointer"
-                        onClick={() => cart.decreaseQuantity(data.id)}
+                        onClick={handleDecrease}
                     />
                     <p className="text-body-bold">{data.quantity}</p>
                     <PlusCircle
                         className="hover:text-green-500 cursor-pointer"
-                        onClick={() => cart.increaseQuantity(data.id)}
+                        onClick={handleIncrease}
                     />
                 </div>
             </div>

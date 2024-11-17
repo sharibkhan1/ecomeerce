@@ -8,14 +8,13 @@ import { TrashIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/iamge-ypload";
 
 
@@ -37,7 +36,7 @@ export const BillboardForm:React.FC<BillboardFormProps>=({
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const origin = useOrigin();
+    const [isPending, startTransition] = useTransition(); // Transition state
 
     const title = initialData ? "Edit billboard":"Create billboard"
     const description = initialData ? "Edit a billboard":"Add a new  billboard"
@@ -53,36 +52,41 @@ export const BillboardForm:React.FC<BillboardFormProps>=({
     });
 
     const onSubmit = async(data: BillboardFormValues)=>{
-        try{
+        startTransition(async () => {
             setLoading(true);
+        try{
             if(initialData){
                 await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`,data);
             }else{
                 await axios.post(`/api/${params.storeId}/billboards`,data);
             }
+            toast.success(toastMessage)
             router.refresh();
             router.push(`/${params.storeId}/billboards`)
-            toast.success(toastMessage)
         }catch(e){
             toast.error("Something went wrong");
         }finally{
             setLoading(false);
         }
+    });
     }
 
     const onDelete = async()=>{
+        startTransition(async () => {
+            setLoading(true);
         try{
             setLoading(true);
             await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+            toast.success("Billboard deleted")
             router.refresh();
             router.push(`/${params.storeId}/billboards`);
-            toast.success("Billboard deleted")
         }catch(e){
             toast.error("Make sure to remove all categories using this billboard first");
         }finally{
             setLoading(false);
             setOpen(false);
         }
+    });
     }
 
     return(

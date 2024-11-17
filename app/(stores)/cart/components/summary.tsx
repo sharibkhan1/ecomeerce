@@ -1,5 +1,6 @@
 "use client";
 
+import { getCartItems } from "@/actions/cartcount";
 import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import { UserDetail } from "@/components/userdetail";
@@ -9,30 +10,52 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+type CartItem = {
+  id: string;
+  name: string;
+  salesPrice: number | null;
+  image: string;
+  quantity: number;
+  color: string | null;
+  size: string | null;
+};
+
 const Summary = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
   const [open,setOpen] = useState(false);
   const [loading,setLoading] = useState(false);
-  
+  const [items, setItems] = useState<CartItem[]>([]); // Initialize items state with CartItem type
+
   const user =  useCurrentUser();
 
   useEffect(() => {
+    // Fetch cart items and update the state
+    const fetchCartItems = async () => {
+      const cartItems = await getCartItems();
+      setItems(cartItems);
+    };
+
+    fetchCartItems();
+    const intervalId = setInterval(fetchCartItems, 3000);
+
     if (searchParams.get("success")) {
       toast.success("Payment completed.");
-      removeAll();
+      // Reset cart
+      setItems([]);
     }
 
     if (searchParams.get("canceled")) {
       toast.error("Something went wrong.");
     }
-  }, [searchParams, removeAll]);
+    return () => clearInterval(intervalId);
+
+  }, [searchParams]);
 
   // Calculate total price based on quantity of each item
   const totalPrice = items.reduce((total, item) => {
-    return total + Number(item.salesPrice) * item.quantity;
+    return total + (item.salesPrice ? item.salesPrice : 0) * item.quantity;
   }, 0);
 
   // Handle Checkout using Razorpay
@@ -40,12 +63,12 @@ const Summary = () => {
     try {
       const orderItems = items.map((item) => ({
         id: item.id,
-        color: item.color?.name,  // Pass the color of the item
-        size: item.size?.value,    // Pass the size of the item
+        color: item.color,  // Pass the color of the item
+        size: item.size,    // Pass the size of the item
         quantity: item.quantity, // Pass the quantity of the item
         price: item.salesPrice,
       }));
-  
+  console.log(orderItems)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
         method: "POST",
         body: JSON.stringify({

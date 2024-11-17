@@ -6,26 +6,40 @@ import { Button } from './ui/button';
 import { FaShoppingCart } from 'react-icons/fa';
 import useCart from '@/hooks/use-cart';
 import { toast } from 'sonner';
+import { addToCart } from '@/actions/ordercat';
 
 interface InfoProps {
   data: Product;
 }
 
 const InfoPage: React.FC<InfoProps> = ({ data }) => {
-  const cart = useCart();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const AddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const AddToCart: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation();
 
     if (!selectedColor || !selectedSize) {
       return toast.error("Please select both color and size.");
     }
+    const firstImage = data.images[0]?.url;  // Assuming the first image URL is available
 
-    // Adding item with selected color and size
-    cart.addItem({ ...data, color: { ...data.color, value: selectedColor }, size: { ...data.size, value: selectedSize } });
+    const result = await addToCart({
+      productId: data.id,
+      color: selectedColor,
+      size: selectedSize,
+      name:data.name,
+      quantity: 1, // Default to 1 for now
+      price: data.salesPrice,
+      image: firstImage || '',  // Assuming you have an imageUrl field in your data model
+    });
+
+    if (result?.success) {
+      toast.success("success");
+    } else {
+      toast.error("product cannot be added");
+    }
   };
 
   return (

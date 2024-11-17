@@ -23,28 +23,50 @@ export async function POST(req: Request, { params }: { params: { storeId: string
         phoneno: true,
       },
     });
-
+console.log(user)
     // Fetch product details for each order item
     const enrichedOrderItems = await Promise.all(orderItems.map(async (item: any) => {
+      console.log("userdfsf sd")
+
       // Fetch product details using the item id
-      const product = await db.product.findUnique({
+      const cartItem = await db.cartItem.findUnique({
         where: { id: item.id },
         select: {
-          name: true,
-          dilevery: true,
-          images: true,
+           // Ensure we get the product's ID
+          quantity: true, // Cart item quantity
+          size: true, // Cart item size
+          color: true, // Cart item color
+          price: true, // Cart item price
+          name: true, // Cart item name
+          Image: true, // Cart item image
+          product: {
+            select: {
+              id: true,
+              name: true, // Product name
+              dilevery: true, // Product delivery details
+              images: {
+                select: {
+                  url: true, // Product image URL
+                },
+              },
+            },
+          },
         },
       });
-
+      console.log("usasdadsaderdfsf sd")
+      
       // Enrich the item with product details
       return {
         ...item,
-        productname: product?.name || '',
-        dilevery: product?.dilevery || '',
-        image: (product?.images && product?.images.length > 0) ? product.images[0].url : '',  // Take first image
+        productId: cartItem?.product?.id, // Ensure productId is set
+        productname: cartItem?.product?.name || '',
+        dilevery: cartItem?.product?.dilevery || '',
+        image: (cartItem?.product?.images && cartItem?.product?.images.length > 0) ? cartItem?.product.images[0].url : '',  // Take first image
       };
     }));
 
+    // Log enrichedOrderItems after all async tasks are completed
+    console.log("Enriched Order Items:", enrichedOrderItems);
     // Calculate total price (already provided from frontend)
     const totalAmount = totalPrice * 100; // Convert to paise (totalPrice already in INR)
 
@@ -57,11 +79,14 @@ export async function POST(req: Request, { params }: { params: { storeId: string
         orderDetails: enrichedOrderItems.map((item: any) => item.productname).join(", "), // Add the names of products
       },
     };
+    
+    console.log(orderOptions)
 
     const order = await instance.orders.create(orderOptions);
+    console.log(order)
 
     // Create the order in your database
-    await db.order.create({
+    const crt = await db.order.create({
       data: {
         storeId: params.storeId,
         userId: userId,
@@ -72,7 +97,7 @@ export async function POST(req: Request, { params }: { params: { storeId: string
         orderItems: {
           create: enrichedOrderItems.map((item: any) => ({
             product: {
-              connect: { id: item.id },
+              connect: { id: item.productId   },
             },
             color: item.color, // Save color
             size: item.size,   // Save size
@@ -86,6 +111,7 @@ export async function POST(req: Request, { params }: { params: { storeId: string
         },
       },
     });
+    console.log(crt)
 
     return NextResponse.json({ url: order?.id, order });
   } catch (error) {

@@ -62,9 +62,7 @@ const Ordersdpage = async ({
       dileve: item.orderItems.map((orderItem) => ({
         dilevery: countdowns[orderItem.id] || 'N/A',
       })),
-      statu: item.orderItems.map((orderItem) => ({
-        status: orderItem.status || 'N/A',
-      })),
+      statuss: item.orderItems.map((orderItem) => orderItem.status || 'N/A').join(', '),
       orderStat: item.orderItems.map((orderItem) => ({
         orderState: orderItem.orderState || 'Packing',
       })),

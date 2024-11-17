@@ -103,7 +103,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
       const { size, size1, size2, size3 } = row.original;
   
       // Collect all available size values, filter out null, undefined, and "N/A" values
-      const sizes = [size, size1, size2, size3].filter(value => value && value !== "N/A");
+      const sizes = [size, size1, size2, size3].filter(value => value && value !== "n/a");
   
       // If no valid sizes are found, fall back to the main size if it's not "N/A"
       const displayedSizes = sizes.length > 0 ? sizes : (size !== "N/A" ? [size] : []);
