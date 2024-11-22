@@ -15,7 +15,6 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/iamge-ypload";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -76,7 +75,6 @@ export const ProductForm:React.FC<ProductFormProps>=({
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const origin = useOrigin();
 
     const title = initialData ? "Edit products":"Create products"
     const description = initialData ? "Edit a products":"Add a new  products"
@@ -85,7 +83,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
 
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(formSchema),
-        // @ts-ignore
+        // @ts-expect-error
         defaultValues:initialData ?{
             ...initialData,
             price:parseFloat(String(initialData?.price)),
@@ -136,26 +134,6 @@ export const ProductForm:React.FC<ProductFormProps>=({
             setLoading(false);
         }
     }
-    const onDeleteDetail = async (index: number) => {
-        try {
-            setLoading(true);
-            const detailId = fields[index].id; // Ensure you have access to the detail's ID
-    
-            // Call API to remove the detail from the database
-            await axios.patch(`/api/${params.storeId}/products/${params.productId}/remove-detail`, {
-                detailId: detailId,
-            });
-    
-            // Remove the detail from the form's state
-            remove(index);
-    
-            toast.success("Product detail removed");
-        } catch (e) {
-            toast.error("Something went wrong");
-        } finally {
-            setLoading(false);
-        }
-    };
     
     const onDelete = async()=>{
         try{

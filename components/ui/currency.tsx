@@ -2,25 +2,26 @@
 import { formatter } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-interface CurrenyProps{
-    value?: string| number;
+interface CurrencyProps {
+    value?: string | number;
 }
 
-const Currency:React.FC<CurrenyProps>=({
-    value
-})=>{
+const Currency: React.FC<CurrencyProps> = ({ value }) => {
     const [isMounted, setIsMounted] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         setIsMounted(true);
-    })
-    if(!isMounted){
+    }, []); // Empty dependency array to run only on mount
+
+    if (!isMounted) {
         return null;
     }
-    return(
-        <div className="font-semibold" >
+
+    return (
+        <div className="font-semibold">
             {formatter.format(Number(value))}
         </div>
-    )
+    );
 }
-export default Currency
+
+export default Currency;

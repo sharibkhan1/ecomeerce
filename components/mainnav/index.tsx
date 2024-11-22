@@ -5,7 +5,6 @@ import { useParams, usePathname } from "next/navigation";
 
 export function MainNav({
     className,
-    ...propagateServerField
 }:React.HTMLAttributes<HTMLElement>){
     const pathname = usePathname();
     const params = useParams();

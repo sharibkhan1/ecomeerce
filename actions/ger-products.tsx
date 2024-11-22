@@ -40,7 +40,7 @@ const getProducts = async (query: Query): Promise<Product[]> => {
             reviews: true, 
         },
     });
-// @ts-ignore
+// @ts-expect-error
     return products;
 };
 

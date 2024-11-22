@@ -16,7 +16,6 @@ const ProtectedLayout = ({ session, children }: { session: Session | null; child
 
 export default async function Layout({
     children,
-    params,
 }: {
     children: ReactNode;
     params: { storeId: string };

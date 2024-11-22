@@ -3,8 +3,14 @@
 import React from "react";
 import {AreaChart, Area, Bar, BarChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
+interface GraphData {
+    name: string; // Assuming this represents the month or category
+    total?: number;
+    Ordered?: number; // Optional fields for stacked area chart
+    Cancel?: number;  // Optional fields for stacked area chart
+  }
 interface OverviewProps {
-    data: any[];
+    data: GraphData[];
 };
 
 export const Overview: React.FC<OverviewProps> = ({

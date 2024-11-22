@@ -15,7 +15,6 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
 
 const formSchema = z.object({
     name:z.string().min(1),
@@ -34,7 +33,6 @@ export const SizeForm:React.FC<BillboardFormProps>=({
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const origin = useOrigin();
 
     const title = initialData ? "Edit size":"Create size"
     const description = initialData ? "Edit a size":"Add a new  size"

@@ -14,7 +14,6 @@ interface InfoProps {
 const MiniInfoPage: React.FC<InfoProps> = ({ data }) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const AddToCart: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation();

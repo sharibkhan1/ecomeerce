@@ -21,12 +21,9 @@ const YearlyRevenueGraph: React.FC<YearlyRevenueGraphProps> = ({ storeId }) => {
     setLoading(true);
     try {
       // Fetch the revenue data for the selected year
-      // @ts-ignore
       const data = await getGraphRevenue(storeId, yearNum);
-      console.log("Fetched graph data:", data); // Debugging line to check the data structure
       setGraphData(data);
     } catch (error) {
-      console.error("Error fetching graph data:", error);
     } finally {
       setLoading(false);
     }

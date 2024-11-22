@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { useOrigin } from "@/hooks/use-origin";
 
 interface SettingsFormProps{
     initialData:Store;
@@ -30,9 +29,7 @@ export const SettingsForm:React.FC<SettingsFormProps>=({
 })=>{
     const params = useParams();
     const router = useRouter();
-    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const origin = useOrigin();
     const form = useForm<SettingsFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues:initialData

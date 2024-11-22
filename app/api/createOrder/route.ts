@@ -1,16 +1,15 @@
 "use server"
 
 import { NextResponse } from "next/server";
-import Razorpay from "razorpay";
 import crypto from "crypto";
 import db from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import { pusherServer } from "@/lib/pusher"; // import your pusherServer
 
-const instance = new Razorpay({
-  key_id: process.env.RAZOR_KEY!,
-  key_secret: process.env.RAZOR_SECRET_KEY!,
-});
+// const instance = new Razorpay({
+//   key_id: process.env.RAZOR_KEY!,
+//   key_secret: process.env.RAZOR_SECRET_KEY!,
+// });
 
 export async function POST(req: Request) {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await req.json();

@@ -31,7 +31,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const totalRevenue = await getTotalRevenue(params.storeId);
   const salesCount = await getSalesCount(params.storeId);
   const stockCount = await getStockCount(params.storeId);
-  const graphRevenue = await getGraphRevenue(params.storeId);  // Get the graph data here
+  const graphRevenue = await getGraphRevenue(params.storeId,currentYear);  // GraphData[]
   const graphRevenueDdaily = await getDailyRevenue(params.storeId,currentYear);  // Get the graph data here
   const orderStatusData = await getDailyOrderStatus(params.storeId, currentYear); // Fetch order status data
   const graphOrder = await getYearOrderStatus(params.storeId);  // Get the graph data here

@@ -21,8 +21,7 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ data }) => {
-    const [quantity, setQuantity] = useState(data.quantity);
-    const [loading, setLoading] = useState(false);
+    const [, setQuantity] = useState(data.quantity);
 
     const handleRemove = async () => {
       const response = await removeFromCart(data.id);

@@ -29,7 +29,7 @@ export const StoreModal =()=>{
     const onSubmit = async (values: z.infer<typeof formSchema>)=>{
         try{
             setLoading(true);
-            const response = await axios.post('/api/stores',values);
+            await axios.post('/api/stores', values);  // Removed the unused response variable
             toast.success("Store Created");
         }catch(e){
             toast.error("Something went wrong");

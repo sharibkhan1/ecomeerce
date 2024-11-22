@@ -36,7 +36,7 @@ export const BillboardForm:React.FC<BillboardFormProps>=({
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [isPending, startTransition] = useTransition(); // Transition state
+    const [, startTransition] = useTransition(); // Transition state
 
     const title = initialData ? "Edit billboard":"Create billboard"
     const description = initialData ? "Edit a billboard":"Add a new  billboard"

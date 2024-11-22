@@ -2,7 +2,7 @@ import { getUserByAddress } from "@/actions/userupdate"; // Function to fetch cu
 const GOOGLE_MAPS_API_KEY = process.env.GOGGLE_MAP;
 const DESTINATION_ADDRESS = "Holy Family Convent High School";
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     // Fetch the current user's address
     const userAddress = await getUserByAddress();

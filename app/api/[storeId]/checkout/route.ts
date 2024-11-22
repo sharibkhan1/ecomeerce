@@ -9,14 +9,49 @@ const instance = new Razorpay({
   key_id: process.env.RAZOR_KEY!,
   key_secret: process.env.RAZOR_SECRET_KEY!,
 });
+interface OrderItem {
+  id: string;
+  quantity: number;
+  size: string;
+  color: string;
+  price: number;
+}
+
+interface CartItemProduct {
+  id: string;
+  name: string;
+  dilevery: string;
+  images: { url: string }[];
+}
+
+interface CartItem {
+  quantity: number;
+  size: string;
+  color: string;
+  price: number;
+  name: string;
+  Image: string;
+  product: CartItemProduct;
+}
+
+interface EnrichedOrderItem {
+  id: string |undefined;
+  quantity: number;
+  size: string;
+  color: string;
+  price: number;
+  productId: string;
+  productname: string;
+  dilevery: string;
+  image: string;
+}
 export async function POST(req: Request, { params }: { params: { storeId: string } }) {
   
   try {
-    const { orderItems, totalPrice } = await req.json();
+    const { orderItems, totalPrice }: { orderItems: OrderItem[], totalPrice: number } = await req.json();
     const userId = await currentUserId();
     if (orderItems.length === 0) {
       window.location.reload();
-      console.log(orderItems)
       return NextResponse.json({ error: "Cart is empty, cannot proceed with order." }, { status: 400 });
     }
     const user = await db.user.findUnique({
@@ -27,10 +62,9 @@ export async function POST(req: Request, { params }: { params: { storeId: string
         phoneno: true,
       },
     });
-console.log(user)
     // Fetch product details for each order item
-    const enrichedOrderItems = await Promise.all(orderItems.map(async (item: any) => {
-      console.log("userdfsf sd")
+                // @ts-expect-error
+    const enrichedOrderItems: EnrichedOrderItem[] = await Promise.all(orderItems.map(async (item: OrderItem) => {
 
       // Fetch product details using the item id
       const cartItem = await db.cartItem.findUnique({
@@ -57,7 +91,6 @@ console.log(user)
           },
         },
       });
-      console.log("usasdadsaderdfsf sd")
       
       // Enrich the item with product details
       return {
@@ -70,7 +103,6 @@ console.log(user)
     }));
 
     // Log enrichedOrderItems after all async tasks are completed
-    console.log("Enriched Order Items:", enrichedOrderItems);
     // Calculate total price (already provided from frontend)
     const totalAmount = totalPrice * 100; // Convert to paise (totalPrice already in INR)
 
@@ -80,14 +112,12 @@ console.log(user)
       receipt: shortid.generate(),
       payment_capture: 1, // Automatic payment capture
       notes: {
-        orderDetails: enrichedOrderItems.map((item: any) => item.productname).join(", "), // Add the names of products
+        orderDetails: enrichedOrderItems.map((item: EnrichedOrderItem) => item.productname).join(", "), 
       },
     };
     
-    console.log(orderOptions)
 
     const order = await instance.orders.create(orderOptions);
-    console.log(order)
 
     // Create the order in your database
     const crt = await db.order.create({
@@ -99,7 +129,7 @@ console.log(user)
         phone: user?.phoneno || "",  // Add user's phone number
         address: user?.address || "", // Add user's address
         orderItems: {
-          create: enrichedOrderItems.map((item: any) => ({
+          create: enrichedOrderItems.map((item: EnrichedOrderItem) => ({
             product: {
               connect: { id: item.productId   },
             },
@@ -115,11 +145,9 @@ console.log(user)
         },
       },
     });
-    console.log(crt)
 
     return NextResponse.json({ url: order?.id, order });
   } catch (error) {
-    console.error("Error creating Razorpay order:", error);
     return NextResponse.json(
       { error: "Failed to create Razorpay order" },
       { status: 500 }

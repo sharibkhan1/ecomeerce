@@ -102,24 +102,25 @@ export const getYearOrderStatus = async (storeId: string) => {
     return {
       year,
       data: [
-        { name: 'Jan', Ordered: yearlyStatus[year][0]?.Ordered || 0, Cancel: yearlyStatus[year][0]?.Cancel || 0 },
-        { name: 'Feb', Ordered: yearlyStatus[year][1]?.Ordered || 0, Cancel: yearlyStatus[year][1]?.Cancel || 0 },
-        { name: 'Mar', Ordered: yearlyStatus[year][2]?.Ordered || 0, Cancel: yearlyStatus[year][2]?.Cancel || 0 },
-        { name: 'Apr', Ordered: yearlyStatus[year][3]?.Ordered || 0, Cancel: yearlyStatus[year][3]?.Cancel || 0 },
-        { name: 'May', Ordered: yearlyStatus[year][4]?.Ordered || 0, Cancel: yearlyStatus[year][4]?.Cancel || 0 },
-        { name: 'Jun', Ordered: yearlyStatus[year][5]?.Ordered || 0, Cancel: yearlyStatus[year][5]?.Cancel || 0 },
-        { name: 'Jul', Ordered: yearlyStatus[year][6]?.Ordered || 0, Cancel: yearlyStatus[year][6]?.Cancel || 0 },
-        { name: 'Aug', Ordered: yearlyStatus[year][7]?.Ordered || 0, Cancel: yearlyStatus[year][7]?.Cancel || 0 },
-        { name: 'Sep', Ordered: yearlyStatus[year][8]?.Ordered || 0, Cancel: yearlyStatus[year][8]?.Cancel || 0 },
-        { name: 'Oct', Ordered: yearlyStatus[year][9]?.Ordered || 0, Cancel: yearlyStatus[year][9]?.Cancel || 0 },
-        { name: 'Nov', Ordered: yearlyStatus[year][10]?.Ordered || 0, Cancel: yearlyStatus[year][10]?.Cancel || 0 },
-        { name: 'Dec', Ordered: yearlyStatus[year][11]?.Ordered || 0, Cancel: yearlyStatus[year][11]?.Cancel || 0 },
+        { name: 'Jan', Ordered: yearlyStatus[year][0]?.Ordered || 0, Cancel: yearlyStatus[year][0]?.Cancel || 0, total: (yearlyStatus[year][0]?.Ordered || 0) + (yearlyStatus[year][0]?.Cancel || 0) },
+        { name: 'Feb', Ordered: yearlyStatus[year][1]?.Ordered || 0, Cancel: yearlyStatus[year][1]?.Cancel || 0, total: (yearlyStatus[year][1]?.Ordered || 0) + (yearlyStatus[year][1]?.Cancel || 0) },
+        { name: 'Mar', Ordered: yearlyStatus[year][2]?.Ordered || 0, Cancel: yearlyStatus[year][2]?.Cancel || 0, total: (yearlyStatus[year][2]?.Ordered || 0) + (yearlyStatus[year][2]?.Cancel || 0) },
+        { name: 'Apr', Ordered: yearlyStatus[year][3]?.Ordered || 0, Cancel: yearlyStatus[year][3]?.Cancel || 0, total: (yearlyStatus[year][3]?.Ordered || 0) + (yearlyStatus[year][3]?.Cancel || 0) },
+        { name: 'May', Ordered: yearlyStatus[year][4]?.Ordered || 0, Cancel: yearlyStatus[year][4]?.Cancel || 0, total: (yearlyStatus[year][4]?.Ordered || 0) + (yearlyStatus[year][4]?.Cancel || 0) },
+        { name: 'Jun', Ordered: yearlyStatus[year][5]?.Ordered || 0, Cancel: yearlyStatus[year][5]?.Cancel || 0, total: (yearlyStatus[year][5]?.Ordered || 0) + (yearlyStatus[year][5]?.Cancel || 0) },
+        { name: 'Jul', Ordered: yearlyStatus[year][6]?.Ordered || 0, Cancel: yearlyStatus[year][6]?.Cancel || 0, total: (yearlyStatus[year][6]?.Ordered || 0) + (yearlyStatus[year][6]?.Cancel || 0) },
+        { name: 'Aug', Ordered: yearlyStatus[year][7]?.Ordered || 0, Cancel: yearlyStatus[year][7]?.Cancel || 0, total: (yearlyStatus[year][7]?.Ordered || 0) + (yearlyStatus[year][7]?.Cancel || 0) },
+        { name: 'Sep', Ordered: yearlyStatus[year][8]?.Ordered || 0, Cancel: yearlyStatus[year][8]?.Cancel || 0, total: (yearlyStatus[year][8]?.Ordered || 0) + (yearlyStatus[year][8]?.Cancel || 0) },
+        { name: 'Oct', Ordered: yearlyStatus[year][9]?.Ordered || 0, Cancel: yearlyStatus[year][9]?.Cancel || 0, total: (yearlyStatus[year][9]?.Ordered || 0) + (yearlyStatus[year][9]?.Cancel || 0) },
+        { name: 'Nov', Ordered: yearlyStatus[year][10]?.Ordered || 0, Cancel: yearlyStatus[year][10]?.Cancel || 0, total: (yearlyStatus[year][10]?.Ordered || 0) + (yearlyStatus[year][10]?.Cancel || 0) },
+        { name: 'Dec', Ordered: yearlyStatus[year][11]?.Ordered || 0, Cancel: yearlyStatus[year][11]?.Cancel || 0, total: (yearlyStatus[year][11]?.Ordered || 0) + (yearlyStatus[year][11]?.Cancel || 0) },
       ],
     };
   });
 
   return graphData;
 };
+
 
 
 export const getDailyRevenue = async (storeId: string, year: number) => {

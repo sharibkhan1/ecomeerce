@@ -22,7 +22,6 @@ export const settings = async(
     if (!dbUser){
         return {error:"UNauthorized"}
     }
-    console.log("ha;lf")
     // if(user.isOAuth){
     //     values.email= undefined;
     //     values.password= undefined;
@@ -71,7 +70,6 @@ export const settings = async(
             ...values,
         }
     });
-    console.log("full")
     return {success: "Settings Updated"}
 
 }

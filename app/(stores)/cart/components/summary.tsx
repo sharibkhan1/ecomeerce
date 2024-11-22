@@ -4,7 +4,6 @@ import { getCartItems } from "@/actions/cartcount";
 import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import { UserDetail } from "@/components/userdetail";
-import useCart from "@/hooks/use-cart";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,13 +18,16 @@ type CartItem = {
   color: string | null;
   size: string | null;
 };
-
+type RazorpayResponse = {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+};
 const Summary = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const removeAll = useCart((state) => state.removeAll);
   const [open,setOpen] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading,] = useState(false);
   const [items, setItems] = useState<CartItem[]>([]); // Initialize items state with CartItem type
   const [isProcessing, setIsProcessing] = useState(false); // Track processing state
 
@@ -43,7 +45,6 @@ const Summary = () => {
 
     if (searchParams.get("success")) {
       toast.success("Payment completed.");
-      // Reset cart
       setIsProcessing(false); // Reset processing after success
       setItems([]);
     }
@@ -55,7 +56,7 @@ const Summary = () => {
     }
     return () => clearInterval(intervalId);
 
-  }, [searchParams]);
+  }, [searchParams,router]);
   const hasOutOfStockItems = items.some(item => item.quantity <= 0);
 
   // Calculate total price based on quantity of each item
@@ -71,7 +72,6 @@ const Summary = () => {
       if (window.Razorpay) {
         const paymentObject = new window.Razorpay();
         paymentObject.close();
-        console.log(hasOutOfStockItems)
       }
       return; // Prevent checkout if any item has 0 quantity
 
@@ -85,7 +85,6 @@ const Summary = () => {
         quantity: item.quantity, // Pass the quantity of the item
         price: item.salesPrice,
       }));
-  console.log(orderItems)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout`, {
         method: "POST",
         body: JSON.stringify({
@@ -98,19 +97,18 @@ const Summary = () => {
       });
   
       const { order } = await response.json();
-      if (hasOutOfStockItems) {
-        toast.error("One or more items are out of stock. Please remove them before proceeding.");
-        window.location.reload();
+      // if (hasOutOfStockItems) {
+      //   toast.error("One or more items are out of stock. Please remove them before proceeding.");
+      //   window.location.reload();
 
-        if (window.Razorpay) {
-          const paymentObject = new (window as any).Razorpay();
-          paymentObject.close();
-          console.log(hasOutOfStockItems)
+      //   if (window.Razorpay) {
+      //     const paymentObject = new (window as any).Razorpay();
+      //     paymentObject.close();
 
-        }
+      //   }
   
-        return; // Prevent checkout if any item has 0 quantity
-      }
+      //   return; // Prevent checkout if any item has 0 quantity
+      // }
       if (order) {
         const options = {
           key: process.env.RAZOR_KEY!, // Razorpay public key
@@ -119,7 +117,7 @@ const Summary = () => {
           currency: order.currency,
           order_id: order.id,
           description: "Order Description",
-          handler: async function (response: any) {
+          handler: async function (response: RazorpayResponse) {
             try {
               const verifyResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/createOrder`, {
                 method: "POST",
@@ -132,15 +130,7 @@ const Summary = () => {
                   "Content-Type": "application/json",
                 },
               });
-              if (hasOutOfStockItems) {
-                toast.error("One or more items are out of stock. Please remove them before proceeding.");
-                if (window.Razorpay) {
-                  const paymentObject = new window.Razorpay();
-                  paymentObject.close();
-                  console.log(hasOutOfStockItems)
-                }
-                return; // Prevent checkout if any item has 0 quantity
-              }
+              
               const result = await verifyResponse.json();
               if (result.message === "success") {
                 toast.success("Payment successful.");
@@ -149,7 +139,6 @@ const Summary = () => {
                 toast.error("Payment failed.");
               }
             } catch (error) {
-              console.error("Verification error:", error);
               toast.error("Failed to verify payment. Please try again.");
             }finally {
               setIsProcessing(false); // Reset processing after payment attempt
@@ -175,7 +164,6 @@ const Summary = () => {
         });
       }
     } catch (error) {
-      console.error("Checkout error:", error);
       toast.error("Failed to initiate checkout. Please try again.");
       setIsProcessing(false); // Reset processing on error
 

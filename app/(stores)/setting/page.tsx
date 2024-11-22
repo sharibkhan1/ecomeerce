@@ -33,7 +33,6 @@ const SettingsPage = () => {
     startTransition(()=>{
       setError(undefined);
       setSuccess(undefined);
-      console.log("half gald")
       settings(values)
       .then((data)=>{
         if(data.error){
@@ -43,7 +42,6 @@ const SettingsPage = () => {
         if(data.success){
           update();
           setSuccess(data.success);
-          console.log("full full")
         }
       })
       .catch(()=>setError("Something went wrong!"))

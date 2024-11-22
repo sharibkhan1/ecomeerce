@@ -36,16 +36,20 @@ interface OrderFormProps {
 }
 
 const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
-    if (!order) {
-        return <div>Order not found</div>; // Handle null case inside the form component
-    }
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedStates, setSelectedStates] = useState<{ [key: string]: OrderItem["orderState"] }>({});
     const router = useRouter();
 
+
+    if (!order) {
+        return <div>Order not found</div>; // Handle null case inside the form component
+    }
+   
     // Calculate countdowns only once when the component mounts
     const countdowns = useMemo(() => {
+        if (!order) return {}; // Return an empty object if order is null
         return order.orderItems.reduce((acc, item) => {
             const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 8 days if undefined
             const endDate = addDays(new Date(order.createdAt), deliveryDays);
@@ -63,6 +67,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
     }, [order.orderItems, order.createdAt]);
 
     useEffect(() => {
+        if (!order) return; // Return an empty object if order is null
         const initialStates = order.orderItems.reduce((acc, item) => {
             acc[item.id] = item.orderState;
             return acc;

@@ -39,7 +39,7 @@ interface OrderFormProps {
 
 const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);  // For Modal visibility
   const router = useRouter();
   const [travelTime, setTravelTime] = useState<number | null>(null);

@@ -54,7 +54,7 @@ const CartPage = () => {
                             ) : (
                                 <ul>
                                     {cartItems.map((item) => (
-                                        // @ts-ignore
+                                        // @ts-expect-error
                                         <CartItem key={item.id} data={item} />
                                     ))}
                                 </ul>

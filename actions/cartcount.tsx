@@ -70,7 +70,6 @@ export const checkAndRemoveOutOfStockItems = async () => {
           });
 
           // Optionally, you can also update the cart state or inform the user
-          console.log(`Removed out-of-stock item: ${item.product.name}`);
         }
       }
     }

@@ -8,9 +8,10 @@ import { Separator } from '../ui/separator';
 import { ModeToggle } from '../mode-toggle';
 import { LogoutButton } from '../auth/logout-button';
 import { ExitIcon } from '@radix-ui/react-icons';
+import { Category } from '@/lib/types';
 
 interface SidebarProps {
-  categories: any[]; // Replace `any` with the correct type for categories
+  categories: Category[]; // Replace `any` with the correct type for categories
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ categories }) => {

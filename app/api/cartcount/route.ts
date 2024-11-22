@@ -2,7 +2,7 @@
 import db from '@/lib/db';
 import { getUserIdInfor } from '@/lib/userinfo';
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     const userId = await getUserIdInfor();
 

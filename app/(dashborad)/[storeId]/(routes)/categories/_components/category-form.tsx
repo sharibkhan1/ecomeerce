@@ -15,7 +15,6 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 
@@ -37,7 +36,6 @@ export const CategoryForm:React.FC<CategoryFormProps>=({
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const origin = useOrigin();
 
     const title = initialData ? "Edit category":"Create category"
     const description = initialData ? "Edit a category":"Add a new  category"

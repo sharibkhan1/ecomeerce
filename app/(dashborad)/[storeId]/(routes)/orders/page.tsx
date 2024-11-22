@@ -25,7 +25,7 @@ const Ordersdpage = async ({
       createdAt: "desc"
     }
   });
-// @ts-ignore
+// @ts-expect-error
 
   const formattedOrders: OrderColumn[] = orders.map((item) => {
     const countdowns = item.orderItems.reduce((acc, orderItem) => {

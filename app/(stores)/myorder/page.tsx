@@ -57,7 +57,7 @@ export default async function OrdersPage() {
       ) : (
         <div>
           {orders.map(order => (
-            // @ts-ignore
+            // @ts-expect-error
             <OrderForm key={order.id} order={order} />
           ))}
         </div>

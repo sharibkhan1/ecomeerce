@@ -20,7 +20,7 @@ const Footer = () => {
                                     rel="noopener noreferrer"
                                     className="text-gray-600 dark:text-gray-400 hover:underline"
                                 >
-                                   Vidyavardhini's College of Engineering and Technology
+                                   Vidyavardhini&apos;s College of Engineering and Technology
                                 </Link>
                             </li>
                         </ul>

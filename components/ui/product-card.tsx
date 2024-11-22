@@ -8,7 +8,6 @@ import Currency from "./currency";
 import { useRouter } from "next/navigation";
 import usePreviewModal from "@/hooks/use-preview-modal";
 import { MouseEventHandler } from "react";
-import useCart from "@/hooks/use-cart";
 
 interface ProductCard{
     data:Product;
@@ -17,7 +16,6 @@ interface ProductCard{
 const ProductCard:React.FC<ProductCard>=({
     data
 })=>{
-    const cart = useCart();
     const router= useRouter();
     const previewModal = usePreviewModal();
 
@@ -40,7 +38,6 @@ const ProductCard:React.FC<ProductCard>=({
             salesPrice: data.salesPrice,
             images: data.images,
             stocks: data.stocks,
-            dilevery: data.dilevery,
         };
 
         // Pass ProductSmall to the modal
