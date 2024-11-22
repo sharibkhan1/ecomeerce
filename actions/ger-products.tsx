@@ -36,9 +36,11 @@ const getProducts = async (query: Query): Promise<Product[]> => {
             color2:true,
             color3:true,
             images: true,
+            details: true, // Include details
+            reviews: true, 
         },
     });
-
+// @ts-ignore
     return products;
 };
 

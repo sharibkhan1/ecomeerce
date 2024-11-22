@@ -36,24 +36,25 @@ const CartPage = () => {
       await checkAndRemoveOutOfStockItems(); // Check and remove out-of-stock items
       const items = await getCartItems(); // Re-fetch the cart items after removal
       setCartItems(items);
-    }, 5000); // 5 seconds
+    }, 2000); // 5 seconds
 
     // Cleanup interval when the component is unmounted
     return () => clearInterval(intervalId);
   }, []);
 
     return (
-        <div className="bg-white">
+        <div className="bg-white dark:bg-black/90 min-h-screen">
             <Cont>
                 <div className="px-4 py-16 sm:px-6 lg:px-8">
-                    <h1 className="text-3xl font-bold text-black">Shopping Cart</h1>
+                    <h1 className="text-3xl font-bold dark:text-white text-black">Shopping Cart</h1>
                     <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start gap-x-12">
                         <div className="lg:col-span-7">
                             {cartItems.length === 0 ? (
-                                <p className="text-neutral-500">No items added to cart</p>
+                                <p className="text-neutral-500 text-lg">No items added to cart</p>
                             ) : (
                                 <ul>
                                     {cartItems.map((item) => (
+                                        // @ts-ignore
                                         <CartItem key={item.id} data={item} />
                                     ))}
                                 </ul>

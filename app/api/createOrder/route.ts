@@ -24,12 +24,34 @@ export async function POST(req: Request) {
 
   const isAuthentic = expectedSignature === razorpay_signature;
 
+  
   if (isAuthentic) {
     const orderToUpdate = await db.order.findFirst({
       where: { razorpayOrderId: razorpay_order_id },  // Query based on razorpayOrderId
     });
     
     if (orderToUpdate) {
+      
+      const ordItems = await db.orderItem.findMany({
+        where: { orderId: orderToUpdate.id },
+      });
+      if (ordItems.length === 0) {
+        window.location.reload();
+        console.log(ordItems)
+      }
+      // if (ordItems.length === 0) {
+      //   console.log(ordItems)
+      //   await db.order.update({
+      //     where: { id: orderToUpdate.id },
+      //     data: {
+      //       status: "Cancel", // Mark the order as canceled
+      //       isPaid: false,
+      //     },
+          
+      //   });
+
+      //   return NextResponse.json({ message: "Cart is empty, order cancelled." });
+      // }
       
       await db.order.update({
         where: { id: orderToUpdate.id },  // Now use ObjectId (id) for update

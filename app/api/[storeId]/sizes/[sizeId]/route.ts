@@ -110,7 +110,7 @@ export async function PATCH(
                 value,
             }
         });
-        return NextResponse.json(size);
+        return NextResponse.json({size,size1,size2,size3});
     }catch(e){
         console.log("[size_PATCH]",e);
         return new NextResponse("Internal error",{status:500});
@@ -162,7 +162,7 @@ export async function DELETE(
                 id:params.sizeId,
             },
         });
-        return NextResponse.json(size);
+        return NextResponse.json({size,size1,size2,size3});
     }catch(e){
         console.log("[size_DELETE]",e);
         return new NextResponse("Internal error",{status:500});

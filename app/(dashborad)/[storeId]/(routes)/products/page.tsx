@@ -37,15 +37,15 @@ const Productpage = async({
     isArchived:item.isArchived,
     price:formatter.format(item.price),
     category: item.category.name,
-    dilevery:item.dilevery,
+    dilevery:item.dilevery|| "",
     size:item.size.value,
-    size1:item.size1?.value,
-    size2:item.size2?.value,
-    size3:item.size3?.value,
+    size1:item.size1?.value|| "",
+    size2:item.size2?.value|| "",
+    size3:item.size3?.value|| "",
     color:item.color.value,
-    color1:item.color1?.value,
-    color2:item.color2?.value,
-    color3:item.color3?.value,
+    color1:item.color1?.value|| "",
+    color2:item.color2?.value|| "",
+    color3:item.color3?.value|| "",
     createdAt:format(item.createdAt,"MMMM do, yyyy"),
     discription:item.discription,
     salesPrice:formatter.format(item.salesPrice),
@@ -53,7 +53,7 @@ const Productpage = async({
   }));
 
   return (
-    <div className='flex-col' >
+    <div className='flex-col dark:bg-muted-foreground min-h-screen flex' >
         <div className='flex-1 space-y-4 p-8 pt-6 ' >
             <ProductClient data={formattedProducts} />
         </div>

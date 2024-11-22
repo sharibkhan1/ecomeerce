@@ -72,6 +72,7 @@ export const SizeForm:React.FC<BillboardFormProps>=({
             await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
             router.refresh();
             router.push(`/${params.storeId}/sizes`);
+            router.refresh();
             toast.success("size deleted")
         }catch(e){
             toast.error("Make sure to remove all products using this size first");
@@ -137,7 +138,7 @@ export const SizeForm:React.FC<BillboardFormProps>=({
                         )}
                     />
                 </div>
-                <Button disabled={loading} className="ml-auto" type="submit" >
+                <Button variant="stretch" disabled={loading} className="ml-auto" type="submit" >
                     {action}
                 </Button>
             </form>

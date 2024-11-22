@@ -85,6 +85,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
 
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(formSchema),
+        // @ts-ignore
         defaultValues:initialData ?{
             ...initialData,
             price:parseFloat(String(initialData?.price)),
@@ -163,6 +164,8 @@ export const ProductForm:React.FC<ProductFormProps>=({
             router.refresh();
             router.push(`/${params.storeId}/products`);
             toast.success("product deleted")
+            router.refresh();
+
         }catch(e){
             toast.error("Something went wrong");
         }finally{
@@ -532,7 +535,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
                                     <FormLabel>
                                         Featured
                                     </FormLabel>
-                                    <FormDescription>
+                                    <FormDescription className="text-black">
                                         This product will appear on the home page
                                     </FormDescription>
                                 </div>
@@ -543,7 +546,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
                         control={form.control}
                         name="isArchived"
                         render={({field})=>(
-                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 " >
+                            <FormItem className="flex flex-row dark:text-black items-start space-x-3 space-y-0 rounded-md border p-4 " >
                                 <FormControl>
                                     <Checkbox
                                         checked={field.value}
@@ -551,11 +554,11 @@ export const ProductForm:React.FC<ProductFormProps>=({
                                         onCheckedChange={field.onChange}
                                     />
                                 </FormControl>
-                                <div className="space-y-1 leading-none" >
+                                <div className="space-y-1  leading-none" >
                                     <FormLabel>
                                         Archived
                                     </FormLabel>
-                                    <FormDescription>
+                                    <FormDescription className="text-black">
                                         This product will appear not appear anywhere in store
                                     </FormDescription>
                                 </div>
@@ -599,11 +602,11 @@ export const ProductForm:React.FC<ProductFormProps>=({
                       <Button type="button" variant="destructive" onClick={() => remove(index)}>Remove</Button>
                     </div>
                   ))}
-                  <Button type="button" onClick={() => append({ title: '', description: '' })}>Add Ingredient</Button>
+                  <Button type="button" onClick={() => append({ title: '', description: '' })}>Add Details</Button>
                 </div>
 
                 </div>
-                <Button disabled={loading} className="ml-auto" type="submit" >
+                <Button  variant="stretch" disabled={loading} className="ml-auto" type="submit" >
                     {action}
                 </Button>
             </form>

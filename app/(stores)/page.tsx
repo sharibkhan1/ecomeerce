@@ -15,18 +15,18 @@ const StoreHome = async () => {
   const homeImageUrl = await getBillboard("Home");
 
   return (
-    <>
+    <div className='dark:bg-black/90'>
       {/* Pass the fetched imageUrl to the Billboard component */}
       {homeImageUrl && <HomeBillboard imageUrl={homeImageUrl} />}
 
       <Cont>
-        <div className='space-y-10 pb-10'>
+        <div className='space-y-10 pb-10 dark:text-white/90 '>
           <div className='flex-col flex gap-y-8 sm:px-6 lg:px-8'>
             <ProductListHalf title="Featured Products" items={products} />
           </div>
         </div>
       </Cont>
-    </>
+    </div>
   );
 };
 

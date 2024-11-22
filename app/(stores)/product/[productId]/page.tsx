@@ -21,18 +21,23 @@ const ProductPage:React.FC<ProductPageProps> = async ({params}) => {
     categoryId: product?.category?.id
   })
 
+  if (!product) {
+    return <NoResult />;
+  }
     return (
-    <div className='bg-white' >
+    <div className='bg-white dark:bg-black/90' >
         
-            <div className='px-4 py-10 sm:px-6 lg:px-8' >
+            <div className='px-4 py-10 sm:px-6 lg:px-10 ' >
             <Cont>
-                <div className='lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8 ' >
+              <div className='dark:bg-muted-foreground rounded-xl '>
+                <div className='lg:grid md:p-4 p-4 lg:grid-cols-2 lg:items-start lg:gap-x-8 ' >
                 
                     <Gallery images={product?.images || []}/>
                     
-                    <div className='mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0 ' >
+                    <div className='mt-10  px-4 sm:mt-16 sm:px-0 lg:mt-0 ' >
                     {product ? <Info data={product} /> : <NoResult/>}
                     </div>
+                </div>
                 </div>
                 </Cont>
                 <hr className='my-10' />

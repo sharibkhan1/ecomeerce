@@ -63,7 +63,7 @@ const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
 
   return (
     <div>
-    <div className="flex items-center py-4">
+    <div className="flex dark:text-black/80 items-center py-4">
         <Input
           placeholder="Search"
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
@@ -74,25 +74,25 @@ const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         />
            {searchKey2 && (
           <Input
-            placeholder="Search by Second Field"
+            placeholder="Search Customer status"
             value={(table.getColumn(searchKey2)?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
               table.getColumn(searchKey2)?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className="max-w-sm  ml-4"
           />
         )}
         
         {children}
     </div>
-    <div className="rounded-md border">
+    <div className="rounded-md dark:text-black/80  border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="dark:text-black font-bold ">
                     {header.isPlaceholder
                       ? null
                       : flexRender(

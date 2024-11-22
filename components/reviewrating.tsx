@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import { Product, Review } from "@/lib/types";
+import { Review } from "@/lib/types";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { format, formatDate } from "date-fns/format";
+import { format } from "date-fns/format";
 
 interface ReviewSectionProps {
   productId: string;
@@ -103,7 +103,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
     setNewRating(rating);
   };
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="max-w-6xl mx-auto p-6 dark:bg-muted-foreground dark:shadow-white/30 bg-white rounded-lg shadow-md">
       <h3 className="text-3xl mt-6 font-bold text-gray-900">Customer Reviews</h3>
       <div className="font-semibold mt-4 mb-2 text-gray-900">
         <strong>Average Rating:</strong>
@@ -114,26 +114,26 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
       </div>
 
       {/* Rating Distribution */}
-      <div className="bg-gray-50 p-4 rounded-lg mt-6 mb-8">
-        <h4 className="text-lg font-semibold mb-4">Rating</h4>
+      <div className="bg-gray-50 dark:bg-black/80 p-4 rounded-lg mt-6 mb-8">
+        <h4 className="text-lg font-semibold dark:text-muted-foreground mb-4">Rating</h4>
         {[5, 4, 3, 2, 1].map((star) => (
           <div key={star} className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600  w-14">{star} Stars</span>
+            <span className="text-sm text-gray-600 dark:text-muted-foreground  w-14">{star} Stars</span>
             <div className="flex items-center justify-between gap-2 w-full">
   <div className="flex items-center gap-2">
     {renderStars(star)}
   </div>
-  <span className="text-sm text-gray-600">{ratingDistribution[star - 1]} reviews</span>
+  <span className="text-sm dark:text-muted-foreground text-gray-600">{ratingDistribution[star - 1]} reviews</span>
 </div>
           </div>
         ))}
       </div>
 
-      {user && <p className="text-xl text-gray-600">Welcome, {user.name}!</p>}
+      {user && <p className="text-xl text-gray-800">Welcome, {user.name}!</p>}
       {/* Review Form */}
       <div className="mt-8 border-b border-gray-200 pb-4 mb-8">
         <h4 className="text-xl font-semibold mb-4">Add Your Review</h4>
-        <div className="flex gap-4 mb-4">
+        <div className="flex gap-4 mb-4 dark:text-white">
         <div className="flex items-center gap-2">
             {/* Star rating selection */}
             {renderStars(newRating, handleStarClick)}
@@ -142,7 +142,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Leave a comment"
-            className="p-2 border border-gray-300 rounded-md w-full"
+            className="p-2 border dark:text-white border-gray-300 rounded-md w-full"
             rows={4}
           />
         </div>
@@ -159,9 +159,9 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
           <div key={review.id} className="">
             <div className="flex items-center gap-2">
               <div>{renderStars(review.rating)}</div>
-              <span className="text-sm text-gray-600">{review.comment || "No comment"}</span>
+              <span className="text-lg dark:text-white text-gray-600">{review.comment || "No comment"}</span>
             </div>
-            <div className="text-xs text-gray-500 mt-1">
+            <div className="text-sm text-gray-800 mt-1">
 
               <span>Reviewed on {format(review.createdAt,"MMMM do, yyyy")}</span>
             </div>

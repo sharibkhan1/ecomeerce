@@ -25,6 +25,7 @@ const Ordersdpage = async ({
       createdAt: "desc"
     }
   });
+// @ts-ignore
 
   const formattedOrders: OrderColumn[] = orders.map((item) => {
     const countdowns = item.orderItems.reduce((acc, orderItem) => {
@@ -79,7 +80,7 @@ const Ordersdpage = async ({
   });
 
   return (
-    <div className='flex-col'>
+    <div className='flex-col dark:bg-muted-foreground min-h-screen flex'>
       <div className='flex-1 space-y-4 p-8 pt-6'>
         <BillBoardClient data={formattedOrders} />
       </div>

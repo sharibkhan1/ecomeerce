@@ -4,7 +4,6 @@ import React, { MouseEventHandler, useState } from 'react';
 import Currency from './ui/currency';
 import { Button } from './ui/button';
 import { FaShoppingCart } from 'react-icons/fa';
-import useCart from '@/hooks/use-cart';
 import { toast } from 'sonner';
 import { addToCart } from '@/actions/ordercat';
 
@@ -36,7 +35,7 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
     });
 
     if (result?.success) {
-      toast.success("success");
+      toast.success("Item added to cart");
     } else {
       toast.error("product cannot be added");
     }
@@ -44,13 +43,13 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900">{data.name}</h1>
-      <h1 className="text-xl font-semibold text-gray-900">{data.category.name}</h1>
+      <h1 className="text-3xl font-bold  text-gray-900">{data.name}</h1>
+      <h1 className="text-xl font-semibold  text-gray-900">{data.category.name}</h1>
       <div className="mt-3 flex items-end justify-between">
         <p className="text-xl line-through text-red-500">
           <Currency value={data?.price} />
         </p>
-        <p className="text-4xl text-gray-700">
+        <p className="text-4xl  text-gray-700">
           <Currency value={data?.salesPrice} />
         </p>
       </div>
@@ -58,7 +57,7 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
       <div className="flex flex-col gap-y-6">
         {/* Size Selection */}
         <div className="flex items-center gap-x-4">
-          <h3 className="font-semibold text-black">Size:</h3>
+          <h3 className="font-semibold  text-black">Size:</h3>
           <div className="flex gap-x-3">
           {[data.size, data.size1, data.size2, data.size3]
   .filter((size) => size?.value !== 'n/a')
@@ -68,8 +67,8 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
       onClick={() => setSelectedSize(size?.value)}
       className={`cursor-pointer mr-4 px-4 py-2 border rounded
         ${selectedSize === size?.value 
-          ? 'bg-gray-800 text-white border-gray-800'    // Selected: black background, white text, black border
-          : 'bg-transparent text-gray-800 border-gray-800'} // Non-selected: transparent background, black text, black border
+          ? 'bg-gray-800   text-white border-gray-800'    // Selected: black background, white text, black border
+          : 'bg-transparenttext-gray-800 border-gray-800'} // Non-selected: transparent background, black text, black border
       `}
     >
       {size?.value}
@@ -81,7 +80,7 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
 
         {/* Color Selection */}
         <div className="flex items-center gap-x-4">
-          <h3 className="font-semibold text-gray-800">Color:</h3>
+          <h3 className="font-semibold  text-gray-800">Color:</h3>
           <div className="flex gap-x-2">
             {[data.color, data.color1, data.color2, data.color3]
               .filter((color) => color?.value !== '#00000000')
@@ -95,19 +94,19 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
               ))}
           </div>
         </div>
-        <div className='flex items-center gap-x-4 ' >
-            <h3 className='font-semibold text-black ' >Stock:</h3>
+        <div className='flex items-center gap-x-4  ' >
+            <h3 className='font-semibold text-black  ' >Stock:</h3>
             <div>
                 {data?.stocks}
             </div>
         </div>
-        <div className='flex items-center gap-x-4 ' >
+        <div className='flex items-center gap-x-4  ' >
             <h3 className='font-semibold text-black ' >Dilevery TIme:</h3>
             <div>
                 {data?.dilevery}
             </div>
         </div>
-        <div className='flex items-start text-lg  text-gray-700' >
+        <div className='flex items-start text-lg   text-gray-700' >
         <p
         className={`transition-all duration-300 ${
           isExpanded ? '' : 'line-clamp-5' // Apply line clamp when collapsed
@@ -115,25 +114,26 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
       >
         {data?.discription}</p>
     </div>
-    <div className='flex items-end -mt-7 text-sm  text-gray-700' >
-    {data?.discription.split(' ').length > 25 && ( // Show button only if text is long
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-blue-500 hover:underline mt-2"
-        >
-          {isExpanded ? 'Show Less' : 'Show More'}
-        </button>
-      )}
-          </div>
+    <div className='flex items-end -mt-7 text-sm text-gray-700'>
+  {data?.discription && data?.discription.split(' ').length > 25 && ( // Check if discription exists before using split
+    <button
+      onClick={() => setIsExpanded(!isExpanded)}
+      className="text-blue-500 hover:underline mt-2"
+    >
+      {isExpanded ? 'Show Less' : 'Show More'}
+    </button>
+  )}
+</div>
+
 
         <div className='mt-6'>
     {data?.details?.length > 0 && (
         <>
-            <table className='table-auto w-full'>
+            <table className='table-auto  w-full'>
                 <thead>
                     <tr>
-                        <th className='text-left p-2'>Title</th>
-                        <th className='text-left p-2'>Description</th>
+                        <th className='text-left p-2 '>Title</th>
+                        <th className='text-left p-2 '>Description</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -153,11 +153,11 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
 </div>
 
         {/* Add to Cart Button */}
-        <div className="mt-10 flex items-center gap-x-3">
-          <Button onClick={AddToCart} disabled={data.stocks === 0}  className={`flex p-7 items-center gap-x-3${
-            data.stocks === 0 ? 'bg-red-500 cursor-not-allowed': ''
+        <div className="md:mt-10 mt-3 flex items-center gap-x-3">
+          <Button variant="brutal" onClick={AddToCart} disabled={data.stocks === 0}  className={`flex p-7 items-center bg-yellow-300 hover:bg-yellow-200 gap-x-3${
+            data.stocks === 0 ? 'bg-red-500  cursor-not-allowed': ''
           }`}>
-            {data.stocks === 0 ? 'Out of Stock' : 'Add To Cart'}
+            {data.stocks === 0 ? 'Out of Stock ' : 'Add To Cart'}
             <FaShoppingCart />
           </Button>
         </div>

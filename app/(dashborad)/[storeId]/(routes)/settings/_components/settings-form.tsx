@@ -4,7 +4,6 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import { Store } from "@prisma/client"
-import { TrashIcon } from "@radix-ui/react-icons";
 import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,8 +13,6 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { AlertModal } from "@/components/alert-modal";
-import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
 
 interface SettingsFormProps{
@@ -54,42 +51,42 @@ export const SettingsForm:React.FC<SettingsFormProps>=({
         }
     }
 
-    const onDelete = async()=>{
-        try{
-            setLoading(true);
-            await axios.delete(`/api/stores/${params.storeId}`);
-            router.refresh();
-            router.push("/mainAdmin/");
-            toast.success("Store deleted")
-        }catch(e){
-            toast.error("Make sure to remove all products and categories first");
-        }finally{
-            setLoading(false);
-            setOpen(false);
-        }
-    }
+    // const onDelete = async()=>{
+    //     try{
+    //         setLoading(true);
+    //         await axios.delete(`/api/stores/${params.storeId}`);
+    //         router.refresh();
+    //         router.push("/mainAdmin/");
+    //         toast.success("Store deleted")
+    //     }catch(e){
+    //         toast.error("Make sure to remove all products and categories first");
+    //     }finally{
+    //         setLoading(false);
+    //         setOpen(false);
+    //     }
+    // }
 
     return(
         <>
-        <AlertModal
+        {/* <AlertModal
             isOpen={open}
             onClose={()=>setOpen(false)}
             onConfirm={onDelete}
             loading={loading}
-        />
+        /> */}
         <div className="flex items-center justify-between " >
             <Heading
                 title="Settings"
                 description="Manage store prefernce"
             />
-            <Button 
+            {/* <Button 
             disabled={loading}
                 variant="destructive"
                 size="icon"
                 onClick={()=>setOpen(true)}
             >
                 <TrashIcon className="h-4 w-4" />
-            </Button>
+            </Button> */}
         </div>
         <Separator/>
         <Form {...form} >
@@ -109,13 +106,13 @@ export const SettingsForm:React.FC<SettingsFormProps>=({
                         )}
                     />
                 </div>
-                <Button disabled={loading} className="ml-auto" type="submit" >
+                <Button variant="stretch" disabled={loading} className="ml-auto bg-yellow-300 " type="submit" >
                     Save changes
                 </Button>
             </form>
         </Form>
-        <Separator/>
-        <ApiAlert title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${params.storeId}`} variant="public"/>
+        {/* <Separator/> */}
+        {/* <ApiAlert title="NEXT_PUBLIC_API_URL" description={`${origin}/api/${params.storeId}`} variant="public"/> */}
         </>
     )
 }

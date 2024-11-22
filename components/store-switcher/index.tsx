@@ -6,8 +6,8 @@ import { useStoreModal } from '@/hooks/use-store-modal';
 import { useParams, useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
-import { CheckIcon, ChevronUpIcon, PlusCircledIcon, TableIcon } from '@radix-ui/react-icons';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from '../ui/command';
+import { CheckIcon, ChevronUpIcon, TableIcon } from '@radix-ui/react-icons';
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '../ui/command';
 import { FaStore } from 'react-icons/fa';
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
@@ -53,7 +53,7 @@ const StoreSwitcher = ({className,items=[]}:StoreSwitcherProps) => {
         <PopoverContent className='w-[200px] p-0 ' >
             <Command>
                 <CommandList>
-                    <CommandInput placeholder='Seacrh store...' />
+                    {/* <CommandInput placeholder='Seacrh store...' /> */}
                     <CommandEmpty>No store found</CommandEmpty>
                     <CommandGroup heading="Store" >
                         {formattedItems.map((store)=>(
@@ -73,7 +73,7 @@ const StoreSwitcher = ({className,items=[]}:StoreSwitcherProps) => {
                         ))}
                     </CommandGroup>
                 </CommandList> 
-                <CommandSeparator/>
+                {/* <CommandSeparator/>
                 <CommandList>
                         <CommandGroup>
                             <CommandItem onSelect={()=>{
@@ -83,7 +83,7 @@ const StoreSwitcher = ({className,items=[]}:StoreSwitcherProps) => {
                                 <PlusCircledIcon className='h-5 w-5 mr-2' />
                             </CommandItem>
                         </CommandGroup>
-                </CommandList> 
+                </CommandList>  */}
             </Command>
         </PopoverContent>
     </Popover>

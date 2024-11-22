@@ -1,5 +1,5 @@
     import db from '@/lib/db';
-    import React, { useState } from 'react';
+    import React from 'react';
     import OrderForm from '../_components/order-form';
     
     const OrderPage = async({
@@ -15,10 +15,29 @@
                 
             }
         });
-    
+        const orderWithDefaults = order ? {
+            ...order,
+            createdAt: order.createdAt.toString(),  // Optionally convert to string if needed
+            orderItems: order.orderItems.map(item => ({
+                ...item,
+                quantity: item.quantity ?? 0, // Default to 0 if quantity is null
+            }))
+        } : null;
+        
+        if (!orderWithDefaults) {
+            return (
+                <div className="flex-col dark:bg-muted-foreground h-auto">
+                    <div className="flex-1 space-y-4 p-8 pt-6">
+                        <p>Order not found.</p>
+                    </div>
+                </div>
+            );
+        }
+        
         return (
-            <div className='flex-col'>
+            <div className='flex-col dark:bg-muted-foreground min-h-screen flex'>
                 <div className='flex-1 space-y-4 p-8 pt-6'>
+                    
                     <OrderForm order={order} />
                 </div>
             </div>

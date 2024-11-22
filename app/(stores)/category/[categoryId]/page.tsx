@@ -4,10 +4,8 @@ import getColors from "@/actions/get-colors";
 import getSizes from "@/actions/get-sizes";
 import Billboard from "@/components/ui/billboard";
 import Cont from "@/components/ui/cont";
-import Filter from "./_components/filter";
 import NoResult from "@/components/ui/no-result";
 import ProductCard from "@/components/ui/product-card";
-import MobileFilter from "./_components/mobile-filter";
 
 export const revalidate = 0;
 
@@ -37,7 +35,7 @@ const CategoryPage:React.FC<CategoryPageProps>= async({
     const category = await getCategory(params.categoryId);
 
     return(
-        <div className="bg-white" >
+        <div className="bg-white dark:bg-black/90" >
             
                 {category ? <Billboard data={category?.billboard} /> : <NoResult/>}
                 <Cont>
@@ -58,7 +56,7 @@ const CategoryPage:React.FC<CategoryPageProps>= async({
                         </div> */}
                         <div className="mt-6 lg:col-span-4 lg:mt-0 " >
                             {products.length === 0 && <NoResult/>}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 " >
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 " >
                                 {products.map((item)=>(
                                     <ProductCard
                                         key={item.id}

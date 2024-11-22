@@ -34,8 +34,9 @@ export const addToCart = async ({
     // If the user doesn't have a cart, create one
     if (!cart) {
       cart = await db.cart.create({
+        
         data: {
-          userId:userId,
+          userId:userId ?? '',
         },
       });
     }

@@ -5,10 +5,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useCurrentUser } from "@/hooks/use-current-user"
 import { LogoutButton } from "./logout-button"
 import { ExitIcon } from "@radix-ui/react-icons"
+import { ModeToggle } from "../mode-toggle"
+import { Settings } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export const UserButton=()=>{
     const user = useCurrentUser();
-
+const router = useRouter();
     return(
        <DropdownMenu>
         <DropdownMenuTrigger>
@@ -21,11 +24,18 @@ export const UserButton=()=>{
         </DropdownMenuTrigger>
         <DropdownMenuContent>
             <LogoutButton>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="md:flex hidden">
                     <ExitIcon className="h-4 w-4 mr-2" />
                     Logout
                 </DropdownMenuItem>
             </LogoutButton>
+            <DropdownMenuItem onClick={()=>router.push("/setting")}>
+                    <Settings className="h-4 w-4 mr-2" />
+                    Settings
+                </DropdownMenuItem>
+                <div className="md:flex hidden" >
+            <ModeToggle/>
+                </div>
         </DropdownMenuContent>
        </DropdownMenu>
     )

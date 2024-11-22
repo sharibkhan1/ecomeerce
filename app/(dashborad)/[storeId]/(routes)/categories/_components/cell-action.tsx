@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { CopyIcon ,DotsHorizontalIcon, TrashIcon } from '@radix-ui/react-icons';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { FaEdit } from 'react-icons/fa';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';

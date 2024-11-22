@@ -20,13 +20,13 @@ export const Modal: React.FC<ModalProps>=({
     };
 
     return(
-        <Dialog open={isOpen} onOpenChange={onChange} >
-            <DialogContent>
-                <DialogHeader>
+        <Dialog  open={isOpen} onOpenChange={onChange} >
+            <DialogContent className="bg-white dark:bg-black/80">
+                <DialogHeader className="text-black dark:text-white" >
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
-                <div>
+                <div className="text-black dark:text-white" >
                     {children}
                 </div>
             </DialogContent>

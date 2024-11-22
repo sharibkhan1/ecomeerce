@@ -21,13 +21,13 @@ const BillBoardClient:React.FC<BillBoardClientProps> = ({
 
   return (
     <>
-        <div className='flex items-center justify-between ' >
+        <div className='flex items-center  justify-between ' >
         <Heading
                 title={`Billboards (${data.length})`}
                 description="Manage billboards for your store"
         />
-        <Button onClick={()=> router.push(`/${params.storeId}/billboards/673136c6efefd5ac6745b9f6`)} >
-            <PlusIcon className='mr-2 h-4 w-4' />
+        <Button className='dark:shadow-black' variant="brutal" onClick={()=> router.push(`/${params.storeId}/billboards/673136c6efefd5ac6745b9f6`)} >
+            <PlusIcon className='mr-2 h-4 w-4 ' />
             Add New
         </Button>
         </div>

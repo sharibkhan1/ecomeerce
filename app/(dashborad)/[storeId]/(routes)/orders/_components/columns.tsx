@@ -2,9 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import CellAction from "./cell-action"
-import { format, addDays, intervalToDuration, formatDuration } from "date-fns";
-import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
 
 export type OrderColumn = {
   id: string;
@@ -79,18 +76,19 @@ export const columns: ColumnDef<OrderColumn>[] = [
   },
   {
     accessorKey: "itemsSummary",
-    header: ({ column }) => {
-      return (
-        <Button
-          className=" text-black p-2 rounded-md" // Ensures text is visible with padding
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Time Remaining
-          <ArrowUpDown className="h-4 w-4 ml-2" />
-        </Button>
-      );
-    },
+    header:"Time Remaining",
+    // header: ({ column }) => {
+    //   return (
+    //     <Button
+    //       className=" text-black p-2 rounded-md" // Ensures text is visible with padding
+    //       variant="ghost"
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //     >
+    //       Time Remaining
+    //       <ArrowUpDown className="h-4 w-4 ml-2" />
+    //     </Button>
+    //   );
+    // },
     cell: ({ row }) => (
       <div>
         {row.original.dileve.map((item, index) => (
@@ -130,18 +128,19 @@ header:"Status",
   },
   {
     accessorKey: "orderStat",
-    header: ({ column }) => {
-      return (
-        <Button
-          className=" text-black p-2 rounded-md" // Ensures text is visible with padding
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          orderStauts
-          <ArrowUpDown className="h-4 w-4 ml-2" />
-        </Button>
-      );
-    },
+    header:"orderStauts",
+    // header: ({ column }) => {
+    //   return (
+    //     <Button
+    //       className=" text-black p-2 rounded-md" // Ensures text is visible with padding
+    //       variant="ghost"
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //     >
+    //       orderStauts
+    //       <ArrowUpDown className="h-4 w-4 ml-2" />
+    //     </Button>
+    //   );
+    // },
     cell: ({ row }) => (
       <div>
         {row.original.orderStat.map((item, index) => (

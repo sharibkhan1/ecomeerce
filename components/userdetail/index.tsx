@@ -21,19 +21,34 @@ interface AlertModalProps {
 
 export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfirm, loading }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [mobileNo, setMobileNo] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Only access localStorage in the browser
+      setMobileNo(localStorage.getItem("mobileNo") || "+91");
+      setAddress(localStorage.getItem("address") || "");
+    }
+    setIsMounted(true);
+  }, []);
 
   const form = useForm<z.infer<typeof ContactSchema>>({
     resolver: zodResolver(ContactSchema),
     defaultValues: {
-      mobileNo: "",
-      address: "",
+     mobileNo: mobileNo || "+91",
+      address: address || "",// Prefill with saved address
     },
   });
 
   // Handle form submission
   const handleSubmit = async (data: { mobileNo: string; address: string }) => {
     try {
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("mobileNo", data.mobileNo);
+        localStorage.setItem("address", data.address);
+      }
       // Call the server-side function to update user details
       const result = await updateUserDetails(data.mobileNo, data.address);
 
@@ -68,7 +83,7 @@ export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfi
           })}
           className="space-y-6"
         >
-          <div className="space-y-4 text-white">
+          <div className="space-y-4 dark:text-white text-black">
             <FormField
               control={form.control}
               name="mobileNo"
@@ -76,7 +91,13 @@ export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfi
                 <FormItem>
                   <FormLabel>Mobile No</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="+9181232133" {...field} />
+                    <Input type="text" disabled={loading} placeholder="+9181232133" {...field} 
+                     onChange={(e) => {
+                      field.onChange(e); 
+                      if (typeof window !== "undefined") {
+                        localStorage.setItem("mobileNo", e.target.value); 
+                      }
+                    }}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -89,7 +110,13 @@ export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfi
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Textarea disabled={loading} placeholder="Type your address here." {...field} />
+                    <Textarea disabled={loading} placeholder="Type your address here." {...field}
+                     onChange={(e) => {
+                      field.onChange(e); 
+                      if (typeof window !== "undefined") {
+                        localStorage.setItem("address", e.target.value); 
+                      }
+                    }} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -97,7 +124,7 @@ export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfi
             />
           </div>
           <Button disabled={loading} className="ml-auto" type="submit">
-            Checkout
+            Place Order
           </Button>
         </form>
       </Form>

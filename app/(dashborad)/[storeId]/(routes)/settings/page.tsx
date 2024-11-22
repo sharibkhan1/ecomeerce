@@ -3,6 +3,7 @@ import db from '@/lib/db'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { SettingsForm } from './_components/settings-form'
+import ManageUsers from './_components/rolechage'
 
 interface SettingsPageProps{
     params:{
@@ -28,9 +29,10 @@ const Settings:React.FC<SettingsPageProps> = async ({params}) => {
   }
 
   return (
-    <div className='flex-col' >
+    <div className='flex-col min-h-screen flex dark:bg-muted-foreground ' >
       <div className='flex-1 space-y-4 p-8 pt-6 ' >
         <SettingsForm initialData={store} />
+        <ManageUsers />
       </div>
     </div>
   )

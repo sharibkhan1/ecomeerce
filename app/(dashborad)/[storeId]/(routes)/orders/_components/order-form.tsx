@@ -10,15 +10,15 @@ import { useRouter } from "next/navigation";
 
 interface OrderItem {
     id: string;
-    username?: string;
-    productname?: string;
-    dilevery?: string; // Should be numeric or converted to a number representing days
-    image?: string;
-    color?: string;
-    size?: string;
-    quantity?: number;
-    Price?: number;
-    status: string;
+    username?: string| null;
+    productname?: string| null;
+    dilevery?: string| null; // Should be numeric or converted to a number representing days
+    image?: string| null;
+    color?: string| null;
+    size?: string| null;
+    quantity?: number| null;
+    Price?: number| null;
+    status: string| null;
     orderState: "Packing" | "Shipped" | "Delivered" | "CancelOrder";
 }
 
@@ -27,15 +27,18 @@ interface Order {
     orderItems: OrderItem[];
     phone: string;
     address: string;
-    createdAt: string;
+    createdAt: Date;  // Change from string to Date
     userId: string;
 }
 
 interface OrderFormProps {
-    order: Order;
+    order: Order | null; // Allow null values for order
 }
 
 const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
+    if (!order) {
+        return <div>Order not found</div>; // Handle null case inside the form component
+    }
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedStates, setSelectedStates] = useState<{ [key: string]: OrderItem["orderState"] }>({});
@@ -96,19 +99,19 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
     };
 
     return (
-        <div className="p-6 bg-white shadow-xl rounded-lg max-w-7xl mx-auto">
-            <h2 className="text-3xl font-semibold text-gray-800 mb-6">Order Details</h2>
+        <div className="p-6 dark:text-white dark:bg-black/80 bg-white shadow-xl rounded-lg max-w-7xl mx-auto">
+            <h2 className="text-3xl font-semibold dark:text-white text-gray-800 mb-6">Order Details</h2>
 
             {/* Order Summary */}
             <div className="border-b pb-6 mb-6">
-                <p className="text-lg"><strong className="text-gray-900">Ordered At:</strong> {format(new Date(order.createdAt), "MMMM do, yyyy")}</p>
-                <p className="text-lg"><strong className="text-gray-900">Customer Address:</strong> {order.address}</p>
-                <p className="text-lg"><strong className="text-gray-900">Customer Phone:</strong> {order.phone}</p>
+                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Ordered At:</strong> {format(new Date(order.createdAt), "MMMM do, yyyy")}</p>
+                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Customer Address:</strong> {order.address}</p>
+                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Customer Phone:</strong> {order.phone}</p>
             </div>
 
             {/* Order Items */}
             <div className="space-y-8">
-                <h3 className="text-2xl font-medium text-gray-700">Order Items</h3>
+                <h3 className="text-2xl font-medium dark:text-white text-gray-700">Order Items</h3>
                 {order.orderItems.map((item) => (
                     <div key={item.id} className="border-t border-gray-300 pt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                         {/* Image */}
@@ -122,10 +125,10 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
 
                         {/* Product Info */}
                         <div className="md:col-span-2 space-y-3">
-                            <h4 className="text-2xl font-semibold text-gray-900">{item.productname || "Unnamed Product"}</h4>
-                            <p className="text-xl"><strong className="text-gray-900 text-xl">Total Price:</strong> ₹{(item.Price || 0) * (item.quantity || 1)}</p>
-                            <p className="text-lg"><strong className="text-gray-900">Customer Name:</strong> {item.username || "Anonymous"}</p>
-                            <p className="text-lg text-gray-600 flex items-center space-x-2">
+                            <h4 className="text-2xl font-semibold text-gray-900 dark:text-gray-300">{item.productname || "Unnamed Product"}</h4>
+                            <p className="text-xl"><strong className="text-gray-900 dark:text-gray-300 text-xl">Total Price:</strong> ₹{(item.Price || 0) * (item.quantity || 1)}</p>
+                            <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Customer Name:</strong> {item.username || "Anonymous"}</p>
+                            <p className="text-lg text-gray-600 dark:text-gray-300 flex items-center space-x-2">
   <strong>Color:</strong> 
   {item.color ? (
     <>
@@ -138,16 +141,16 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
   ) : (
     <span>N/A</span>
   )}
-</p>                            <p className="text-lg"><strong className="text-gray-900">Size:</strong> {item.size || "N/A"}</p>
-                            <p className="text-lg"><strong className="text-gray-900">Quantity:</strong> {item.quantity || 1}</p>
-                            <p className="text-lg"><strong className="text-gray-900">Price:</strong> ₹{item.Price}</p>
-                            <p className="text-lg"><strong className="text-gray-900">Delivery Time:</strong> {item.dilevery || "N/A"}</p>
-                            <p className="text-lg"><strong className="text-gray-900">Time Remaining:</strong> {countdowns[item.id] || "Calculating..."}</p>
+</p>                            <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Size:</strong> {item.size || "N/A"}</p>
+                            <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Quantity:</strong> {item.quantity || 1}</p>
+                            <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Price:</strong> ₹{item.Price}</p>
+                            <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Delivery Time:</strong> {item.dilevery || "N/A"}</p>
+                            <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Time Remaining:</strong> {countdowns[item.id] || "Calculating..."}</p>
                         </div>
 
-                        {/* Order State Form */}
+            
                         <div className="md:col-span-3 mt-6">
-                        <p className="text-lg"><strong className="text-gray-900 text-lg">Status by Customer:</strong> {item.status || 1}</p>
+                        <p className="text-lg   flex flex-row"><strong className={` text-gray-700 dark:text-gray-300 text-lg`}>Status by Customer:</strong> <p className={`${item.status==="Cancel"?"text-red-500":"text-green-400"} text-lg`}>{item.status || 1}</p></p>
 
                             <form
                                 onSubmit={(e) => {
@@ -156,15 +159,15 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
                                 }}
                                 className="space-y-4"
                             >
-                                <label className="block text-lg font-medium text-gray-700">Order Item State</label>
+                                <label className="block text-lg font-medium dark:text-gray-300 text-gray-700">Order Item State</label>
                                 <Select
                                     onValueChange={(value) => handleStateChange(item.id, value as OrderItem["orderState"])}
                                     value={selectedStates[item.id] || item.orderState}
                                 >
-                                    <SelectTrigger className="w-full md:w-1/2 bg-gray-100 text-lg rounded-md">
+                                    <SelectTrigger className="w-full md:w-1/2 dark:text-black bg-gray-100 text-lg rounded-md">
                                         <SelectValue>{selectedStates[item.id] || item.orderState}</SelectValue>
                                     </SelectTrigger>
-                                    <SelectContent className="bg-white">
+                                    <SelectContent className="bg-white dark:text-black">
                                         <SelectItem value="Packing">Packing</SelectItem>
                                         <SelectItem value="Shipped">Shipped</SelectItem>
                                         <SelectItem value="Delivered">Delivered</SelectItem>
@@ -173,9 +176,10 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
                                 </Select>
 
                                 <Button
+                                variant="brutal"
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="mt-3 w-full md:w-auto bg-blue-500 text-white rounded-lg shadow disabled:bg-gray-400"
+                                    className="mt-3 w-full md:w-auto bg-yellow-300 dark:shadow-yellow-50 shadow-black text-black rounded-lg disabled:bg-gray-400"
                                 >
                                     {isSubmitting ? "Updating..." : "Submit"}
                                 </Button>

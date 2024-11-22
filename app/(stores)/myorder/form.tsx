@@ -8,6 +8,8 @@ import { format, addDays, intervalToDuration, formatDuration } from "date-fns";
 import NextImage from "next/image";
 import { useRouter } from 'next/navigation';
 import Cont from '@/components/ui/cont';
+import { AiOutlineClockCircle, AiOutlineCloseCircle } from "react-icons/ai"; // Icons
+import { MdDeliveryDining, MdOutlineCancel } from "react-icons/md";
 
 interface OrderItem {
   id: string;
@@ -86,87 +88,121 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
   };
 
   return (
-    <Cont>
-    <div className="p-8 bg-gray-300 shadow-lg rounded-xl space-y-8 mb-5">
-      <h2 className="text-3xl font-bold text-gray-900">Order Details</h2>
-
+    <div className="container mx-auto p-6 space-y-6">
       {/* Order Summary */}
-      <div className="">
-        <p className="text-lg text-gray-700"><strong>Ordered At:</strong> {format(new Date(order.createdAt), "MMMM do, yyyy")}</p>
-        <p className="text-lg text-gray-700"><strong>Owner Address:</strong> {order.address}</p>
-        <p className="text-lg text-gray-700"><strong>Owner Phone:</strong> {order.phone}</p>
+      <div>
+
+     
+      <div className="bg-white dark:bg-muted-foreground shadow-lg rounded-lg p-6">
+        <h2 className="text-2xl font-bold">Order Summary</h2>
+        <p className="text-lg">
+          <strong>Ordered At:</strong>{" "}
+          {format(new Date(order.createdAt), "MMMM do, yyyy")}
+        </p>
+        <p className="text-lg">
+          <strong>Owner Address:</strong> {order.address}
+        </p>
+        <p className="text-lg">
+          <strong>Owner Phone:</strong> {order.phone}
+        </p>
       </div>
 
-      {/* Order Items */}
-      <div className="space-y-6 bg-white shadow-lg rounded-xl">
-        {order.orderItems.map((item) => (
-          <div key={item.id} className=" pt-6 grid border-t border-gray-800  grid-cols-1 md:grid-cols-3 gap-6">
-            
-            {/* Image */}
-            <div className="md:col-span-1  flex justify-center">
-              {item.image ? (
-                <NextImage src={item.image} alt={item.productname || "Product Image"} width={300} height={200} className="object-cover rounded-lg shadow-md" />
-              ) : (
-                <div className="w-24 h-24 bg-gray-200 rounded flex items-center justify-center text-gray-600">No Image</div>
-              )}
-            </div>
-
-            {/* Product Info */}
-            <div className="md:col-span-2 space-y-4">
-            <p className="text-lg text-gray-600"><strong>Status:</strong> {item.status}</p>
-            <p className="text-lg text-gray-600"><strong>Store Status:</strong> {item.orderState}</p>
-              <h4 className="text-xl font-semibold text-gray-800">{item.productname || "Unnamed Product"}</h4>
-              <p className="text-lg text-gray-600"><strong>Owner Name:</strong> {item.username || "Anonymous"}</p>
-{/* Color */}
-<p className="text-lg text-gray-600 flex items-center space-x-2">
-  <strong>Color:</strong> 
-  {item.color ? (
-    <>
-      <span
-        style={{ backgroundColor: item.color }}
-        className="w-6 h-6 inline-block rounded-full border border-gray-300"
-        title={item.color} // Tooltip for accessibility
-      ></span>
-    </>
-  ) : (
-    <span>N/A</span>
-  )}
-</p>
-              <p className="text-lg text-gray-600"><strong>Size:</strong> {item.size || "N/A"}</p>
-              <p className="text-lg text-gray-600"><strong>Quantity:</strong> {item.quantity || 1}</p>
-              <p className="text-lg text-gray-600"><strong>Price:</strong> ₹{item.Price}</p>
-              <p className="text-lg text-gray-600"><strong>Delivery Time:</strong> {item.dilevery || "N/A"}</p>
-              <p className="text-lg text-gray-600"><strong>Time Remaining:</strong> {countdowns[item.id] || "Calculating..."}</p>
-              <p className="text-lg font-semibold text-gray-800"><strong>Total Price:</strong> ₹{(item.Price || 0) * (item.quantity || 1)}</p> {/* Total price calculation */}
-            </div>
-
-            {/* Cancel Button */}
-            {item.status !== 'Cancel' && (
-              <Button
-                variant="destructive"
-                onClick={() => {
-                  setItemToCancel(item);  // Set the item to cancel
-                  setIsModalOpen(true);    // Open the modal
-                }}
-                className="w-full mt-4 text-white bg-red-600 hover:bg-red-700"
-              >
-                Cancel Order
-              </Button>
+      {/* Ordered Items */}
+      {order.orderItems.map((item) => (
+        <div
+          key={item.id}
+          className="bg-gray-100 dark:text-white dark:bg-black/40 p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {/* Image */}
+          <div className="col-span-1 flex justify-center">
+            {item.image ? (
+              <NextImage
+                src={item.image}
+                alt={item.productname || "Product"}
+                width={350}
+                height={150}
+                className="rounded-lg"
+              />
+            ) : (
+              <div className="bg-gray-200 w-24 h-24 rounded-md flex items-center justify-center">
+                No Image
+              </div>
             )}
           </div>
-        ))}
 
-        {/* Alert Modal for Confirmation */}
-        <AlertModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}  // Close the modal
-          onConfirm={handleCancelOrder}         // Confirm cancel and update status
-          loading={isSubmitting}
-        />
-      </div>
+          {/* Details */}
+          <div className="col-span-2 space-y-4">
+            <h3 className="text-xl font-semibold">{item.productname}</h3>
+            <p>
+              <strong>Status:</strong>{" "}
+              <span
+                className={`${
+                  item.status === "Cancel" ? "text-red-600" : "text-green-600"
+                }`}
+              >
+                {item.status}
+              </span>
+            </p>
+            <p>
+              <strong>Package Status:</strong> {item.orderState || "Pending"}
+            </p>
+            <p>
+              <strong>Color:</strong>{" "}
+              {item.color ? (
+                <span
+                  style={{ backgroundColor: item.color }}
+                  className="inline-block w-5 h-5 rounded-full border"
+                />
+              ) : (
+                "N/A"
+              )}
+            </p>
+            <p>
+              <strong>Size:</strong> {item.size || "N/A"}
+            </p>
+            <p>
+              <strong>Quantity:</strong> {item.quantity || 1}
+            </p>
+            <p>
+              <strong>Price:</strong> ₹{item.Price}
+            </p>
+            <p className="flex items-center space-x-2">
+              <AiOutlineClockCircle className="text-lg" />
+              <strong>Time Remaining:</strong>{" "}
+              {countdowns[item.id] || "Calculating..."}
+            </p>
+            <p className="text-xl font-bold">
+              Total Price: ₹{(item.Price || 0) * (item.quantity || 1)}
+            </p>
+          </div>
+
+          {/* Cancel Button */}
+          {item.status !== "Cancel" && (
+            <Button
+            variant="stretch"
+              onClick={() => {
+                setItemToCancel(item);
+                setIsModalOpen(true);
+              }}
+              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center space-x-2"
+            >
+              <MdOutlineCancel />
+              <span>Cancel Order</span>
+            </Button>
+          )}
+        </div>
+      ))}
+ </div>
+      {/* Alert Modal */}
+      <AlertModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleCancelOrder}
+        loading={isSubmitting}
+      />
     </div>
-    </Cont>
   );
 };
 
 export default OrderForm;
+

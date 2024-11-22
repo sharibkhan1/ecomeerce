@@ -1,11 +1,17 @@
 import { currentUserId } from '@/lib/auth';
 import db from '@/lib/db';
 import OrderForm from './form';
+import Cont from '@/components/ui/cont';
+import Image from 'next/image';
 
 async function fetchUserOrders(userId: string) {
   const orders = await db.order.findMany({
     where: {
       userId: userId,
+      isPaid: true, // Only fetch orders where isPaid is true
+    },
+    orderBy: {
+      createdAt: 'desc', // Sort by createdAt in descending order
     },
     select: {
       id: true,
@@ -32,13 +38,26 @@ export default async function OrdersPage() {
   const orders = await fetchUserOrders(userId);
 
   return (
-    <div>
-      <h1>Your Orders</h1>
+    <div className='dark:bg-black/90'>
       {orders.length === 0 ? (
-        <p>You have no orders yet.</p>
+        <Cont>
+          <div className='h-screen w-auto flex flex-col items-center justify-center' >
+          <Image
+          src="/cart.png"
+          alt="iamge"
+          loading='lazy'
+          sizes="30"
+          className='md:h-[30rem] md:w-[30rem]'
+          width={150}
+          height={150}
+          />
+          <p className='font-semibold dark:text-white text-gray-800 text-[2rem]' >NO ORDER PLACED</p>
+          </div>
+        </Cont>
       ) : (
         <div>
           {orders.map(order => (
+            // @ts-ignore
             <OrderForm key={order.id} order={order} />
           ))}
         </div>

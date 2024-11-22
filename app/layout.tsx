@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Script from 'next/script'
+import { ThemeProvider } from "@/components/theme-pro";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,8 +32,14 @@ export default function RootLayout({
     <>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+          >
           <Toaster/>
           {children}
+          </ThemeProvider>
         </body>
       </html>
       <Script src="https://checkout.razorpay.com/v1/checkout.js"

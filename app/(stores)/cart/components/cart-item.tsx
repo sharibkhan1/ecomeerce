@@ -28,7 +28,7 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
       const response = await removeFromCart(data.id);
       if (response.success) {
         // Optionally update the UI or notify the user
-        toast.error("Item remove successfully")
+        toast.success("Item remove successfully")
       } else {
         console.error(response.message);
       }
@@ -56,8 +56,8 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
     };
 
     return (
-        <li className="flex mb-5 py-6 border-b bg-white shadow-md rounded-lg hover:shadow-xl transition-all">
-            <div className="relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48">
+        <li className="flex mb-5 py-6 border-b dark:bg-black/50 dark:border-white/60 bg-white shadow-md rounded-lg hover:shadow-xl transition-all">
+            <div className="relative h-32 w-32 rounded-md overflow-hidden md:h-48 md:w-48">
             {data.image && (
                     <Image
                         fill
@@ -71,9 +71,9 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
                 <div className="absolute z-10 right-5 top-0">
                     <IconButton onClick={handleRemove} icon={<Cross className="rotate-45" color="black" size={15} />} />
                 </div>
-                <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
+                <div className="relative pr-9 dark:text-gray-200 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                     <div className="flex justify-between">
-                        <p className="text-lg font-semibold text-black">
+                        <p className="text-lg font-semibold dark:text-white text-black">
                             {data.name}
                         </p>
                     </div>
@@ -87,14 +87,14 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
                         )}
                         {/* Displaying the selected size */}
                         {data.size && (
-                            <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">
+                            <p className="text-gray-500 ml-4 mb-4 dark:text-gray-300 border-l border-gray-200 pl-4">
                                 Size: {data.size}
                             </p>
                         )}
                     </div>
                     <Currency value={data.salesPrice} />
                 </div>
-                <div className="flex gap-4 items-center mt-4">
+                <div className="flex dark:text-white gap-4 items-center mt-4">
                     <MinusCircle
                         className="hover:text-red-500 cursor-pointer"
                         onClick={handleDecrease}

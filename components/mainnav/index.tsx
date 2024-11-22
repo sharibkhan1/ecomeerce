@@ -51,6 +51,11 @@ export function MainNav({
             label:'Settings',
             active: pathname === `/${params.storeId}/settings`,
         },
+        {
+            href:`/`,
+            label:'UserSide',
+            active: pathname === `/`,
+        },
         
     ];
 
@@ -63,7 +68,9 @@ export function MainNav({
                 )} >
                     {route.label}
                 </Link>
+                
             ))}
+            
         </nav>
     )
 }

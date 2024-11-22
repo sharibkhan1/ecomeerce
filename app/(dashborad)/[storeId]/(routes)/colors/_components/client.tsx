@@ -26,7 +26,7 @@ const ColorClient:React.FC<ColorClientProps> = ({
                 title={`Color (${data.length})`}
                 description="Manage colora for your store"
         />
-        <Button onClick={()=> router.push(`/${params.storeId}/colors/673136c6efefd5ac6745b9f6`)} >
+        <Button className='dark:shadow-black' variant="brutal"  onClick={()=> router.push(`/${params.storeId}/colors/673136c6efefd5ac6745b9f6`)} >
             <PlusIcon className='mr-2 h-4 w-4' />
             Add New
         </Button>

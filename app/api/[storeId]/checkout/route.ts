@@ -14,7 +14,11 @@ export async function POST(req: Request, { params }: { params: { storeId: string
   try {
     const { orderItems, totalPrice } = await req.json();
     const userId = await currentUserId();
-
+    if (orderItems.length === 0) {
+      window.location.reload();
+      console.log(orderItems)
+      return NextResponse.json({ error: "Cart is empty, cannot proceed with order." }, { status: 400 });
+    }
     const user = await db.user.findUnique({
       where: { id: userId },
       select: {
@@ -89,7 +93,7 @@ console.log(user)
     const crt = await db.order.create({
       data: {
         storeId: params.storeId,
-        userId: userId,
+        userId: userId ?? '',
         isPaid: false,
         razorpayOrderId: order.id,  // Save Razorpay order ID
         phone: user?.phoneno || "",  // Add user's phone number

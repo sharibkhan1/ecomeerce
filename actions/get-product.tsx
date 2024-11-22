@@ -24,7 +24,7 @@ const getProduct = async (productId: string): Promise<Product | null> => {
             size3:true,   
         },
     });
-
+// @ts-ignore
     return product;
 };
 
