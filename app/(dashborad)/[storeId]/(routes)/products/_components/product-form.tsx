@@ -362,6 +362,66 @@ export const ProductForm:React.FC<ProductFormProps>=({
                             </FormItem>
                         )}
                     />
+                        <FormField control={form.control} name="sizeId1" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Size 2 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Size 2" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {sizes1.map((size) => (
+                                <SelectItem key={size.id} value={size.id}>
+                                    {size.value}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
+<FormField control={form.control} name="sizeId2" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Size 3 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Size 3" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {sizes2.map((size) => (
+                                <SelectItem key={size.id} value={size.id}>
+                                    {size.value}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
+              <FormField control={form.control} name="sizeId3" render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Size 4 (Optional)</FormLabel>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Size 4" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {sizes3.map((size) => (
+                                <SelectItem key={size.id} value={size.id}>
+                                    {size.value}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                </FormItem>
+            )} />
                     <FormField
                         control={form.control}
                         name="colorId"
@@ -393,35 +453,16 @@ export const ProductForm:React.FC<ProductFormProps>=({
                             </FormItem>
                         )}
                     />
-                    <FormField control={form.control} name="sizeId1" render={({ field }) => (
-                <FormItem>
-                    <FormLabel>Size 1 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select Size 1" />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            {sizes1.map((size) => (
-                                <SelectItem key={size.id} value={size.id}>
-                                    {size.value}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                </FormItem>
-            )} />
+                
 
             {/* Color1 Field (Optional) */}
             <FormField control={form.control} name="colorId1" render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Color 1 (Optional)</FormLabel>
+                    <FormLabel>Color 2 (Optional)</FormLabel>
                     <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Color 1" />
+                                <SelectValue placeholder="Select Color 2" />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -435,35 +476,16 @@ export const ProductForm:React.FC<ProductFormProps>=({
                     <FormMessage />
                 </FormItem>
             )} />
-            <FormField control={form.control} name="sizeId2" render={({ field }) => (
-                <FormItem>
-                    <FormLabel>Size 1 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select Size 1" />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            {sizes2.map((size) => (
-                                <SelectItem key={size.id} value={size.id}>
-                                    {size.value}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                </FormItem>
-            )} />
+            
 
             {/* Color1 Field (Optional) */}
             <FormField control={form.control} name="colorId2" render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Color 1 (Optional)</FormLabel>
+                    <FormLabel>Color 3 (Optional)</FormLabel>
                     <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Color 1" />
+                                <SelectValue placeholder="Select Color 3" />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -477,35 +499,16 @@ export const ProductForm:React.FC<ProductFormProps>=({
                     <FormMessage />
                 </FormItem>
             )} />
-            <FormField control={form.control} name="sizeId3" render={({ field }) => (
-                <FormItem>
-                    <FormLabel>Size 1 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select Size 1" />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            {sizes3.map((size) => (
-                                <SelectItem key={size.id} value={size.id}>
-                                    {size.value}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                </FormItem>
-            )} />
+          
 
             {/* Color1 Field (Optional) */}
             <FormField control={form.control} name="colorId3" render={({ field }) => (
                 <FormItem>
-                    <FormLabel>Color 1 (Optional)</FormLabel>
+                    <FormLabel>Color 4 (Optional)</FormLabel>
                     <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Color 1" />
+                                <SelectValue placeholder="Select Color 4" />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>

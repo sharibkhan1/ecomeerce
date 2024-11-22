@@ -27,7 +27,6 @@ export interface ProductSmall{
     salesPrice: number;
     images:Image[];
     stocks: number;    // Stocks as a string (or number if you prefer)
-    dilevery:string;
 }
 
 export interface Product{
@@ -50,7 +49,6 @@ export interface Product{
     stocks: number;    // Stocks as a string (or number if you prefer)
     discription: string; 
     reviews: Review[]; // Added reviews array
-    dilevery:string;
 }
 
 export interface Review {

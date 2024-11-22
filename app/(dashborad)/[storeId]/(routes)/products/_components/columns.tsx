@@ -35,37 +35,6 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: "Featured",
   },
   {
-    accessorKey: "dilevery",
-    header: ({ column }) => {
-      return (
-        <Button
-          className="text-black p-2 rounded-md" // Ensures text is visible with padding
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Dilevery Day
-          <ArrowUpDown className="h-4 w-4 ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      let deliveryText = row.original.dilevery;
-  
-      // Check if "day" or "days" is already in the delivery value
-      if (!deliveryText.toLowerCase().includes("days")) {
-        // If not, add "day" to the end
-        deliveryText += " days";
-      }
-  
-      return (
-        <div className="">
-          {deliveryText} {/* Display delivery text with appended "day" if necessary */}
-        </div>
-      );
-    }
-  }
-  ,
-  {
     accessorKey: "stocks",
     header: ({ column }) => {
       return (

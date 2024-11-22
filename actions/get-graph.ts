@@ -1,6 +1,6 @@
 import db from "@/lib/db";
 
-export const getGraphRevenue = async (storeId: string) => {
+export const getGraphRevenue = async (storeId: string, year: number) => {
   const paidOrders = await db.order.findMany({
     where: {
       storeId,

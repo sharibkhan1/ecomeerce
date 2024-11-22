@@ -38,3 +38,28 @@ export const updateUserDetails = async (mobileNo: string, address: string) => {
   }
 };
 
+export const getUserByAddress = async () => {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      throw new Error("Unauthorized"); // No user found
+    }
+
+    const dbUser = await db.user.findUnique({
+      where: {
+        id: user.id, // Get the current user by ID
+      },select: {
+        address: true, // Only fetch the address
+      },
+    });
+    if (!dbUser || !dbUser.address) {
+      throw new Error("User address not found");
+    }
+
+    return dbUser.address; // Return only the address
+
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return null;
+  }
+};

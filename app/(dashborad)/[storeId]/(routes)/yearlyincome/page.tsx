@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { getGraphRevenue } from '@/actions/get-graph';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Overview } from '@/components/overview';
-import { Separator } from '@/components/ui/separator';
 
 interface YearlyGraphPageProps {
   params: { storeId: string }

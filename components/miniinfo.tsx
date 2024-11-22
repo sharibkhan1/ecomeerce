@@ -1,5 +1,5 @@
 "use client"
-import { Product } from '@/lib/types';
+import { ProductSmall } from '@/lib/types';
 import React, { MouseEventHandler, useState } from 'react';
 import Currency from './ui/currency';
 import { Button } from './ui/button';
@@ -8,10 +8,10 @@ import { toast } from 'sonner';
 import { addToCart } from '@/actions/ordercat';
 
 interface InfoProps {
-  data: Product;
+  data: ProductSmall;
 }
 
-const InfoPage: React.FC<InfoProps> = ({ data }) => {
+const MiniInfoPage: React.FC<InfoProps> = ({ data }) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -100,51 +100,6 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
                 {data?.stocks}
             </div>
         </div>
-        <div className='flex items-start text-lg   text-gray-700' >
-        <p
-        className={`transition-all duration-300 ${
-          isExpanded ? '' : 'line-clamp-5' // Apply line clamp when collapsed
-        }`}
-      >
-        {data?.discription}</p>
-    </div>
-    <div className='flex items-end -mt-7 text-sm text-gray-700'>
-  {data?.discription && data?.discription.split(' ').length > 25 && ( // Check if discription exists before using split
-    <button
-      onClick={() => setIsExpanded(!isExpanded)}
-      className="text-blue-500 hover:underline mt-2"
-    >
-      {isExpanded ? 'Show Less' : 'Show More'}
-    </button>
-  )}
-</div>
-
-
-        <div className='mt-6'>
-    {data?.details?.length > 0 && (
-        <>
-            <table className='table-auto  w-full'>
-                <thead>
-                    <tr>
-                        <th className='text-left p-2 '>Title</th>
-                        <th className='text-left p-2 '>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.details.map((detail) => (
-                        <tr key={detail.id}>
-                            <td className='p-2 border-b'>{detail.title}</td>
-                            <td className='p-2 border-b'>{detail.description}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </>
-    )}
-    {data?.details?.length === 0 && (
-        <p className="text-center text-gray-500">No details available</p>
-    )}
-</div>
 
         {/* Add to Cart Button */}
         <div className="md:mt-10 mt-3 flex items-center gap-x-3">
@@ -160,4 +115,4 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
   );
 };
 
-export default InfoPage;
+export default MiniInfoPage;

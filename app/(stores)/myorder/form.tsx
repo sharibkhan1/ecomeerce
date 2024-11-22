@@ -1,5 +1,5 @@
 "use client"
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { updateOrderItemStatus } from '@/actions/orderup';
 import { toast } from 'sonner';
@@ -7,9 +7,8 @@ import { AlertModal } from '@/components/alert-modal';
 import { format, addDays, intervalToDuration, formatDuration } from "date-fns";
 import NextImage from "next/image";
 import { useRouter } from 'next/navigation';
-import Cont from '@/components/ui/cont';
-import { AiOutlineClockCircle, AiOutlineCloseCircle } from "react-icons/ai"; // Icons
-import { MdDeliveryDining, MdOutlineCancel } from "react-icons/md";
+import { AiOutlineClockCircle } from "react-icons/ai"; // Icons
+import { MdOutlineCancel } from "react-icons/md";
 
 interface OrderItem {
   id: string;
@@ -43,25 +42,43 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);  // For Modal visibility
   const router = useRouter();
-
+  const [travelTime, setTravelTime] = useState<number | null>(null);
   const [itemToCancel, setItemToCancel] = useState<OrderItem | null>(null); // Store the item to cancel
+  
+  useEffect(() => {
+    const fetchTravelTime = async () => {
+      try {
+        const response = await fetch("/api/distance", { method: "POST" });
+        const data = await response.json();
+        if (response.ok) {
+          setTravelTime(data.travelTimeMinutes);
+        } else {
+          console.error("Error fetching travel time:", data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching travel time:", error);
+      }
+    };
 
+    fetchTravelTime();
+  }, []);
   const countdowns = useMemo(() => {
     return order.orderItems.reduce((acc, item) => {
-        const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 8 days if undefined
-        const endDate = addDays(new Date(order.createdAt), deliveryDays);
-        const now = new Date();
+      const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 1 day
+      const endDate = addDays(new Date(order.createdAt), deliveryDays);
+      const now = new Date();
 
-        if (endDate > now) {
-            const duration = intervalToDuration({ start: now, end: endDate });
-            acc[item.id] = formatDuration(duration, { format: ['days', 'hours'] });
-        } else {
-            acc[item.id] = "Delivered";
-        }
+      if (endDate > now) {
+        const duration = intervalToDuration({ start: now, end: endDate });
+        const travelDuration = travelTime ? ` + ${travelTime} mins` : "";
+        acc[item.id] = formatDuration(duration, { format: ["days", "hours"] }) + travelDuration;
+      } else {
+        acc[item.id] = "Delivered";
+      }
 
-        return acc;
+      return acc;
     }, {} as { [key: string]: string });
-}, [order.orderItems, order.createdAt]);
+  }, [order.orderItems, order.createdAt, travelTime]);
 
   const handleStatusChange = async (orderItemId: string, newStatus: 'Ordered' | 'Cancel') => {
     setIsSubmitting(true);
@@ -165,6 +182,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
             </p>
             <p>
               <strong>Price:</strong> ₹{item.Price}
+            </p>
+            <p>
+              <strong>Dilevertt:</strong> {item.dilevery}
             </p>
             <p className="flex items-center space-x-2">
               <AiOutlineClockCircle className="text-lg" />
