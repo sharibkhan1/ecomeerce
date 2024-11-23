@@ -8,7 +8,7 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { useSession } from 'next-auth/react';
 import React, { useState, useTransition } from 'react'
 import { useForm } from "react-hook-form";
-import { SettingsSchema } from "@/schemas";
+import { SettingsNameSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -22,14 +22,14 @@ const SettingsPage = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
 
-  const form = useForm<z.infer<typeof SettingsSchema>>({
-    resolver: zodResolver(SettingsSchema),
+  const form = useForm<z.infer<typeof SettingsNameSchema>>({
+    resolver: zodResolver(SettingsNameSchema),
     defaultValues: {
       name: user?.name || undefined,
     }
   });
 
-  const onSubmit=(values: z.infer<typeof SettingsSchema>)=>{
+  const onSubmit=(values: z.infer<typeof SettingsNameSchema>)=>{
     startTransition(()=>{
       setError(undefined);
       setSuccess(undefined);
