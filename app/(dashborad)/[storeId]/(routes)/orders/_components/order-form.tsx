@@ -44,12 +44,10 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
     const router = useRouter();
 
     // Early return if order is null, but hooks should still be called before the return
-    if (!order) {
-        return <div>Order not found</div>; // Handle null case inside the form component
-    }
 
     // Calculate countdowns using useMemo hook
     const countdowns = useMemo(() => {
+        if (!order) return {}; // If order is null, return an empty object
         if (!order.orderItems) return {}; // Handle null or undefined orderItems gracefully
         return order.orderItems.reduce((acc, item) => {
             const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 1 day if undefined
@@ -69,6 +67,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
 
     // Set initial states for the order items using useEffect hook
     useEffect(() => {
+        
         if (order?.orderItems) {
             const initialStates = order.orderItems.reduce((acc, item) => {
                 acc[item.id] = item.orderState;
@@ -112,15 +111,15 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
 
             {/* Order Summary */}
             <div className="border-b pb-6 mb-6">
-                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Ordered At:</strong> {format(new Date(order.createdAt), "MMMM do, yyyy")}</p>
-                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Customer Address:</strong> {order.address}</p>
-                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Customer Phone:</strong> {order.phone}</p>
+                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Ordered At:</strong>{order?.createdAt ? format(new Date(order.createdAt), "MMMM do, yyyy") : "Unknown Date"}</p>
+                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Customer Address:</strong> {order?.address}</p>
+                <p className="text-lg"><strong className="text-gray-900 dark:text-gray-300">Customer Phone:</strong> {order?.phone}</p>
             </div>
 
             {/* Order Items */}
             <div className="space-y-8">
                 <h3 className="text-2xl font-medium dark:text-white text-gray-700">Order Items</h3>
-                {order.orderItems.map((item) => (
+                {order?.orderItems.map((item) => (
                     <div key={item.id} className="border-t border-gray-300 pt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                         {/* Image */}
                         <div className="md:col-span-1 flex justify-center">
