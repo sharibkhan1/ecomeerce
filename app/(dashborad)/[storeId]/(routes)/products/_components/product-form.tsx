@@ -83,12 +83,18 @@ export const ProductForm:React.FC<ProductFormProps>=({
 
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(formSchema),
-        // @ts-expect-error
         defaultValues:initialData ?{
             ...initialData,
             price:parseFloat(String(initialData?.price)),
             salesPrice:parseFloat(String(initialData?.salesPrice)),
             stocks:String(initialData?.stocks),
+            sizeId1: initialData.sizeId1 ?? undefined,
+            colorId1: initialData.colorId1 ?? undefined,
+            sizeId2: initialData.sizeId2 ?? undefined,
+            colorId2: initialData.colorId2 ?? undefined,
+            sizeId3: initialData.sizeId3 ?? undefined,
+            colorId3: initialData.colorId3 ?? undefined,
+            dilevery: initialData.dilevery || '', // If it's null, set it to an empty string or undefined
         }:{
             name:"",
             dilevery:"",
@@ -97,12 +103,12 @@ export const ProductForm:React.FC<ProductFormProps>=({
             categoryId:'',
             colorId:'',
             sizeId:'',
-            sizeId1: '',
-            colorId1: '',
-            sizeId2: '',
-            colorId2: '',
-            sizeId3: '',
-            colorId3: '',
+            sizeId1: undefined, // Ensure undefined instead of null
+            colorId1: undefined,
+            sizeId2: undefined,
+            colorId2: undefined,
+            sizeId3: undefined,
+            colorId3: undefined,
             isFeatured:false,
             isArchived:false,
             discription:'',

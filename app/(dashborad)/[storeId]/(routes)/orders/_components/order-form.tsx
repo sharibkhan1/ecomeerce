@@ -49,7 +49,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
    
     // Calculate countdowns only once when the component mounts
     const countdowns = useMemo(() => {
-        if (!order || !order.orderItems) return {}; // Handle null or undefined order gracefully
+        if (!order.orderItems) return {}; // Handle null or undefined orderItems gracefully
         return order.orderItems.reduce((acc, item) => {
             const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 8 days if undefined
             const endDate = addDays(new Date(order.createdAt), deliveryDays);
@@ -67,7 +67,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
     }, [order]); // Include 'order' as a dependency
 
     useEffect(() => {
-        if (!order || !order.orderItems) return; // Early return inside the hook body, not outside
+        if (!order.orderItems) return; // Early return if orderItems is empty or undefined
         const initialStates = order.orderItems.reduce((acc, item) => {
             acc[item.id] = item.orderState;
             return acc;
