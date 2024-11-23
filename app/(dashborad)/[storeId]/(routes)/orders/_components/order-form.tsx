@@ -40,39 +40,42 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [selectedStates, setSelectedStates] = useState<{ [key: string]: OrderItem["orderState"] }>({});
+
     const router = useRouter();
 
-
+    // Early return if order is null, but hooks should still be called before the return
     if (!order) {
         return <div>Order not found</div>; // Handle null case inside the form component
     }
-   
-    // Calculate countdowns only once when the component mounts
+
+    // Calculate countdowns using useMemo hook
     const countdowns = useMemo(() => {
         if (!order.orderItems) return {}; // Handle null or undefined orderItems gracefully
         return order.orderItems.reduce((acc, item) => {
-            const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 8 days if undefined
+            const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 1 day if undefined
             const endDate = addDays(new Date(order.createdAt), deliveryDays);
             const now = new Date();
-    
+
             if (endDate > now) {
                 const duration = intervalToDuration({ start: now, end: endDate });
                 acc[item.id] = formatDuration(duration, { format: ['days', 'hours'] });
             } else {
                 acc[item.id] = "Delivered";
             }
-    
+
             return acc;
         }, {} as { [key: string]: string });
     }, [order]); // Include 'order' as a dependency
 
+    // Set initial states for the order items using useEffect hook
     useEffect(() => {
-        if (!order.orderItems) return; // Early return if orderItems is empty or undefined
-        const initialStates = order.orderItems.reduce((acc, item) => {
-            acc[item.id] = item.orderState;
-            return acc;
-        }, {} as { [key: string]: OrderItem["orderState"] });
-        setSelectedStates(initialStates);
+        if (order?.orderItems) {
+            const initialStates = order.orderItems.reduce((acc, item) => {
+                acc[item.id] = item.orderState;
+                return acc;
+            }, {} as { [key: string]: OrderItem["orderState"] });
+            setSelectedStates(initialStates);
+        }
     }, [order]); // Include 'order' as a dependency
 
     const handleOrderItemStateChange = async (orderItemId: string) => {
@@ -85,7 +88,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
             toast.success("Order item state updated successfully!");
             if (newState === "CancelOrder") {
                 toast.success("Stock updated for canceled item!");
-              }
+            }
             router.refresh();
         } catch (err) {
             toast.error("Failed to update order item state.");
