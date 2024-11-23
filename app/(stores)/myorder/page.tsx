@@ -18,11 +18,39 @@ async function fetchUserOrders(userId: string) {
       phone: true,
       address: true,
       createdAt: true,
-      orderItems: 
-        true
+      userId:true,
+      orderItems: {
+        select: {
+          id: true,
+          orderId: true,
+          productId: true,
+          createdAt: true,
+          updatedAt: true,
+          color: true,
+          size: true,
+          quantity: true,
+          status: true,
+          username: true, // Ensure username is selected
+          image: true,
+        },
+      },
     },
   });
-  return orders;
+  const ordersWithValidUsername = orders.map(order => ({
+    ...order,
+    createdAt: order.createdAt.toISOString(), // Convert Date to string
+    orderItems: order.orderItems.map(item => ({
+      ...item,
+      image: item.image ?? undefined, // Convert null to undefined here
+      username: item.username ?? undefined, // Convert null to undefined
+      color: item.color ?? undefined, // Convert null to undefined here
+      quantity: item.quantity ?? undefined, // Convert null to undefined here
+      createdAt: item.createdAt.toISOString(), // Convert Date to string for orderItem
+      updatedAt: item.updatedAt.toISOString(),
+    })),
+  }));
+
+  return ordersWithValidUsername;
 }
 
 export default async function OrdersPage() {
@@ -57,7 +85,6 @@ export default async function OrdersPage() {
       ) : (
         <div>
           {orders.map(order => (
-            // @ts-expect-error
             <OrderForm key={order.id} order={order} />
           ))}
         </div>

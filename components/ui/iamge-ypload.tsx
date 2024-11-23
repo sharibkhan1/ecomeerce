@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./button";
 import { TrashIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import { CldUploadWidget } from 'next-cloudinary';
+import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary';
 import { FcStackOfPhotos } from "react-icons/fc";
 
 interface ImageUploadProps{
@@ -23,8 +23,13 @@ const ImageUpload:React.FC<ImageUploadProps>=({
         setIsMounted(true);
     },[]);
 
-    const onUpload = (result:any)=>{
-        onChange(result.info.secure_url);
+    const onUpload = (result: CloudinaryUploadWidgetResults) => {
+        // Check if the result.info is defined and if it has a secure_url
+        if (result.info && typeof result.info !== "string" && result.info.secure_url) {
+            onChange(result.info.secure_url);
+        } else {
+            console.error("Failed to get secure_url from Cloudinary upload result", result);
+        }
     }
 
     if(!isMounted){

@@ -6,16 +6,16 @@ import CartItem from './components/cart-item';
 import Summary from './components/summary';
 import { checkAndRemoveOutOfStockItems, getCartItems } from '@/actions/cartcount';
 
-
 interface CartItemType {
     id: string;
     name: string;
-    salesPrice: number | null;
+    salesPrice: number;
     image: string;
     quantity: number;
-    color: string | null;
+    color: string | null;  // Change here from string | null to string | undefined
     size: string | null;
 }
+
 
 
 const CartPage = () => {
@@ -54,7 +54,6 @@ const CartPage = () => {
                             ) : (
                                 <ul>
                                     {cartItems.map((item) => (
-                                        // @ts-expect-error
                                         <CartItem key={item.id} data={item} />
                                     ))}
                                 </ul>

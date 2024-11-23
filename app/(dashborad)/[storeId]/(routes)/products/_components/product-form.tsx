@@ -29,12 +29,12 @@ import { Textarea } from "@/components/ui/textarea"
         categoryId:z.string().min(1),
         colorId:z.string().min(1),
         sizeId:z.string().min(1),
-        sizeId1: z.string().min(1), // Size1 is nullable
-        colorId1: z.string().min(1), // Color1 is nullable
-        sizeId2: z.string().min(1), // Size2 is nullable
-        colorId2: z.string().min(1), // Color2 is nullable
-        sizeId3: z.string().min(1), // Size3 is nullable
-        colorId3: z.string().min(1),
+     sizeId1: z.string().nullable().optional(), // Allow nullable and optional values
+    colorId1: z.string().nullable().optional(),
+    sizeId2: z.string().nullable().optional(),
+    colorId2: z.string().nullable().optional(),
+    sizeId3: z.string().nullable().optional(),
+    colorId3: z.string().nullable().optional(),
         isFeatured:z.boolean().optional(),
         isArchived:z.boolean().optional(),
         dilevery:z.string().min(1),
@@ -343,7 +343,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
                         <FormField control={form.control} name="sizeId1" render={({ field }) => (
                 <FormItem>
                     <FormLabel>Size 2 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value ?? undefined}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Size 2" />
@@ -363,7 +363,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
 <FormField control={form.control} name="sizeId2" render={({ field }) => (
                 <FormItem>
                     <FormLabel>Size 3 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value ?? undefined}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Size 3" />
@@ -383,7 +383,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
               <FormField control={form.control} name="sizeId3" render={({ field }) => (
                 <FormItem>
                     <FormLabel>Size 4 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value ?? undefined}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Size 4" />
@@ -437,7 +437,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
             <FormField control={form.control} name="colorId1" render={({ field }) => (
                 <FormItem>
                     <FormLabel>Color 2 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value ?? undefined}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Color 2" />
@@ -460,7 +460,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
             <FormField control={form.control} name="colorId2" render={({ field }) => (
                 <FormItem>
                     <FormLabel>Color 3 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value ?? undefined}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Color 3" />
@@ -483,7 +483,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
             <FormField control={form.control} name="colorId3" render={({ field }) => (
                 <FormItem>
                     <FormLabel>Color 4 (Optional)</FormLabel>
-                    <Select disabled={loading} onValueChange={field.onChange} value={field.value}>
+                    <Select disabled={loading} onValueChange={field.onChange} value={field.value ?? undefined}>
                         <FormControl>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select Color 4" />

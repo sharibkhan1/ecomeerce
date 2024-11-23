@@ -49,7 +49,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
    
     // Calculate countdowns only once when the component mounts
     const countdowns = useMemo(() => {
-        if (!order) return {}; // Return an empty object if order is null
+        if (!order || !order.orderItems) return {}; // Handle null or undefined order gracefully
         return order.orderItems.reduce((acc, item) => {
             const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 8 days if undefined
             const endDate = addDays(new Date(order.createdAt), deliveryDays);
@@ -64,16 +64,16 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
     
             return acc;
         }, {} as { [key: string]: string });
-    }, [order.orderItems, order.createdAt]);
+    }, [order]); // Include 'order' as a dependency
 
     useEffect(() => {
-        if (!order) return; // Return an empty object if order is null
+        if (!order || !order.orderItems) return; // Early return inside the hook body, not outside
         const initialStates = order.orderItems.reduce((acc, item) => {
             acc[item.id] = item.orderState;
             return acc;
         }, {} as { [key: string]: OrderItem["orderState"] });
         setSelectedStates(initialStates);
-    }, [order.orderItems]);
+    }, [order]); // Include 'order' as a dependency
 
     const handleOrderItemStateChange = async (orderItemId: string) => {
         setIsSubmitting(true);

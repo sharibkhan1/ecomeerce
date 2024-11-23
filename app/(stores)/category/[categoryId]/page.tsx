@@ -1,7 +1,5 @@
 import getProducts from "@/actions/ger-products";
 import getCategory from "@/actions/get-category";
-import getColors from "@/actions/get-colors";
-import getSizes from "@/actions/get-sizes";
 import Billboard from "@/components/ui/billboard";
 import Cont from "@/components/ui/cont";
 import NoResult from "@/components/ui/no-result";

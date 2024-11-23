@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+
 type CartItem = {
   id: string;
   name: string;
@@ -69,10 +70,6 @@ const Summary = () => {
     if (hasOutOfStockItems) {
       toast.error("One or more items are out of stock. Please remove them before proceeding.");
       window.location.reload();
-      if (window.Razorpay) {
-        const paymentObject = new window.Razorpay();
-        paymentObject.close();
-      }
       return; // Prevent checkout if any item has 0 quantity
 
     }
@@ -155,10 +152,10 @@ const Summary = () => {
           },
         };
   
-        const paymentObject = new (window as any).Razorpay(options);
+        const paymentObject = new window.Razorpay(options);
         paymentObject.open();
   
-        paymentObject.on("payment.failed", function (response: any) {
+        paymentObject.on("payment.failed", function () {
           toast.error("Payment failed. Please try again.");
           setIsProcessing(false); // Reset processing after failure
         });

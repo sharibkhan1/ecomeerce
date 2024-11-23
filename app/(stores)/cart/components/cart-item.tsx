@@ -13,9 +13,9 @@ interface CartItemProps {
         id: string;
         name: string;
         quantity: number;
-        color?: string;
-        size?: string;
-        salesPrice: number;
+        color: string | null;  // Change here from string | undefined to string | null
+        size: string |null;
+        salesPrice: number | null;
         image?: string;
     };
 }
@@ -91,7 +91,7 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
                             </p>
                         )}
                     </div>
-                    <Currency value={data.salesPrice} />
+                    <Currency value={data.salesPrice ?? 0} />
                 </div>
                 <div className="flex dark:text-white gap-4 items-center mt-4">
                     <MinusCircle

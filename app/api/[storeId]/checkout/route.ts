@@ -16,24 +16,6 @@ interface OrderItem {
   color: string;
   price: number;
 }
-
-interface CartItemProduct {
-  id: string;
-  name: string;
-  dilevery: string;
-  images: { url: string }[];
-}
-
-interface CartItem {
-  quantity: number;
-  size: string;
-  color: string;
-  price: number;
-  name: string;
-  Image: string;
-  product: CartItemProduct;
-}
-
 interface EnrichedOrderItem {
   id: string |undefined;
   quantity: number;
@@ -63,7 +45,6 @@ export async function POST(req: Request, { params }: { params: { storeId: string
       },
     });
     // Fetch product details for each order item
-                // @ts-expect-error
     const enrichedOrderItems: EnrichedOrderItem[] = await Promise.all(orderItems.map(async (item: OrderItem) => {
 
       // Fetch product details using the item id
@@ -91,7 +72,9 @@ export async function POST(req: Request, { params }: { params: { storeId: string
           },
         },
       });
-      
+      if (!cartItem?.product?.id) {
+        throw new Error(`Product ID not found for order item with ID: ${item.id}`);
+      }
       // Enrich the item with product details
       return {
         ...item,
@@ -120,7 +103,7 @@ export async function POST(req: Request, { params }: { params: { storeId: string
     const order = await instance.orders.create(orderOptions);
 
     // Create the order in your database
-    const crt = await db.order.create({
+    await db.order.create({
       data: {
         storeId: params.storeId,
         userId: userId ?? '',

@@ -25,7 +25,6 @@ const Ordersdpage = async ({
       createdAt: "desc"
     }
   });
-// @ts-expect-error
 
   const formattedOrders: OrderColumn[] = orders.map((item) => {
     const countdowns = item.orderItems.reduce((acc, orderItem) => {
@@ -58,12 +57,12 @@ const Ordersdpage = async ({
         price: formatter.format(Number(orderItem.product.salesPrice)),
         status: orderItem.status || 'N/A',
         orderState: orderItem.orderState || 'Packing',
-        dilevery: countdowns[orderItem.id] || 'N/A',
+        // dilevery: countdowns[orderItem.id] || 'N/A',
       })),
       dileve: item.orderItems.map((orderItem) => ({
         dilevery: countdowns[orderItem.id] || 'N/A',
       })),
-      statuss: item.orderItems.map((orderItem) => orderItem.status || 'N/A').join(', '),
+      statuss: item.orderItems.map((orderItem) => orderItem.status || 'N/A'),
       orderStat: item.orderItems.map((orderItem) => ({
         orderState: orderItem.orderState || 'Packing',
       })),
@@ -71,7 +70,7 @@ const Ordersdpage = async ({
         name: orderItem.product.name,
         color: orderItem.color || 'N/A',
         size: orderItem.size || 'Packing',
-        quantity: orderItem.quantity || 'Packing',
+        quantity: String(orderItem.quantity) || 'Packing', // Fixed here
       })),
       status: item.status,
       userId: item.userId || "No user assigned",

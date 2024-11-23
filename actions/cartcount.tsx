@@ -35,7 +35,7 @@ export const getCartItems = async () => {
   return cart ? cart.cartItems.map(item => ({
     id: item.id,
     name: item.name || item.product.name,
-    salesPrice: item.price,
+    salesPrice: item.price ?? 0,
     image: item.Image || "", // Use product image if available
     quantity: item.quantity,
     color: item.color,

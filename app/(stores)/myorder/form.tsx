@@ -12,13 +12,13 @@ import { MdOutlineCancel } from "react-icons/md";
 
 interface OrderItem {
   id: string;
-  username?: string;
+  username?: string | null;  // Allow null here
   productname?: string;
   dilevery?: string; // Should be numeric or converted to a number representing days
-  image?: string;
-  color?: string;
-  size?: string;
-  quantity?: number;
+  image?: string | null; // Allow null here
+  color?: string | null; // Allow null here
+  size?: string | null;
+  quantity?: number | null;  // Allow null here
   Price?: number;
   status?: 'Ordered' | 'Cancel';
   orderState?: string;
