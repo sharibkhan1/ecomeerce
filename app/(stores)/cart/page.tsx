@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import CartItem from './components/cart-item';
 import Summary from './components/summary';
 import { checkAndRemoveOutOfStockItems, getCartItems } from '@/actions/cartcount';
+import { fetchCartItems } from '@/actions/cartfuntion';
 
 interface CartItemType {
     id: string;
@@ -20,24 +21,29 @@ interface CartItemType {
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const loadCartItems = async () => {
+    const items = await fetchCartItems();
+    setCartItems(items);
+};
+  const removeItemFromCart = (id: string) => {
+    // Remove item from the state when it's removed from the cart
+    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+  };
+  const updateCartItems = () => {
+    loadCartItems();
+};
 
-  // Fetch cart items when the page loads
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      const items = await getCartItems();
-      setCartItems(items);
-    };
-    fetchCartItems();
-  }, []);
-
+useEffect(() => {
+    loadCartItems();
+}, []);
   // Set up an interval to check and remove out-of-stock items every 5 seconds
   useEffect(() => {
     const intervalId = setInterval(async () => {
       await checkAndRemoveOutOfStockItems(); // Check and remove out-of-stock items
       const items = await getCartItems(); // Re-fetch the cart items after removal
       setCartItems(items);
-    }, 2000); // 5 seconds
-
+    }, 3600000); // 5 seconds
+ 
     // Cleanup interval when the component is unmounted
     return () => clearInterval(intervalId);
   }, []);
@@ -54,12 +60,12 @@ const CartPage = () => {
                             ) : (
                                 <ul>
                                     {cartItems.map((item) => (
-                                        <CartItem key={item.id} data={item} />
+                                        <CartItem onUpdate={updateCartItems} key={item.id} data={item}  onRemove={removeItemFromCart}/>
                                     ))}
                                 </ul>
                             )}
                         </div>
-                        <Summary />
+                        <Summary  itemss={cartItems} />
                     </div>
                 </div>
             </Cont>

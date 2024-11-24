@@ -14,12 +14,12 @@ interface OrderItem {
   id: string;
   username?: string | null;  // Allow null here
   productname?: string;
-  dilevery?: string; // Should be numeric or converted to a number representing days
+  dilevery?: string| null; // Should be numeric or converted to a number representing days
   image?: string | null; // Allow null here
   color?: string | null; // Allow null here
   size?: string | null;
   quantity?: number | null;  // Allow null here
-  Price?: number;
+  Price?: number | null | undefined;
   status?: 'Ordered' | 'Cancel';
   orderState?: string;
 }
@@ -42,26 +42,26 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
   const [, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);  // For Modal visibility
   const router = useRouter();
-  const [travelTime, setTravelTime] = useState<number | null>(null);
+  // const [travelTime, setTravelTime] = useState<number | null>(null);
   const [itemToCancel, setItemToCancel] = useState<OrderItem | null>(null); // Store the item to cancel
   
-  useEffect(() => {
-    const fetchTravelTime = async () => {
-      try {
-        const response = await fetch("/api/distance", { method: "POST" });
-        const data = await response.json();
-        if (response.ok) {
-          setTravelTime(data.travelTimeMinutes);
-        } else {
-          console.error("Error fetching travel time:", data.error);
-        }
-      } catch (error) {
-        console.error("Error fetching travel time:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchTravelTime = async () => {
+  //     try {
+  //       const response = await fetch("/api/distance", { method: "POST" });
+  //       const data = await response.json();
+  //       if (response.ok) {
+  //         setTravelTime(data.travelTimeMinutes);
+  //       } else {
+  //         console.error("Error fetching travel time:", data.error);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching travel time:", error);
+  //     }
+  //   };
 
-    fetchTravelTime();
-  }, []);
+  //   fetchTravelTime();
+  // }, []);
   const countdowns = useMemo(() => {
     return order.orderItems.reduce((acc, item) => {
       const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 1 day
@@ -70,15 +70,17 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
 
       if (endDate > now) {
         const duration = intervalToDuration({ start: now, end: endDate });
-        const travelDuration = travelTime ? ` + ${travelTime} mins` : "";
-        acc[item.id] = formatDuration(duration, { format: ["days", "hours"] }) + travelDuration;
+        acc[item.id] = formatDuration(duration, { format: ['days', 'hours'] });
+
+        // const travelDuration = travelTime ? ` + ${travelTime} mins` : "";
+        // acc[item.id] = formatDuration(duration, { format: ["days", "hours"] }) + travelDuration;
       } else {
         acc[item.id] = "Delivered";
       }
 
       return acc;
     }, {} as { [key: string]: string });
-  }, [order.orderItems, order.createdAt, travelTime]);
+  }, [order.orderItems, order.createdAt]);
 
   const handleStatusChange = async (orderItemId: string, newStatus: 'Ordered' | 'Cancel') => {
     setIsSubmitting(true);

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaShoppingCart , FaShoppingBag } from 'react-icons/fa';
 import { usePathname, useRouter } from 'next/navigation';
-import { getCartItemCount } from '@/actions/cartcount';
 import { useCurrentRole } from '@/hooks/use-current-role';
 import { Button } from './ui/button';
 import { UserButton } from './auth/user-button';
@@ -13,35 +12,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useCartStore } from '@/hooks/cartstore';
 
 const NavbarAction = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0);
+  const cartItemCount = useCartStore((state) => state.cartCount); // Access the cart item count from Zustand store
   const router = useRouter();
   const role = useCurrentRole(); // Get the current user's role
   const pathname = usePathname(); // Get the current route
 
   // Function to fetch the cart item count from the server
-  const fetchCartItemCount = async () => {
-    const count = await getCartItemCount();
-    setCartItemCount(count);
-  };
-
   useEffect(() => {
-    setIsMounted(true);
-
-    // Fetch cart count initially
-    fetchCartItemCount();
-
-    // Set up polling to update cart count every 5 seconds
-    const intervalId = setInterval(() => {
-      fetchCartItemCount();
-    }, 5000); // Polling interval in milliseconds (5 seconds here)
-
-    // Clear the interval when the component unmounts
-    return () => clearInterval(intervalId);
+    setIsMounted(true); // Ensure the component is mounted before rendering
   }, []);
-
   if (!isMounted) {
     return null;
   }

@@ -6,6 +6,8 @@ import { Button } from './ui/button';
 import { FaShoppingCart } from 'react-icons/fa';
 import { toast } from 'sonner';
 import { addToCart } from '@/actions/ordercat';
+import { useCartStore } from '@/hooks/cartstore';
+import { updateCartCount } from '@/actions/cartfuntion';
 
 interface InfoProps {
   data: Product;
@@ -15,6 +17,7 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const { setCartCount } = useCartStore(); // Get the setCartCount function from Zustand
 
   const AddToCart: MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.stopPropagation();
@@ -36,6 +39,9 @@ const InfoPage: React.FC<InfoProps> = ({ data }) => {
 
     if (result?.success) {
       toast.success("Item added to cart");
+      const newCartCount = await updateCartCount();
+      setCartCount(newCartCount);  // Update the Zustand state with the new count
+
     } else {
       toast.error("product cannot be added");
     }

@@ -28,6 +28,8 @@ async function fetchUserOrders(userId: string) {
           updatedAt: true,
           color: true,
           size: true,
+          Price:true,
+          dilevery:true,
           quantity: true,
           status: true,
           username: true, // Ensure username is selected
@@ -47,6 +49,9 @@ async function fetchUserOrders(userId: string) {
       quantity: item.quantity ?? undefined, // Convert null to undefined here
       createdAt: item.createdAt.toISOString(), // Convert Date to string for orderItem
       updatedAt: item.updatedAt.toISOString(),
+      dilevery: item.dilevery ?? null, // Ensure 'dilevery' is null if not available
+      Price: item.Price ?? undefined, // Convert null to undefined here
+
     })),
   }));
 

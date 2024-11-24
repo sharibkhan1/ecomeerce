@@ -1,6 +1,5 @@
 "use client";
-
-import { getCartItems } from "@/actions/cartcount";
+import { fetchCartItems } from "@/actions/cartfuntion";
 import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import { UserDetail } from "@/components/userdetail";
@@ -9,7 +8,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-
+interface SummaryProps {
+  itemss: CartItem[]; // Ensure you're passing the latest items
+}
 type CartItem = {
   id: string;
   name: string;
@@ -24,7 +25,7 @@ type RazorpayResponse = {
   razorpay_order_id: string;
   razorpay_signature: string;
 };
-const Summary = () => {
+const Summary = ({ itemss }: SummaryProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [open,setOpen] = useState(false);
@@ -34,34 +35,30 @@ const Summary = () => {
 
   const user =  useCurrentUser();
 
-  useEffect(() => {
-    // Fetch cart items and update the state
-    const fetchCartItems = async () => {
-      const cartItems = await getCartItems();
-      setItems(cartItems);
-    };
+  const loadCartItems  = async () => {
+    const data = await fetchCartItems(); // Call the fetchCartItems function
+    setItems(data);
+  };
 
-    fetchCartItems();
-    const intervalId = setInterval(fetchCartItems, 2000);
+  useEffect(() => {
+    loadCartItems();
 
     if (searchParams.get("success")) {
       toast.success("Payment completed.");
-      setIsProcessing(false); // Reset processing after success
+      setIsProcessing(false);
       setItems([]);
     }
 
     if (searchParams.get("canceled")) {
       toast.error("Something went wrong.");
-      setIsProcessing(false); // Reset processing after failure
-      router.refresh()
+      setIsProcessing(false);
+      router.refresh();
     }
-    return () => clearInterval(intervalId);
-
-  }, [searchParams,router]);
+  }, [searchParams, router]);
   const hasOutOfStockItems = items.some(item => item.quantity <= 0);
 
   // Calculate total price based on quantity of each item
-  const totalPrice = items.reduce((total, item) => {
+  const totalPrice = itemss.reduce((total, item) => {
     return total + (item.salesPrice ? item.salesPrice : 0) * item.quantity;
   }, 0);
 

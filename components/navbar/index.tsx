@@ -20,8 +20,8 @@ const NavBar = async () => {
 
   return (
     <div className='border-b sticky z-40 top-0 left-0' >
-        <div className='flex h-10 items-center px-4 dark:border-white dark:text-white dark:bg-black/90 ' >
-        <span className="text-lg font-semibold">{currentStore.name}</span>
+        <div className='flex h-10 items-center px-4 dark:border-white bg-white dark:text-white dark:bg-black/90 ' >
+        <span className="text-sm font-semibold mr-6">{currentStore.name}</span>
             <MainNav/>
             <div className='ml-auto flex items-center space-x-4 ' > 
             <ModeToggle/>

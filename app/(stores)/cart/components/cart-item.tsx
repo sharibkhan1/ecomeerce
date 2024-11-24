@@ -1,10 +1,11 @@
 "use client";
-
-import { decreaseQuantity, increaseQuantity, removeFromCart } from "@/actions/cartcount";
+import { decreaseQuantityApi, increaseQuantityApi, removeFromCartApi, updateCartCoun } from "@/actions/cartfuntion";
 import Currency from "@/components/ui/currency";
 import IconButton from "@/components/ui/IconButton";
+import { useCartStore } from "@/hooks/cartstore";
 import { Cross, MinusCircle, PlusCircle } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -18,26 +19,39 @@ interface CartItemProps {
         salesPrice: number | null;
         image?: string;
     };
+    onRemove: (id: string) => void; // Add this prop to handle removal
+    onUpdate: () => void; // Add this prop to trigger data update in the parent
+
 }
 
-const CartItem: React.FC<CartItemProps> = ({ data }) => {
-    const [, setQuantity] = useState(data.quantity);
+const CartItem: React.FC<CartItemProps> = ({ data,onRemove,  onUpdate  }) => {
+    const [quantity, setQuantity] = useState(data.quantity);
+    const router = useRouter();
+    const { setCartCount } = useCartStore(); // Get the setCartCount function from Zustand
 
     const handleRemove = async () => {
-      const response = await removeFromCart(data.id);
-      if (response.success) {
+        const response = await removeFromCartApi(data.id);
+        if (response.success) {
         // Optionally update the UI or notify the user
         toast.success("Item remove successfully")
+        onRemove(data.id);  // Trigger the parent's state update to remove the item
+        const newCartCount = await updateCartCoun();
+        setCartCount(newCartCount);
+        router.refresh(); // Refresh the page to update the cart
+
       } else {
         console.error(response.message);
       }
     };
   
     const handleIncrease = async () => {
-      const response = await increaseQuantity(data.id);
+      const response = await increaseQuantityApi(data.id);
       if (response.success) {
         
         setQuantity(prevQuantity => prevQuantity + 1);
+        onUpdate(); // Re-fetch cart data after removal
+
+        router.refresh(); // Refresh the page to update the cart
       } else {
         console.error(response.message);
         toast.error("Max number of item avaible ")
@@ -45,9 +59,12 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
     };
   
     const handleDecrease = async () => {
-      const response = await decreaseQuantity(data.id);
+      const response = await decreaseQuantityApi(data.id);
       if (response.success) {
         setQuantity(prevQuantity => prevQuantity - 1);
+        onUpdate(); // Re-fetch cart data after removal
+
+        router.refresh(); // Refresh the page to update the cart
       } else {
         console.error(response.message);
         toast.error("Cannot decrease less than 1")
@@ -98,7 +115,7 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
                         className="hover:text-red-500 cursor-pointer"
                         onClick={handleDecrease}
                     />
-                    <p className="text-body-bold">{data.quantity}</p>
+                    <p className="text-body-bold">{quantity}</p>
                     <PlusCircle
                         className="hover:text-green-500 cursor-pointer"
                         onClick={handleIncrease}
