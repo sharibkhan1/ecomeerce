@@ -4,7 +4,6 @@ import Cont from '@/components/ui/cont';
 import React, { useEffect, useState } from 'react';
 import CartItem from './components/cart-item';
 import Summary from './components/summary';
-import { checkAndRemoveOutOfStockItems, getCartItems } from '@/actions/cartcount';
 import { fetchCartItems } from '@/actions/cartfuntion';
 
 interface CartItemType {

@@ -1,5 +1,6 @@
+import { currentUserId } from '@/lib/auth';
 import db from '@/lib/db';
-import { getUserIdInfor } from '@/lib/userinfo';
+import { redirect } from 'next/navigation';
 
 export async function POST(req:Request) {
   try {
@@ -7,8 +8,10 @@ export async function POST(req:Request) {
     const { cartItemId } = await req.json();
 
     // Get the user ID based on the current session or authentication
-    const userId = await getUserIdInfor();
-
+    const userId = await currentUserId();
+    if(!userId){
+      redirect("/auth/login");
+    }
     // Find the cart item and its related product
     const cartItem = await db.cartItem.findUnique({
       where: { id: cartItemId },

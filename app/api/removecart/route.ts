@@ -1,7 +1,6 @@
 // app/api/cart/remove/route.js (or route.ts if using TypeScript)
 
 import db from '@/lib/db';
-import { getUserIdInfor } from '@/lib/userinfo';
 
 export async function POST(req:Request) {
   try {
@@ -9,8 +8,6 @@ export async function POST(req:Request) {
     const { cartItemId } = await req.json();  // Assuming the body contains { cartItemId: 'some-id' }
 
     // Retrieve user ID information (this can be from cookies or session depending on your setup)
-    const userId = await getUserIdInfor();
-
     // Ensure the cart item exists and belongs to the user before deleting
 
     // Delete the cart item

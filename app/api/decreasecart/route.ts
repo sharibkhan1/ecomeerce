@@ -2,7 +2,6 @@
 
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
-import { getUserIdInfor } from '@/lib/userinfo';
 
 export async function POST(req: Request) {
   try {
@@ -16,8 +15,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
-    const userId = await getUserIdInfor(); // Get user info, make sure it's valid
 
     // Find the cart item
     const cartItem = await db.cartItem.findUnique({

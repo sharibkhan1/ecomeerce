@@ -3,7 +3,6 @@ import db from '@/lib/db'
 import { redirect } from 'next/navigation'
 import React from 'react'
 import { SettingsForm } from './_components/settings-form'
-import ManageUsers from './_components/rolechage'
 
 interface SettingsPageProps{
     params:{
