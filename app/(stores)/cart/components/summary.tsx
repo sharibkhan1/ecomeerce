@@ -3,6 +3,7 @@ import { fetchCartItems } from "@/actions/cartfuntion";
 import { Button } from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import { UserDetail } from "@/components/userdetail";
+import { useCartStore } from "@/hooks/cartstore";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -142,6 +143,7 @@ const Summary = ({ itemss }: SummaryProps) => {
               if (result.message === "success") {
                 toast.success("Payment successful.");
                 router.push(`${process.env.NEXT_PUBLIC_SITE_URL}/myorder`);
+                useCartStore.getState().setCartCount(0);  // Reset cart count to 0
               } else {
                 toast.error("Payment failed.");
               }
