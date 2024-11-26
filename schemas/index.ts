@@ -14,18 +14,19 @@ export const NewPasswordSchema = z.object({
   ),
 });
 export const SettingsNameSchema = z.object({
-  name:z.optional(z.string()),
+  name: z.optional(z.string()),
   phoneno: z
-  .string()
-  .min(10, { message: 'Mobile number should be at least 10 digits long' })
-  .max(15, { message: 'Mobile number can not exceed 15 digits' })
-  .regex(/^\+?\d{10,15}$/, { message: 'Mobile number must contain only digits and optional "+" for country code' }),
+    .string()
+    .min(10, { message: 'Mobile number should be at least 10 digits long' })
+    .max(15, { message: 'Mobile number cannot exceed 15 digits' })
+    .regex(/^\+?\d{10,15}$/, { message: 'Mobile number must contain only digits and optional "+" for country code' }),
 
   address: z
-  .string()
-  .min(10, { message: 'Address should be at least 10 characters long' })
-  .max(200, { message: 'Address can not exceed 200 characters' }),
+    .string()
+    .min(10, { message: 'Address should be at least 10 characters long' })
+    .max(200, { message: 'Address cannot exceed 200 characters' }),
 });
+
 
 export const SettingsSchema = z.object({
     name:z.optional(z.string()),

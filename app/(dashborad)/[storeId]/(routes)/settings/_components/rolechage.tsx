@@ -8,7 +8,6 @@ interface User {
   id: string;
   email: string | null;
   image: string | null;
-  role: 'USER' | 'ADMIN' | 'MAINADMIN';
 }
 
 const ManageUsers: React.FC = () => {

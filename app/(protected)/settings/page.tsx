@@ -38,6 +38,8 @@ const SettingsPage = () => {
   });
 
   const onSubmit=(values: z.infer<typeof SettingsSchema>)=>{
+    setError(undefined); // Clear previous error message
+    setSuccess(undefined); // Clear previous success messag
     startTransition(()=>{
       settings(values)
       .then((data)=>{

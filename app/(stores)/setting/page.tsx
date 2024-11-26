@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import { settings } from "@/actions/settings";
+import {settingsNwe } from "@/actions/settings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -22,7 +22,7 @@ const SettingsPage = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-  const [userDetails, setUserDetails] = useState({
+  const [, setUserDetails] = useState({
     name: "",
     phoneno: "+91",
     address: "",
@@ -65,7 +65,7 @@ const SettingsPage = () => {
     startTransition(() => {
       setError(undefined);
       setSuccess(undefined);
-      settings(values)
+      settingsNwe(values)
         .then((data) => {
           if (data.error) {
             setError(data.error);
