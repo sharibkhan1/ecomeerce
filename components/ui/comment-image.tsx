@@ -14,7 +14,7 @@ interface ImageUploadProps{
     value:string[]
 }
 
-const ImageUpload:React.FC<ImageUploadProps>=({
+const ImageUploadComment:React.FC<ImageUploadProps>=({
     disabled,onChange,onRemove,value
 })=>{
     const [isMounted, setIsMounted] = useState(false);
@@ -55,7 +55,7 @@ const ImageUpload:React.FC<ImageUploadProps>=({
                     </div>
                 ))}
             </div>
-                <CldUploadWidget  onSuccess ={onUpload} uploadPreset="nghmzi1s" >
+                <CldUploadWidget  onSuccess ={onUpload} uploadPreset="gsohl1qu" >
                        {({open})=>{
                         const onClick=()=>{
                             open();
@@ -68,7 +68,7 @@ const ImageUpload:React.FC<ImageUploadProps>=({
                                 onClick={onClick}
                             >
                                 <FcStackOfPhotos className="h-4 w-4 mr-2"/>
-                                Upload an Image
+                                Upload Image
                             </Button>
                         )
                        }}
@@ -76,4 +76,4 @@ const ImageUpload:React.FC<ImageUploadProps>=({
         </div>
     )
 };
-export default ImageUpload; 
+export default ImageUploadComment; 

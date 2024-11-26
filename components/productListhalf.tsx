@@ -14,9 +14,10 @@ const ProductListHalf: React.FC<ProductListProps> =async ({
   items,
 }) => {
   // Get the first 8 products and the rest
-  const firstBatch = items.slice(0, 8);
-  const remainingItems = items.slice(8);
+  const firstBatch = items.slice(0, 6);
+  const remainingItems = items.slice(6);
   const homeImageUrl = await getBillboard("Home2");
+  const homeImageUrls = await getBillboard("Home3");
 
   return (
     <div className="space-y-4 p-3">
@@ -36,6 +37,7 @@ const ProductListHalf: React.FC<ProductListProps> =async ({
           <ProductCard key={item.id} data={item} />
         ))}
       </div>
+      {homeImageUrls && <HomeHalfBillboard imageUrl={homeImageUrls} />}
     </div>
   );
 };

@@ -66,12 +66,25 @@ const Summary = ({ itemss }: SummaryProps) => {
   const onCheckout = async () => {
     if (hasOutOfStockItems) {
       toast.error("One or more items are out of stock. Please remove them before proceeding.");
-      window.location.reload();
+      setIsProcessing(false);
+      router.refresh(); // Trigger a refresh to update the cart      
       return; // Prevent checkout if any item has 0 quantity
 
     }
     setIsProcessing(true);
     try {
+      // Before proceeding with checkout, check for out-of-stock items
+      const responses = await fetch('/api/removestock', {
+        method: 'POST',
+      });
+  
+      const data = await responses.json();
+  
+      if (data.error) {
+        toast.error("Failed to remove out-of-stock items.");
+        setIsProcessing(false);
+        return;
+      }
       const orderItems = items.map((item) => ({
         id: item.id,
         color: item.color,  // Pass the color of the item

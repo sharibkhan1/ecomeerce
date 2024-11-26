@@ -1,9 +1,8 @@
-const NoResult=()=>{
+const NoResultCate=()=>{
     return(
         <div className="flex items-center justify-center h-full w-full text-neutral-500 " >
-            No result found
+            No Product found
         </div>
     )
 }
-export default NoResult
-
+export default NoResultCate

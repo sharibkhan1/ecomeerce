@@ -78,7 +78,7 @@ const NavbarAction = () => {
         </Tooltip>
       </TooltipProvider>
       { role!=="USER" && role && (
-        <Button variant="stretch" onClick={handleRoleNavigation} className='flex items-center border-2 border-black hover:bg-yellow-300 rounded-full px-4 py-2'>
+        <Button variant="stretch" onClick={handleRoleNavigation} className='flex mb-3 items-center border-2 border-black hover:bg-yellow-300 rounded-full px-4 py-2'>
           {role === 'ADMIN' ? 'Admin' : role === 'MAINADMIN' ? 'Main Admin' : ''}
         </Button>
       )}
@@ -87,9 +87,6 @@ const NavbarAction = () => {
           <TooltipTrigger>
             <UserButton />
           </TooltipTrigger>
-          <TooltipContent>
-            <p>Settings</p>
-          </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       {/* <Button onClick={()=>router.push("/settings")} >Set</Button> */}

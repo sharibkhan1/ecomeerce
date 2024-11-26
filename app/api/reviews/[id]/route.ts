@@ -5,12 +5,12 @@ import db from "@/lib/db";
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const { id } = params;
-  const { rating, comment } = await req.json();
+  const { rating, comment,image  } = await req.json();
 
   try {
     const updatedReview = await db.review.update({
       where: { id: String(id) },
-      data: { rating, comment },
+      data: { rating, comment,image  },
     });
     return NextResponse.json(updatedReview, { status: 200 });
   } catch (error) {

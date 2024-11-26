@@ -57,6 +57,7 @@ export interface Review {
     productId: string; // The product being reviewed
     rating: number; // Rating between 0 and 5
     comment: string | null; // Allow null to match the Prisma schema
+    image:string |null;
     createdAt: Date; // Date when the review was created
     updatedAt: Date; // Date when the review was last updated
 }

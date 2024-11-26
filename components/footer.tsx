@@ -9,21 +9,21 @@ const Footer = () => {
                     {/* Contact Info */}
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-200">Contact Us</h3>
-                        <ul className="mt-4 text-sm text-gray-600 dark:text-gray-400">
-                            <li>Email: <Link href="mailto:sharibkhan939@gmail.com"  className="hover:text-black dark:hover:text-white">sharibkhan939@gmail.com</Link></li>
-                            <li>Phone: <Link href="tel:+1234567890" className="hover:text-black dark:hover:text-white">+1 234 567 890</Link></li>
-                            <li>
+                        <div className="mt-4 text-sm text-gray-600  dark:text-gray-400">
+                            <div className="flex flex-row">Email: <p  className="hover:text-black ml-1 dark:hover:text-white">sharibkhan939@gmail.com</p></div>
+                            <div className="flex flex-row">Phone: <p  className="hover:text-black ml-1 dark:hover:text-white">+1 234 567 890</p></div>
+                            <p>
                                 Address: 
                                 <Link 
                                     href="https://www.google.com/maps?q=Vidyavardhini's+College+of+Engineering+and+Technology" 
                                     target="_blank" 
                                     rel="noopener noreferrer"
-                                    className="text-gray-600 dark:text-gray-400 hover:underline"
+                                    className="text-gray-600 ml-1 dark:text-gray-400 hover:underline"
                                 >
                                    Vidyavardhini&apos;s College of Engineering and Technology
                                 </Link>
-                            </li>
-                        </ul>
+                            </p>
+                        </div>
                     </div>
 
                     {/* Links */}

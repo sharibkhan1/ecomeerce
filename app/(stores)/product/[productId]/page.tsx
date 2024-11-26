@@ -29,7 +29,7 @@ const ProductPage:React.FC<ProductPageProps> = async ({params}) => {
         
             <div className='px-4 py-10 sm:px-6 lg:px-10 ' >
             <Cont>
-              <div className='dark:bg-muted-foreground rounded-xl '>
+              <div className=' rounded-xl '>
                 <div className='lg:grid md:p-4 p-4 lg:grid-cols-2 lg:items-start lg:gap-x-8 ' >
                 
                     <Gallery images={product?.images || []}/>

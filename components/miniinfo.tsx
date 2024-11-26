@@ -47,13 +47,13 @@ const MiniInfoPage: React.FC<InfoProps> = ({ data }) => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold  text-gray-900">{data.name}</h1>
-      <h1 className="text-xl font-semibold  text-gray-900">{data.category.name}</h1>
+      <h1 className="text-3xl font-bold dark:text-gray-300 text-gray-900">{data.name}</h1>
+      <h1 className="text-xl font-semibold dark:text-gray-300 text-gray-900">{data.category.name}</h1>
       <div className="mt-3 flex items-end justify-between">
         <p className="text-xl line-through text-red-500">
           <Currency value={data?.price} />
         </p>
-        <p className="text-4xl  text-gray-700">
+        <p className="text-4xl dark:text-gray-200 text-gray-700">
           <Currency value={data?.salesPrice} />
         </p>
       </div>
@@ -61,8 +61,8 @@ const MiniInfoPage: React.FC<InfoProps> = ({ data }) => {
       <div className="flex flex-col gap-y-6">
         {/* Size Selection */}
         <div className="flex items-center gap-x-4">
-          <h3 className="font-semibold  text-black">Size:</h3>
-          <div className="flex gap-x-3">
+        <h3 className="font-semibold dark:text-gray-300 text-black">Size:</h3>
+        <div className="flex gap-x-3">
           {[data.size, data.size1, data.size2, data.size3]
   .filter((size) => size?.value !== 'n/a')
   .map((size) => (
@@ -71,8 +71,8 @@ const MiniInfoPage: React.FC<InfoProps> = ({ data }) => {
       onClick={() => setSelectedSize(size?.value)}
       className={`cursor-pointer mr-4 px-4 py-2 border rounded
         ${selectedSize === size?.value 
-          ? 'bg-gray-800   text-white border-gray-800'    // Selected: black background, white text, black border
-          : 'bg-transparenttext-gray-800 border-gray-800'} // Non-selected: transparent background, black text, black border
+          ? 'bg-gray-800 dark:bg-gray-100 dark:text-gray-900 text-white border-gray-800'    // Selected: black background, white text, black border
+          : 'bg-transparent dark:text-gray-100 dark: border-gray-500 text-gray-800'} // Non-selected: transparent background, black text, black border
       `}
     >
       {size?.value}
@@ -84,8 +84,8 @@ const MiniInfoPage: React.FC<InfoProps> = ({ data }) => {
 
         {/* Color Selection */}
         <div className="flex items-center gap-x-4">
-          <h3 className="font-semibold  text-gray-800">Color:</h3>
-          <div className="flex gap-x-2">
+        <h3 className="font-semibold dark:text-gray-300 text-gray-800">Color:</h3>
+        <div className="flex gap-x-2">
             {[data.color, data.color1, data.color2, data.color3]
               .filter((color) => color?.value !== '#00000000')
               .map((color) => (
@@ -98,8 +98,8 @@ const MiniInfoPage: React.FC<InfoProps> = ({ data }) => {
               ))}
           </div>
         </div>
-        <div className='flex items-center gap-x-4  ' >
-            <h3 className='font-semibold text-black  ' >Stock:</h3>
+        <div className='flex items-center gap-x-4 dark:text-gray-100 ' >
+        <h3 className='font-semibold text-black dark:text-gray-300 ' >Stock:</h3>
             <div>
                 {data?.stocks}
             </div>

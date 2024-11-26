@@ -1,14 +1,14 @@
 "use client"
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { updateOrderItemStatus } from '@/actions/orderup';
 import { toast } from 'sonner';
-import { AlertModal } from '@/components/alert-modal';
 import { format, addDays, intervalToDuration, formatDuration } from "date-fns";
 import NextImage from "next/image";
 import { useRouter } from 'next/navigation';
 import { AiOutlineClockCircle } from "react-icons/ai"; // Icons
 import { MdOutlineCancel } from "react-icons/md";
+import { AlertModalOrder } from '@/components/alertorder';
 
 interface OrderItem {
   id: string;
@@ -62,6 +62,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
 
   //   fetchTravelTime();
   // }, []);
+  const totalPrice = useMemo(() => {
+    return order.orderItems.reduce((acc, item) => {
+      const itemPrice = (item.Price || 0) * (item.quantity || 1);
+      return acc + itemPrice;
+    }, 0);
+  }, [order.orderItems]);
   const countdowns = useMemo(() => {
     return order.orderItems.reduce((acc, item) => {
       const deliveryDays = parseInt(item.dilevery || "1", 10); // Default to 1 day
@@ -125,7 +131,11 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
           <strong>Owner Phone:</strong> {order.phone}
         </p>
       </div>
-
+      {order.orderItems.length > 1 && (
+        <div className="text-2xl font-bold text-center bg-gray-100 dark:text-white dark:bg-black/40 p-6 rounded-lg shadow-md">
+          Total Order Price: ₹{totalPrice}
+        </div>
+      )}
       {/* Ordered Items */}
       {order.orderItems.map((item) => (
         <div
@@ -216,7 +226,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
       ))}
  </div>
       {/* Alert Modal */}
-      <AlertModal
+      <AlertModalOrder
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleCancelOrder}

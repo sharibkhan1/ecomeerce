@@ -2,6 +2,7 @@ import { getDailyOrderStatus, getDailyRevenue, getGraphRevenue, getYearOrderStat
 import { getSalesCount } from '@/actions/get-sales-count'
 import { getStockCount } from '@/actions/get-stock'
 import { getTotalRevenue } from '@/actions/get-total-revenue'
+import OrderItemListPage from '@/components/orderITempage'
 import { Overview, Overviewarea, OverviewStacked } from '@/components/overview'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Heading from '@/components/ui/heading'
@@ -149,6 +150,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
         </div>
           </CardContent>
         </Card>
+        <OrderItemListPage/>
       </div>
     </div>
   )

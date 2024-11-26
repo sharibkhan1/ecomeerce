@@ -10,7 +10,7 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { updateUserDetails } from "@/actions/userupdate";
+import { getUserDetails, updateUserDetails } from "@/actions/userupdate";
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -21,43 +21,53 @@ interface AlertModalProps {
 
 export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfirm, loading }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [mobileNo, setMobileNo] = useState<string | null>(null);
-  const [address, setAddress] = useState<string | null>(null);
+  const [defaults, setDefaults] = useState<{ phoneno: string; address: string }>({
+    phoneno: "+91",
+    address: "",
+  });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Only access localStorage in the browser
-      setMobileNo(localStorage.getItem("mobileNo") || "+91");
-      setAddress(localStorage.getItem("address") || "");
-    }
-    setIsMounted(true);
-  }, []);
+
 
   const form = useForm<z.infer<typeof ContactSchema>>({
     resolver: zodResolver(ContactSchema),
     defaultValues: {
-     mobileNo: mobileNo || "+91",
-      address: address || "",// Prefill with saved address
+      phoneno: defaults.phoneno,
+      address: defaults.address,
     },
   });
-
+  useEffect(() => {
+    if (isOpen) {
+      const fetchUserDetails = async () => {
+        try {
+          const userDetails = await getUserDetails();
+          if (userDetails) {
+            setDefaults({
+              phoneno: userDetails.phoneno || "+91",
+              address: userDetails.address || "",
+            });
+            // Update form values dynamically
+            form.reset({
+              phoneno: userDetails.phoneno || "+91",
+              address: userDetails.address || "",
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        }
+      };
+      fetchUserDetails();
+    }
+  }, [isOpen, form]);
   // Handle form submission
-  const handleSubmit = async (data: { mobileNo: string; address: string }) => {
+  const handleSubmit = async (data: { phoneno: string; address: string }) => {
     try {
-
-      if (typeof window !== "undefined") {
-        localStorage.setItem("mobileNo", data.mobileNo);
-        localStorage.setItem("address", data.address);
-      }
-      // Call the server-side function to update user details
-      const result = await updateUserDetails(data.mobileNo, data.address);
+      const result = await updateUserDetails(data.phoneno, data.address);
 
       if (result.error) {
         console.error(result.error);
-        return;  // You can handle this error appropriately
+        return; // Handle this error appropriately
       }
 
-      // After the user is updated, call the onConfirm callback and close the modal
       await onConfirm();
       onClose();
     } catch (error) {
@@ -86,18 +96,13 @@ export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfi
           <div className="space-y-4 dark:text-white text-black">
             <FormField
               control={form.control}
-              name="mobileNo"
+              name="phoneno"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Mobile No</FormLabel>
                   <FormControl>
-                    <Input type="text" disabled={loading} placeholder="+9181232133" {...field} 
-                     onChange={(e) => {
-                      field.onChange(e); 
-                      if (typeof window !== "undefined") {
-                        localStorage.setItem("mobileNo", e.target.value); 
-                      }
-                    }}/>
+                  <Input type="text" disabled={loading} placeholder="+9181232133" {...field} />
+
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,13 +115,11 @@ export const UserDetail: React.FC<AlertModalProps> = ({ isOpen, onClose, onConfi
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Textarea disabled={loading} placeholder="Type your address here." {...field}
-                     onChange={(e) => {
-                      field.onChange(e); 
-                      if (typeof window !== "undefined") {
-                        localStorage.setItem("address", e.target.value); 
-                      }
-                    }} />
+                  <Textarea
+                      disabled={loading}
+                      placeholder="Type your address here."
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

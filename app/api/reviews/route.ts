@@ -5,7 +5,7 @@ import { currentUserId } from "@/lib/auth"; // Your method for getting the user 
 import db from "@/lib/db";
 
 export async function POST(req: Request) {
-  const { productId, rating, comment } = await req.json();
+  const { productId, rating, comment,image  } = await req.json();
   const userId = await currentUserId();
 
   if (!userId) {
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
   try {
     const newReview = await db.review.create({
-      data: { productId, userId, rating, comment },
+      data: { productId, userId, rating, comment,image  },
     });
     return NextResponse.json(newReview, { status: 201 });
   } catch (error) {

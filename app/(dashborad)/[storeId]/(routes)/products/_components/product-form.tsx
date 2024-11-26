@@ -19,12 +19,13 @@ import ImageUpload from "@/components/ui/iamge-ypload";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea"
+import ImageUploadmul from "@/components/ui/iamgeup";
 
 
 
     const formSchema = z.object({
         name:z.string().min(1),
-        images:z.object({url:z.string()}).array(),
+        images: z.array(z.object({ url: z.string() })).nonempty("At least one image is required"),
         price:z.coerce.number().min(1),
         categoryId:z.string().min(1),
         colorId:z.string().min(1),
@@ -127,6 +128,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
     const onSubmit = async(data: ProductFormValues)=>{
         try{
             setLoading(true);
+            router.refresh();
             if(initialData){
                 await axios.patch(`/api/${params.storeId}/products/${params.productId}`,data);
             }else{
@@ -157,7 +159,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
             setOpen(false);
         }
     }
-
+    
     return(
         <>
         <AlertModal
@@ -193,13 +195,16 @@ export const ProductForm:React.FC<ProductFormProps>=({
                             <FormItem>
                                 <FormLabel>Images</FormLabel>
                                 <FormControl>
-                                    <ImageUpload
-                                        value={field.value.map((image)=>image.url)}
-                                        disabled={loading}
-                                        onChange={(url)=>field.onChange([...field.value, {url}])}
-                                        onRemove={(url)=>field.onChange([...field.value.filter((current)=>current.url !== url)])}
-                                    />
-                                </FormControl>
+                                <ImageUploadmul
+  value={field.value.map((image) => image.url)} // Current list of image URLs
+  disabled={loading}
+  onRemove={(url) => field.onChange(field.value.filter((current) => current.url !== url))}
+  onChange={(updatedImages) =>
+    field.onChange(updatedImages.map((url) => ({ url }))) // Keep original object structure
+  }
+/>
+
+                </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}

@@ -2,6 +2,7 @@ import getProducts from "@/actions/ger-products";
 import getCategory from "@/actions/get-category";
 import Billboard from "@/components/ui/billboard";
 import Cont from "@/components/ui/cont";
+import NoResultCate from "@/components/ui/no-prod";
 import NoResult from "@/components/ui/no-result";
 import ProductCard from "@/components/ui/product-card";
 
@@ -35,7 +36,7 @@ const CategoryPage:React.FC<CategoryPageProps>= async({
                 {category ? <Billboard data={category?.billboard} /> : <NoResult/>}
                 <Cont>
                 <div className="px-4 sm:px-6 lg:px-8 pb-24 " >
-                    <div className="lg:grid lg:grid-cols-5 lg:gap-x-8 " >
+                    <div className="lg:grid lg:grid-cols-4 lg:gap-x-8 " >
                         {/* <MobileFilter sizes={sizes} colors={colors}/>
                         <div className="hidden lg:block " >
                             <Filter
@@ -50,7 +51,7 @@ const CategoryPage:React.FC<CategoryPageProps>= async({
                             />
                         </div> */}
                         <div className="mt-6 lg:col-span-4 lg:mt-0 " >
-                            {products.length === 0 && <NoResult/>}
+                            {products.length === 0 && <NoResultCate/>}
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 " >
                                 {products.map((item)=>(
                                     <ProductCard

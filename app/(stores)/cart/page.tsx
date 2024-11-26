@@ -37,16 +37,7 @@ useEffect(() => {
     loadCartItems();
 }, []);
   // Set up an interval to check and remove out-of-stock items every 5 seconds
-  useEffect(() => {
-    const intervalId = setInterval(async () => {
-      await checkAndRemoveOutOfStockItems(); // Check and remove out-of-stock items
-      const items = await getCartItems(); // Re-fetch the cart items after removal
-      setCartItems(items);
-    }, 3600000); // 5 seconds
- 
-    // Cleanup interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, []);
+
 
     return (
         <div className="bg-white dark:bg-black/90 min-h-screen">

@@ -19,18 +19,26 @@ export const getGraphRevenue = async (storeId: string, year: number) => {
 
   // Calculate yearly and monthly revenue from paid orders
   for (const order of paidOrders) {
-    const year = order.createdAt.getFullYear();
-    const month = order.createdAt.getMonth(); // 0-based index for months
-    let revenueForOrder = 0;
+    // Filter only those orders where orderItems have the right status and orderState
+    const filteredOrderItems = order.orderItems.filter(
+      (item) => item.status === "Ordered" && item.orderState === "Delivered"
+    );
 
-    // Sum up the revenue for each order item
-    for (const item of order.orderItems) {
-      revenueForOrder += item.product.salesPrice;
+    if (filteredOrderItems.length === 0) continue; // Skip this order if no valid items
+
+    // Sum up the revenue for each valid order item
+    // Loop through each valid order item and calculate revenue based on the item's createdAt
+    for (const item of filteredOrderItems) {
+      const orderItemYear = item.createdAt.getFullYear(); // Use the createdAt of OrderItem
+      const month = item.createdAt.getMonth(); // 0-based index for months
+
+      let revenueForItem = item.product.salesPrice * (item.quantity || 1); // Calculate revenue for the item
+
+      if (!yearlyRevenue[orderItemYear]) yearlyRevenue[orderItemYear] = {};
+      yearlyRevenue[orderItemYear][month] = (yearlyRevenue[orderItemYear][month] || 0) + revenueForItem;
     }
-
-    if (!yearlyRevenue[year]) yearlyRevenue[year] = {};
-    yearlyRevenue[year][month] = (yearlyRevenue[year][month] || 0) + revenueForOrder;
   }
+
 
   // Prepare the graph data
   const graphData = Object.keys(yearlyRevenue).map((yearStr) => {
@@ -58,46 +66,40 @@ export const getGraphRevenue = async (storeId: string, year: number) => {
   return graphData;
 };
 
+
 export const getYearOrderStatus = async (storeId: string) => {
+  // Fetch all orders for the store, including their OrderItems
   const orders = await db.order.findMany({
-    where: {
-      storeId,
-    },
+    where: { storeId },
     include: {
-      orderItems: {
-        where: {
-          status: {
-            in: ['Ordered', 'Cancel'], // Filter by 'Ordered' or 'Cancel' status on OrderItems
-          },
-        },
-      },
+      orderItems: true, // Include all order items
     },
   });
 
   const yearlyStatus: { [key: number]: { [key: number]: { Ordered: number; Cancel: number } } } = {};
 
-  // Aggregate data by year and month from orderItems status
+  // Iterate over each order and aggregate statuses from orderItems
   for (const order of orders) {
-    const year = order.createdAt.getFullYear(); // Extract year from order's creation date
-    const month = order.createdAt.getMonth(); // 0-based month index
-
-    // Ensure there's an entry for the year and month
-    if (!yearlyStatus[year]) yearlyStatus[year] = {};
-    if (!yearlyStatus[year][month]) yearlyStatus[year][month] = { Ordered: 0, Cancel: 0 };
-
-    // Loop through each orderItem and aggregate its status
     for (const item of order.orderItems) {
-      if (item.status === 'Cancel') {
-        yearlyStatus[year][month].Cancel += 1;
-      } else if (item.status === 'Ordered') {
+      const year = item.createdAt.getFullYear(); // Extract year from OrderItem's creation date
+      const month = item.createdAt.getMonth(); // 0-based month index
+
+      // Ensure year and month entries exist
+      if (!yearlyStatus[year]) yearlyStatus[year] = {};
+      if (!yearlyStatus[year][month]) yearlyStatus[year][month] = { Ordered: 0, Cancel: 0 };
+
+      // Increment count based on OrderItem's status
+      if (item.status === 'Ordered') {
         yearlyStatus[year][month].Ordered += 1;
+      } else if (item.status === 'Cancel') {
+        yearlyStatus[year][month].Cancel += 1;
       }
     }
   }
 
-  // Prepare the graph data for display
+  // Prepare graph data for visualization
   const graphData = Object.keys(yearlyStatus).map((yearStr) => {
-    const year = parseInt(yearStr, 10); // Convert year string to number
+    const year = parseInt(yearStr, 10);
 
     return {
       year,
@@ -128,10 +130,6 @@ export const getDailyRevenue = async (storeId: string, year: number) => {
     where: {
       storeId,
       isPaid: true,
-      createdAt: {
-        gte: new Date(`${year}-01-01`),
-        lt: new Date(`${year + 1}-01-01`),
-      },
     },
     include: {
       orderItems: {
@@ -144,22 +142,28 @@ export const getDailyRevenue = async (storeId: string, year: number) => {
 
   const dailyRevenue: { [key: number]: { [key: number]: number } } = {};
 
-  // Calculate daily revenue for the given year
+  // Loop through each paid order
   for (const order of paidOrders) {
-    const month = order.createdAt.getMonth(); // 0-based index for months
-    const day = order.createdAt.getDate(); // Day of the month
-    let revenueForOrder = 0;
+    // Filter only those orderItems that were created in the given year
+    const filteredOrderItems = order.orderItems.filter((item) => {
+      const itemYear = item.createdAt.getFullYear(); // Get the year of the order item
+      return itemYear === year && item.status === "Ordered" && item.orderState === "Delivered";
+    });
 
-    // Sum up the revenue for each order item
-    for (const item of order.orderItems) {
-      revenueForOrder += item.product.salesPrice;
+    if (filteredOrderItems.length === 0) continue; // Skip if no valid items for the specified year
+
+    // Loop through each valid order item and calculate revenue based on createdAt
+    for (const item of filteredOrderItems) {
+      const month = item.createdAt.getMonth(); // 0-based index for months
+      const day = item.createdAt.getDate(); // Day of the month
+      let revenueForItem = item.product.salesPrice * (item.quantity || 1); // Calculate revenue for the item
+
+      if (!dailyRevenue[month]) dailyRevenue[month] = {}; // Initialize month if it doesn't exist
+      dailyRevenue[month][day] = (dailyRevenue[month][day] || 0) + revenueForItem; // Add to the existing revenue
     }
-
-    if (!dailyRevenue[month]) dailyRevenue[month] = {};
-    dailyRevenue[month][day] = (dailyRevenue[month][day] || 0) + revenueForOrder;
   }
 
-  // Prepare the graph data for each month and day
+  // Prepare the graph data with monthly breakdown
   const graphData = Object.keys(dailyRevenue).map((monthStr) => {
     const month = parseInt(monthStr, 10);
 
@@ -169,13 +173,13 @@ export const getDailyRevenue = async (storeId: string, year: number) => {
     const monthlyData = Array.from({ length: daysInMonth }, (_, index) => {
       const day = index + 1; // Day of the month (1-based index)
       return {
-        name: `${day}`,
-        total: dailyRevenue[month][day] || 0,
+        name: `${day}`, // Day as string
+        total: dailyRevenue[month][day] || 0, // Total revenue for the day
       };
     });
 
     return {
-      month: month + 1,
+      month: month + 1, // Month (1-based index)
       data: monthlyData,
     };
   });
@@ -204,9 +208,10 @@ export const getDailyOrderStatus = async (storeId: string, year: number) => {
     },
   });
 
-  // Aggregate data by month and status
-  const dailyStatus: { [key: number]: { [key: number]: { Ordered: number; Cancel: number } } } = {};
+  // Aggregate data by month and day, and track each item's status
+  const dailyStatus: { [month: number]: { [day: number]: { Ordered: number; Cancel: number } } } = {};
 
+  // Initialize dailyStatus for each month
   for (let month = 0; month < 12; month++) {
     dailyStatus[month] = {};
   }
@@ -228,7 +233,7 @@ export const getDailyOrderStatus = async (storeId: string, year: number) => {
     }
   }
 
-  // Prepare the graph data
+  // Prepare the graph data with monthly breakdown
   const graphData = Object.keys(dailyStatus).map((monthStr) => {
     const month = parseInt(monthStr, 10);
 
@@ -238,7 +243,7 @@ export const getDailyOrderStatus = async (storeId: string, year: number) => {
     const monthlyData = Array.from({ length: daysInMonth }, (_, index) => {
       const day = index + 1; // Day of the month (1-based index)
       return {
-        name: `${day}`,
+        name: `${day}`, // Day as string
         Ordered: dailyStatus[month][day]?.Ordered || 0,
         Cancel: dailyStatus[month][day]?.Cancel || 0,
       };
@@ -248,6 +253,11 @@ export const getDailyOrderStatus = async (storeId: string, year: number) => {
       month: month + 1, // Month (1-based index)
       data: monthlyData,
     };
+  }) .filter((monthData) => {
+    const hasData = monthData.data.some(
+      (dayData) => dayData.Ordered > 0 || dayData.Cancel > 0
+    );
+    return hasData; // Only keep months with actual data
   });
 
   return graphData;

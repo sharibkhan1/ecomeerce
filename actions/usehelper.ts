@@ -2,7 +2,7 @@
 import db from '@/lib/db';
 
 export const fetchUsers = async () => {
-  return await db.user.findMany({
+  const users = await db.user.findMany({
     where: {
       role: { not: 'MAINADMIN' },
     },
@@ -11,8 +11,29 @@ export const fetchUsers = async () => {
       email: true,
       image: true,
       role: true,
+      orders:{
+        select:{
+          orderItems:{
+            select:{
+              status:true,
+            }
+          }
+        }
+      }
     },
   });
+  return users.map((user)=>{
+    const orderItems = user.orders.flatMap((order)=>order.orderItems);
+    const orderedCount = orderItems.filter((item)=> item.status === "Ordered");
+    const canceledCount = orderItems.filter((item)=> item.status === "Cancel");
+    return {
+      id: user.id,
+      email: user.email,
+      image: user.image,
+      orderedCount, // Ensure this is a number
+      canceledCount,
+    };
+  })
 };
 
 export const updateUserRole = async (userId: string, newRole: 'USER' | 'ADMIN') => {

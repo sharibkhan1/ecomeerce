@@ -12,7 +12,7 @@ const GalleryTab:React.FC<GalleryPros>=({
 })=>{
     return(
         <Tab className="relative flex aspect-square cursor-pointer items-center justify-center
-        rounded-md bg-white " >
+        rounded-md dark:bg-black bg-white " >
             {({selected})=>(
                 <div>
                     <span className="absolute h-full w-full aspect-square inset-0
@@ -27,7 +27,7 @@ const GalleryTab:React.FC<GalleryPros>=({
                     <span
                     className={cn(
                         "absolute inset-0 rounded-md ring-2 ring-offset-2 ",
-                        selected ? "ring-black" : "ring-transparent"
+                        selected ? "ring-black  dark:ring-white" : "ring-transparent"
                     )}
                     />
                 </div>

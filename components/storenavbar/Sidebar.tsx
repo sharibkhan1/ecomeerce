@@ -9,6 +9,8 @@ import { ModeToggle } from '../mode-toggle';
 import { LogoutButton } from '../auth/logout-button';
 import { ExitIcon } from '@radix-ui/react-icons';
 import { Category } from '@/lib/types';
+import { useRouter } from 'next/navigation';
+import { Settings2Icon } from 'lucide-react';
 
 interface SidebarProps {
   categories: Category[]; // Replace `any` with the correct type for categories
@@ -16,6 +18,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ categories }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -69,12 +72,16 @@ const Sidebar: React.FC<SidebarProps> = ({ categories }) => {
             <div className='dark:text-white mt-10'>
               <ModeToggle/>
             </div>
-            <div className='dark:text-white flex flex-row mt-5'>
+            <Button variant="brutal" onClick={()=>router.push("/settings")} className=' flex flex-row mt-5'>
+              <Settings2Icon className="h-4 w-4 mr-2" />
+              Settings
+            </Button>
+            <Button variant="destructive" className='dark:text-white flex flex-row mt-5'>
               <LogoutButton>
               <ExitIcon className="h-4 dark:text-white w-4 mr-2" />
               Logout
               </LogoutButton>
-            </div>
+            </Button>
           </div>
         </div>
       )}

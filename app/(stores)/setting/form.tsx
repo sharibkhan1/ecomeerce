@@ -22,11 +22,7 @@ const SettingsPage = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-  const [userDetails, setUserDetails] = useState({
-    name: "",
-    phoneno: "+91",
-    address: "",
-  });
+
   const form = useForm<z.infer<typeof SettingsNameSchema>>({
     resolver: zodResolver(SettingsNameSchema),
     defaultValues: {
@@ -37,29 +33,14 @@ const SettingsPage = () => {
   });
 
   useEffect(() => {
-    // Fetch the user details using the API
-    const fetchUserDetails = async () => {
-      try {
-        const res = await fetch("/api/userdet");
-        if (!res.ok) {
-          throw new Error("Error fetching user details");
-        }
-        const data = await res.json();
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setUserDetails(data);
-          form.setValue("name", data.name);
-          form.setValue("phoneno", data.phoneno);
-          form.setValue("address", data.address);
-        }
-      } catch (error) {
-        setError("Something went wrong!");
-      }
-    };
-
-    fetchUserDetails();
-  }, []);
+    if (user) {
+      form.reset({
+        name: user.name || "",
+        phoneno: user.phoneno || "+91",
+        address: user.address || "",
+      });
+    }
+  }, [user, form]);
 
   const onSubmit = (values: z.infer<typeof SettingsNameSchema>) => {
     startTransition(() => {

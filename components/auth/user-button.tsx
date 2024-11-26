@@ -22,14 +22,14 @@ const router = useRouter();
                 </AvatarFallback>
             </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="md:flex md:flex-col hidden">
             <LogoutButton>
                 <DropdownMenuItem className="md:flex hidden">
                     <ExitIcon className="h-4 w-4 mr-2" />
                     Logout
                 </DropdownMenuItem>
             </LogoutButton>
-            <DropdownMenuItem onClick={()=>router.push("/setting")}>
+            <DropdownMenuItem onClick={()=>router.push("/setting")} className="md:flex hidden">
                     <Settings className="h-4 w-4 mr-2" />
                     Settings
                 </DropdownMenuItem>

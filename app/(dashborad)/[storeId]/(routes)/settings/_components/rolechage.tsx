@@ -1,9 +1,8 @@
 "use client";
 
-import { fetchUsers, updateUserRole } from '@/actions/usehelper';
+import { fetchUsers } from '@/actions/usehelper';
 import React, { useState, useEffect } from 'react';
 import NextImage from "next/image";
-import { Button } from '@/components/ui/button';
 
 interface User {
   id: string;
@@ -15,8 +14,8 @@ interface User {
 const ManageUsers: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [editedRoles, setEditedRoles] = useState<{ [key: string]: 'USER' | 'ADMIN' }>({});
-  const [loading, setLoading] = useState(false); // Loading state for fetch and update
+  // const [editedRoles, setEditedRoles] = useState<{ [key: string]: 'USER' | 'ADMIN' }>({});
+  const [, setLoading] = useState(false); // Loading state for fetch and update
 
   useEffect(() => {
     const getUsers = async () => {
@@ -34,36 +33,36 @@ const ManageUsers: React.FC = () => {
     getUsers();
   }, []);
 
-  const handleRoleChange = (userId: string, newRole: 'USER' | 'ADMIN') => {
-    setEditedRoles((prev) => ({
-      ...prev,
-      [userId]: newRole,
-    }));
-  };
+  // const handleRoleChange = (userId: string, newRole: 'USER' | 'ADMIN') => {
+  //   setEditedRoles((prev) => ({
+  //     ...prev,
+  //     [userId]: newRole,
+  //   }));
+  // };
 
-  const handleSubmit = async (userId: string) => {
-    const newRole = editedRoles[userId];
-    if (!newRole) return;
+  // const handleSubmit = async (userId: string) => {
+  //   const newRole = editedRoles[userId];
+  //   if (!newRole) return;
 
-    setLoading(true); // Set loading state to true while submitting the role update
-    try {
-      await updateUserRole(userId, newRole);
-      setUsers((prev) =>
-        prev.map((user) =>
-          user.id === userId ? { ...user, role: newRole } : user
-        )
-      );
-    } catch (error) {
-      console.error("Error updating user role:", error);
-    } finally {
-      setLoading(false); // Reset loading state after the update is done
-      setEditedRoles((prev) => {
-        const updatedRoles = { ...prev };
-        delete updatedRoles[userId];
-        return updatedRoles;
-      });
-    }
-  };
+  //   setLoading(true); // Set loading state to true while submitting the role update
+  //   try {
+  //     await updateUserRole(userId, newRole);
+  //     setUsers((prev) =>
+  //       prev.map((user) =>
+  //         user.id === userId ? { ...user, role: newRole } : user
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error("Error updating user role:", error);
+  //   } finally {
+  //     setLoading(false); // Reset loading state after the update is done
+  //     setEditedRoles((prev) => {
+  //       const updatedRoles = { ...prev };
+  //       delete updatedRoles[userId];
+  //       return updatedRoles;
+  //     });
+  //   }
+  // };
 
   const filteredUsers = users.filter((user) =>
     user.email?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -93,7 +92,7 @@ const ManageUsers: React.FC = () => {
               )}
               <span>{user.email || 'No email available'}</span>
             </div>
-            <div className="flex items-center space-x-4">
+            {/* <div className="flex items-center space-x-4">
               <select
                 value={editedRoles[user.id] || user.role}
                 onChange={(e) => handleRoleChange(user.id, e.target.value as 'USER' | 'ADMIN')}
@@ -112,7 +111,7 @@ const ManageUsers: React.FC = () => {
                   {loading ? 'Updating...' : 'Submit'}
                 </Button>
               )}
-            </div>
+            </div> */}
           </li>
         ))}
       </ul>

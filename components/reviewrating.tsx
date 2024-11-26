@@ -5,6 +5,9 @@ import { Star } from "lucide-react";
 import { Review } from "@/lib/types";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { format } from "date-fns/format";
+import Image from "next/image";
+import ImageUploadComment from "./ui/comment-image";
+import { toast } from "sonner";
 
 interface ReviewSectionProps {
   productId: string;
@@ -17,6 +20,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
   const [newRating, setNewRating] = useState(0);
   const [averageRating, setAverageRating] = useState<number>(0);
   const [ratingDistribution, setRatingDistribution] = useState<number[]>([0, 0, 0, 0, 0]);
+  const [newImage, setNewImage] = useState<string | null>(null);
 
   const user = useCurrentUser();
 
@@ -42,6 +46,9 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
 
   const handleAddReview = async () => {
     if (newRating < 0 || newRating > 5) return alert("Rating must be between 0 and 5.");
+    if (newRating === 0) {
+      return toast.error("Please select a rating before submitting.");
+    }
     if (!user) {
       return alert("You must be logged in to submit a review.");
     }
@@ -54,6 +61,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
           userId: user.id,
           rating: newRating,
           comment: newComment,
+          image:newImage,
         }),
         headers: { "Content-Type": "application/json" },
       });
@@ -62,9 +70,16 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
         setReviews([...reviews, updatedReview]);
         setNewRating(0);
         setNewComment("");
+        setNewImage(null);
+        toast.success("Review added successfully!");
+
+      }else {
+        toast.error("Failed to submit your review. Please try again.");
       }
     } catch (error) {
       console.error("Failed to add review:", error);
+      toast.error("An error occurred while adding your review.");
+
     }
   };
 
@@ -75,9 +90,13 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
       });
       if (response.ok) {
         setReviews(reviews.filter((r) => r.id !== reviewId));
+        toast.success("Review deleted successfully.");
+
       }
     } catch (error) {
       console.error("Failed to delete review:", error);
+      toast.error("An error occurred while deleting your review.");
+
     }
   };
 
@@ -133,7 +152,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
       {/* Review Form */}
       <div className="mt-8 border-b border-gray-200 pb-4 mb-8">
         <h4 className="text-xl font-semibold mb-4">Add Your Review</h4>
-        <div className="flex gap-4 mb-4 dark:text-white">
+        <div className="flex  gap-4 mb-4 md:flex-row flex-col dark:text-white">
         <div className="flex items-center gap-2">
             {/* Star rating selection */}
             {renderStars(newRating, handleStarClick)}
@@ -146,9 +165,14 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
             rows={4}
           />
         </div>
+        <ImageUploadComment
+    value={newImage ? [newImage] : []} // Store uploaded image URL
+    onChange={(url) => setNewImage(url)}
+    onRemove={() => setNewImage("")}
+  />
         <button
           onClick={handleAddReview}
-          className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition"
+          className="bg-orange-500 mt-5 text-white py-2 px-4 rounded-md hover:bg-orange-600 transition"
         >
           Submit Review
         </button>
@@ -156,12 +180,25 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
       {/* Reviews */}
       <div className="mt-4">
         {reviews.map((review) => (
-          <div key={review.id} className="">
+          <div key={review.id} className="dark:bg-black/70 bg-gray-100 mb-5 rounded-2xl p-4">
             <div className="flex items-center gap-2">
               <div>{renderStars(review.rating)}</div>
               <span className="text-lg dark:text-white text-gray-600">{review.comment || "No comment"}</span>
             </div>
-            <div className="text-sm text-gray-800 mt-1">
+            {review.image && (
+  <div className="mt-4">
+    <Image
+      src={review.image}
+      alt="Review Image"
+      width={400} // Set an appropriate width
+      height={200} // Set an appropriate height
+      className="rounded-lg shadow-md object-cover"
+    />
+  </div>
+)}
+
+
+            <div className="text-sm dark:text-white/70 text-gray-800 mt-1">
 
               <span>Reviewed on {format(review.createdAt,"MMMM do, yyyy")}</span>
             </div>

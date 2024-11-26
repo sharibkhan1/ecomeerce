@@ -22,7 +22,7 @@ export type OrderColumn = {
   dileve:{
     dilevery:string;
   }[];
-  statuss: string[]; // Now it's just an array of status values
+  statuss: string; // Now it's just an array of status values
 
   orderStat:{
     orderState:string;
@@ -102,30 +102,34 @@ export const columns: ColumnDef<OrderColumn>[] = [
   },
   {
     accessorKey: "statuss",
-header:"Status",
-//     cell: ({ row }) => (
-//       <div>
-//         {row.original.statuss.map((status, index) => {
-//   const stockBgColor =
-//     status === "Ordered"
-//       ? "bg-green-200"
-//       : status === "Cancel"
-//       ? "bg-red-200"
-//       : "bg-gray-300";
-
-//   return (
-//     <div key={index} className={`p-2 text-center rounded ${stockBgColor}`}>
-//       <p>
-//         <strong>{status}</strong>
-//       </p>
-//       <hr className="my-2" />
-//     </div>
-//   );
-// })}
-
-//       </div>
-//     ),
-  },
+    header: "Status",
+    cell: ({ row }) => {
+      const statussArray = row.original.statuss.split(', '); // Split the joined string back into an array
+  
+      return (
+        <div>
+          {statussArray.map((status, index) => {
+            const stockBgColor =
+              status === "Ordered"
+                ? "bg-green-200"
+                : status === "Cancel"
+                ? "bg-red-200"
+                : "bg-gray-300";
+  
+            return (
+              <div key={index} className={`p-2 text-center rounded ${stockBgColor}`}>
+                <p>
+                  <strong>{status}</strong>
+                </p>
+                <hr className="my-2" />
+              </div>
+            );
+          })}
+        </div>
+      );
+    },
+  }
+  ,
   {
     accessorKey: "orderStat",
     header:"orderStauts",

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import {  FaShoppingBag } from 'react-icons/fa';
 import { usePathname, useRouter } from 'next/navigation';
-import { getCartItemCount } from '@/actions/cartcount';
 import { Button } from '../ui/button';
 import { useCartStore } from '@/hooks/cartstore';
 
