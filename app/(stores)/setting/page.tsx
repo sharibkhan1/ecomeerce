@@ -145,7 +145,7 @@ const SettingsPage = () => {
               </div>
               <FormError message={error} />
               <FormSuccess message={success} />
-              <Button type="submit" disabled={isPending}>
+              <Button variant="stretch" type="submit" disabled={isPending}>
                 {isPending ? "Saving" : "Save"}
               </Button>
             </form>
