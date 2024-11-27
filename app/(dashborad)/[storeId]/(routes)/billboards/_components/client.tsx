@@ -24,7 +24,7 @@ const BillBoardClient:React.FC<BillBoardClientProps> = ({
         <div className='flex items-center  justify-between ' >
         <Heading
                 title={`Billboards (${data.length})`}
-                description="Home :home page,,,,, Home2,Home3:break"
+                description="Home :home page,,,,, Home2  :mid,,,,,,Home3,Home4:last"
         />
         <Button className='dark:shadow-yellow-300' variant="brutal" onClick={()=> router.push(`/${params.storeId}/billboards/673136c6efefd5ac6745b9f6`)} >
             <PlusIcon className='mr-2 h-4 w-4 ' />

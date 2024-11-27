@@ -4,7 +4,7 @@ import HomeLAstBillboard from './ui/lstbill';
 
 const ProductListHalfnext =async () => {
   const homeImageUrls = await getBillboard("Home3");
-  const homeImageUrlss = await getBillboard("Home3");
+  const homeImageUrlss = await getBillboard("Home4");
 
   return (
     <div className="space-y-9 p-3">
