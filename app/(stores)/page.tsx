@@ -1,6 +1,7 @@
 import getProducts from '@/actions/ger-products';
 import getBillboard from '@/actions/get-billboard';
 import ProductListHalf from '@/components/productListhalf';
+import ProductListHalfnext from '@/components/productnaext';
 import Cont from '@/components/ui/cont';
 import HomeBillboard from '@/components/ui/HomeBillboard';
 import React from 'react';
@@ -15,7 +16,7 @@ const StoreHome = async () => {
   const homeImageUrl = await getBillboard("Home");
 
   return (
-    <div className='dark:bg-black/90'>
+    <div className='dark:bg-[#09090B]'>
       {/* Pass the fetched imageUrl to the Billboard component */}
       {homeImageUrl && <HomeBillboard imageUrl={homeImageUrl} />}
 
@@ -26,6 +27,7 @@ const StoreHome = async () => {
           </div>
         </div>
       </Cont>
+<ProductListHalfnext/>
     </div>
   );
 };

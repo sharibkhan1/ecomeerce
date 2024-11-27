@@ -41,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ categories }) => {
       {/* Sidebar */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-50"
+          className="fixed inset-0 z-40 bg-black bg-opacity-80"
           onClick={closeSidebar}
         >
           <div
@@ -69,10 +69,10 @@ const Sidebar: React.FC<SidebarProps> = ({ categories }) => {
             <div className='mt-4' >
             <Separator/> 
             </div>
-            <div className='dark:text-white mt-10'>
+            <div className='dark:text-white mt-4'>
               <ModeToggle/>
             </div>
-            <Button variant="brutal" onClick={()=>router.push("/settings")} className=' flex flex-row mt-5'>
+            <Button variant="default" onClick={()=>router.push("/settings")} className=' flex flex-row mt-5'>
               <Settings2Icon className="h-4 w-4 mr-2" />
               Settings
             </Button>

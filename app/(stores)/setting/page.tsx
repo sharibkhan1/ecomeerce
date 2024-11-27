@@ -81,8 +81,8 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="overflow-x-hidden dark:bg-black/90 h-screen flex flex-col items-center justify-center">
-      <Card className="w-[350px] md:w-[600px] dark:bg-muted-foreground dark:text-black">
+    <div className="overflow-x-hidden dark:bg-[#09090B] h-screen flex flex-col items-center justify-center">
+      <Card className="w-[350px] md:w-[600px] dark:bg-[#FAFAFA] dark:text-black">
         <CardHeader>
           <p className="text-2xl font-semibold text-center">Settings</p>
         </CardHeader>
@@ -145,7 +145,7 @@ const SettingsPage = () => {
               </div>
               <FormError message={error} />
               <FormSuccess message={success} />
-              <Button variant="stretch" type="submit" disabled={isPending}>
+              <Button variant="stretch" type="submit" className="bg-yellow-300" disabled={isPending}>
                 {isPending ? "Saving" : "Save"}
               </Button>
             </form>

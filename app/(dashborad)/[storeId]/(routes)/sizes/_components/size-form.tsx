@@ -107,7 +107,7 @@ export const SizeForm:React.FC<BillboardFormProps>=({
         </div>
         <Separator/>
         <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full" >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full dark:text-white" >
                 <div className="grid grid-cols-3 gap-8 " >
                 <FormField
                         control={form.control}

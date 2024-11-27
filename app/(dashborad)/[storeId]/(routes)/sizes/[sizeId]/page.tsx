@@ -14,7 +14,7 @@ const SizePage = async({
         }
     });
   return (
-    <div className='flex-col dark:bg-muted-foreground min-h-screen flex ' >
+    <div className='flex-col dark:bg-[#09090B] min-h-screen flex ' >
         <div className='flex-1 spce-y-4 p-8 pt-6 ' >
             <SizeForm initialData={size}/>
         </div>

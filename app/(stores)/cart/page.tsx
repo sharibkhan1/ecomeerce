@@ -39,7 +39,7 @@ useEffect(() => {
 
 
     return (
-        <div className="bg-white dark:bg-black/90 min-h-screen">
+        <div className="bg-white dark:bg-[#09090B] min-h-screen">
             <Cont>
                 <div className="px-4 py-16 sm:px-6 lg:px-8">
                     <h1 className="text-3xl font-bold dark:text-white text-black">Shopping Cart</h1>

@@ -26,7 +26,7 @@ const SizesClient:React.FC<SizesClientProps> = ({
                 title={`Sizes (${data.length})`}
                 description="Manage sizes for your store"
         />
-        <Button className='dark:shadow-black' variant="brutal"  onClick={()=> router.push(`/${params.storeId}/sizes/673136c6efefd5ac6745b9f6`)} >
+        <Button className='dark:shadow-yellow-300' variant="brutal"  onClick={()=> router.push(`/${params.storeId}/sizes/673136c6efefd5ac6745b9f6`)} >
             <PlusIcon className='mr-2 h-4 w-4' />
             Add New
         </Button>

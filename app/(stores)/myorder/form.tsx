@@ -118,7 +118,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ order }) => {
       <div>
 
      
-      <div className="bg-white dark:bg-muted-foreground shadow-lg rounded-lg p-6">
+      <div className="bg-white dark:bg-[#FAFAFA] shadow-lg rounded-lg p-6">
         <h2 className="text-2xl font-bold">Order Summary</h2>
         <p className="text-lg">
           <strong>Ordered At:</strong>{" "}

@@ -75,7 +75,7 @@ export default async function CustomerOrdersPage({ params }: CustomerOrdersPageP
   const orders = await fetchUserOrders(userId);
 
   return (
-    <div className='dark:bg-black/90'>
+    <div className='dark:bg-[#09090B]'>
       {orders.length === 0 ? (
         <Cont>
           <div className='h-screen w-auto flex flex-col items-center justify-center' >

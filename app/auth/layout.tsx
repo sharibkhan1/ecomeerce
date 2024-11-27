@@ -7,7 +7,7 @@ const AuthLayout=({
   children: React.ReactNode;
 }) => {
   return (
-<div className='h-screen dark:bg-black/80 flex w-full justify-center' >
+<div className='h-screen dark:bg-[#09090B] flex w-full justify-center' >
         <div className='w-[600px] ld:w-full flex flex-col items-center p-6 ' >
             <Image
             src="/logo.png"

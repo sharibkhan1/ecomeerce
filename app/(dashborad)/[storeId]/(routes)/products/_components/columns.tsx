@@ -39,7 +39,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="text-black p-2 rounded-md" // Ensures text is visible with padding
+          className="text-black dark:text-white p-2 rounded-md" // Ensures text is visible with padding
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -50,16 +50,16 @@ export const columns: ColumnDef<ProductColumn>[] = [
     },
     cell: ({ row }) => {
       const stocks = Number(row.original.stocks);
-      let stockBgColor = 'transparent'; // default
+      let stockBgColor = 'bg-white/90'; // default
 
       if (stocks === 0) {
-        stockBgColor = 'bg-red-200'; // Red for out of stock
+        stockBgColor = 'bg-red-300'; // Red for out of stock
       } else if (stocks < 10) {
         stockBgColor = 'bg-yellow-200'; // Yellow for low stock
       }
 
       return (
-        <div className={`p-2 text-center rounded ${stockBgColor}`}>
+        <div className={`p-2 dark:text-black text-center rounded ${stockBgColor}`}>
           {stocks}
         </div>
       );
@@ -122,7 +122,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="text-black p-2 rounded-md" // Ensures text is visible with padding
+          className="text-black p-2 dark:text-white rounded-md" // Ensures text is visible with padding
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -137,7 +137,7 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="text-black p-2 rounded-md" // Ensures text is visible with padding
+          className="text-black p-2 dark:text-white rounded-md" // Ensures text is visible with padding
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >

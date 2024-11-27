@@ -117,7 +117,7 @@ export const BillboardForm:React.FC<BillboardFormProps>=({
         </div>
         <Separator/>
         <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full" >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 dark:text-white w-full" >
                 <FormField
                         control={form.control}
                         name="imageUrl"

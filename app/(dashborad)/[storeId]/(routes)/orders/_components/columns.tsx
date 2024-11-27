@@ -117,11 +117,10 @@ export const columns: ColumnDef<OrderColumn>[] = [
                 : "bg-gray-300";
   
             return (
-              <div key={index} className={`p-2 text-center rounded ${stockBgColor}`}>
+              <div key={index} className={`p-2 mb-1 dark:text-black text-center rounded ${stockBgColor}`}>
                 <p>
                   <strong>{status}</strong>
                 </p>
-                <hr className="my-2" />
               </div>
             );
           })}

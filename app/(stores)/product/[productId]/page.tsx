@@ -25,7 +25,7 @@ const ProductPage:React.FC<ProductPageProps> = async ({params}) => {
     return <NoResult />;
   }
     return (
-    <div className='bg-white dark:bg-black/90' >
+    <div className='bg-white dark:bg-[#09090B]' >
         
             <div className='px-4 py-10 sm:px-6 lg:px-10 ' >
             <Cont>

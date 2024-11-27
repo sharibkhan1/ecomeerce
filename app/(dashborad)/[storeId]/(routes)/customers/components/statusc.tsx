@@ -52,13 +52,13 @@ const ManageUsersStatus: React.FC = () => {
         placeholder="Search by email"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full rounded-full dark:bg-black/80 dark:text-white p-2 border border-gray-300"
+        className="w-full rounded-full dark:bg-[#09090B] p-3 dark:text-white border border-gray-300"
       />
       <ul className="space-y-4">
         {filteredUsers.map((user) => (
           <li
             key={user.id}
-            className="flex items-center justify-between p-4 border rounded"
+            className="flex items-center dark:text-white justify-between p-4 border dark:border-white/50 rounded"
           >
             <div className="flex items-center space-x-4">
               {user.image && (
@@ -72,7 +72,7 @@ const ManageUsersStatus: React.FC = () => {
               )}
               <div>
                 <span>{user.email || 'No email available'}</span>
-                <div className="text-sm bg-black/90 rounded-lg flex items-center justify-center text-gray-500">
+                <div className="text-sm bg-black/90  dark:border dark:border-white/70 mt-1 rounded-lg flex items-center justify-center text-gray-500">
                   <span className="text-green-500 mr-3 dark:text-green-300">
                     {user.orderedCount.length} Ordered
                   </span>
@@ -86,7 +86,7 @@ const ManageUsersStatus: React.FC = () => {
             <Button
               variant="stretch"
               onClick={() => router.push(`customers/${user.id}`)}
-              className="px-4 py-2 text-sm text-black bg-yellow-400 rounded hover:bg-yellow-100"
+              className="px-4 py-2 text-sm text-black dark:shadow-white bg-yellow-400 rounded hover:bg-yellow-300"
             >
               Details
             </Button>

@@ -87,7 +87,7 @@ export const SettingsForm:React.FC<SettingsFormProps>=({
         </div>
         <Separator/>
         <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full" >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="dark:text-white space-y-8 w-full" >
                 <div className="grid grid-cols-3 gap-8 " >
                     <FormField
                         control={form.control}
@@ -96,14 +96,14 @@ export const SettingsForm:React.FC<SettingsFormProps>=({
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input disabled={loading} placeholder="Store name" {...field} />
+                                    <Input disabled={loading} placeholder="Store name" className="dark:border-white/70" {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
                         )}
                     />
                 </div>
-                <Button variant="stretch" disabled={loading} className="ml-auto bg-yellow-300 " type="submit" >
+                <Button variant="stretch" disabled={loading} className="ml-auto dark:shadow-white bg-yellow-300 " type="submit" >
                     Save changes
                 </Button>
             </form>

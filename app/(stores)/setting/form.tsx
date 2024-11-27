@@ -62,7 +62,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="overflow-x-hidden dark:bg-black/90 h-screen flex flex-col items-center justify-center">
+    <div className="overflow-x-hidden dark:bg-[#09090B] h-screen flex flex-col items-center justify-center">
       <Card className="w-[350px] md:w-[600px] dark:bg-muted-foreground dark:text-black">
         <CardHeader>
           <p className="text-2xl font-semibold text-center">Settings</p>

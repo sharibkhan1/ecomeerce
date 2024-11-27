@@ -186,7 +186,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
         </div>
         <Separator/>
         <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full" >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="dark:text-white space-y-8 w-full" >
                 <FormField
                         control={form.control}
                         name="images"
@@ -526,7 +526,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
                                     <FormLabel>
                                         Featured
                                     </FormLabel>
-                                    <FormDescription className="text-black">
+                                    <FormDescription className="">
                                         This product will appear on the home page
                                     </FormDescription>
                                 </div>
@@ -537,7 +537,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
                         control={form.control}
                         name="isArchived"
                         render={({field})=>(
-                            <FormItem className="flex flex-row dark:text-black items-start space-x-3 space-y-0 rounded-md border p-4 " >
+                            <FormItem className="flex flex-row  items-start space-x-3 space-y-0 rounded-md border p-4 " >
                                 <FormControl>
                                     <Checkbox
                                         checked={field.value}
@@ -549,7 +549,7 @@ export const ProductForm:React.FC<ProductFormProps>=({
                                     <FormLabel>
                                         Archived
                                     </FormLabel>
-                                    <FormDescription className="text-black">
+                                    <FormDescription className="">
                                         This product will appear not appear anywhere in store
                                     </FormDescription>
                                 </div>

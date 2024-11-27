@@ -63,7 +63,7 @@ const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
 
   return (
     <div>
-    <div className="flex dark:text-black/80 items-center py-4">
+    <div className="flex dark:text-white/90 items-center py-4">
         <Input
           placeholder="Search"
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
@@ -85,14 +85,14 @@ const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         
         {children}
     </div>
-    <div className="rounded-md dark:text-black/80  border">
+    <div className="rounded-md dark:text-white/80  border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="dark:text-black font-bold ">
+                  <TableHead key={header.id} className="dark:text-white font-bold ">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -129,7 +129,7 @@ const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         </TableBody>
       </Table>
     </div>
-    <div className="flex items-center justify-end space-x-2 py-4">
+    <div className="flex dark:text-white items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"

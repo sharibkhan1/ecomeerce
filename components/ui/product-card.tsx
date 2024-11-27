@@ -49,7 +49,7 @@ const ProductCard:React.FC<ProductCard>=({
         router.push(`/product/${data?.id}`);
     }
     return(
-        <div onClick={handleClick} className="bg-white dark:bg-primary-foreground group cursor-pointer rounded-xl dark:border-white/60 border p-3 space-y-4 " >
+        <div onClick={handleClick} className="bg-white dark:bg-black/80 group cursor-pointer rounded-xl dark:border-white/60 border p-3 space-y-4 " >
             <div className="aspect-square rounded-xl bg-gray-100 relative " >
                 <Image
                     src={data?.images?.[0]?.url}

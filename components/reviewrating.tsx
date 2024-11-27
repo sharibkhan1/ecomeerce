@@ -122,7 +122,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
     setNewRating(rating);
   };
   return (
-    <div className="max-w-6xl mx-auto p-6 dark:bg-muted-foreground dark:shadow-white/30 bg-white rounded-lg shadow-md">
+    <div className="max-w-6xl mx-auto p-6 dark:bg-[#FAFAFA] dark:shadow-white/30 bg-gray-50 rounded-lg shadow-md">
       <h3 className="text-3xl mt-6 font-bold text-gray-900">Customer Reviews</h3>
       <div className="font-semibold mt-4 mb-2 text-gray-900">
         <strong>Average Rating:</strong>
@@ -133,7 +133,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
       </div>
 
       {/* Rating Distribution */}
-      <div className="bg-gray-50 dark:bg-black/80 p-4 rounded-lg mt-6 mb-8">
+      <div className="bg-gray-100 dark:bg-[#09090B] p-4 rounded-lg mt-6 mb-8">
         <h4 className="text-lg font-semibold dark:text-muted-foreground mb-4">Rating</h4>
         {[5, 4, 3, 2, 1].map((star) => (
           <div key={star} className="flex items-center justify-between mb-2">
@@ -180,10 +180,10 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
       {/* Reviews */}
       <div className="mt-4">
         {reviews.map((review) => (
-          <div key={review.id} className="dark:bg-black/70 bg-gray-100 mb-5 rounded-2xl p-4">
-            <div className="flex items-center gap-2">
+          <div key={review.id} className="dark:bg-black/10 bg-gray-100 mb-5 rounded-2xl p-4">
+            <div className="flex md:flex-row flex-col items-center gap-2">
               <div>{renderStars(review.rating)}</div>
-              <span className="text-lg dark:text-white text-gray-600">{review.comment || "No comment"}</span>
+              <span className="text-lg  text-gray-600">{review.comment || "No comment"}</span>
             </div>
             {review.image && (
   <div className="mt-4">
@@ -198,7 +198,7 @@ const ReviewRating: React.FC<ReviewSectionProps> = ({ productId, existingReviews
 )}
 
 
-            <div className="text-sm dark:text-white/70 text-gray-800 mt-1">
+            <div className="text-sm  text-gray-800 mt-1">
 
               <span>Reviewed on {format(review.createdAt,"MMMM do, yyyy")}</span>
             </div>

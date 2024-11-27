@@ -30,7 +30,7 @@ const SModal:React.FC<ModalProps>=({
                             leaveTo="opacity-0 scale-95"
                         >
                             <DialogPanel className="w-full  max-w-3xl overflow-hidden rounded-lg text-left align-middle " >
-                                <div className="relative flex w-full items-center overflow-hidden dark:bg-black/90 bg-white px-4 pt-14 
+                                <div className="relative flex w-full items-center overflow-hidden dark:bg-[#09090B] bg-white px-4 pt-14 
                                 shadow-2xl sm:px-6 sm:pt-6 md:p-6 lg:p-8 " >
                                     <div className="absolute right-4 top-4 " >
                                         <IconButton onClick={onClose} icon={<Cross className='rotate-45' color='black' size={15} />} />
