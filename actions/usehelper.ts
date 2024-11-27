@@ -12,6 +12,9 @@ export const fetchUsers = async () => {
       image: true,
       role: true,
       orders:{
+        where: {
+          isPaid: true, // Include only paid orders
+        },
         select:{
           orderItems:{
             select:{
