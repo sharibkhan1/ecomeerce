@@ -17,6 +17,7 @@ const ProductListHalf: React.FC<ProductListProps> =async ({
   const firstBatch = items.slice(0, 8);
   const remainingItems = items.slice(8);
   const homeImageUrl = await getBillboard("Home2");
+  const PhomeImageUrl = await getBillboard("PHome2");
 
   return (
     <div className="space-y-4 p-3">
@@ -29,7 +30,14 @@ const ProductListHalf: React.FC<ProductListProps> =async ({
         ))}
       </div>
       {/* Display Billboard component after first 8 items if there are more items */}
-      {homeImageUrl && <HomeHalfBillboard imageUrl={homeImageUrl} />}
+      {PhomeImageUrl &&(
+        <div className='block md:hidden'>
+        <HomeHalfBillboard imageUrl={PhomeImageUrl} /></div>
+      )}
+      {homeImageUrl &&(
+        <div className='hidden md:block'>
+        <HomeHalfBillboard imageUrl={homeImageUrl} /></div>
+      )}
       {/* Render remaining ProductCards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {remainingItems.map((item) => (

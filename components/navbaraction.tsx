@@ -39,14 +39,14 @@ const NavbarAction = () => {
   const isCartPage = pathname === "/cart";
   const isMyOrderPage = pathname === "/myorder";
   return (
-    <div className='ml-auto flex flex-col md:flex-row items-center gap-x-4'>
+    <div className='ml-auto flex flex-col lg:flex-row items-center gap-x-4'>
             <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
 <Button
         variant="brutal"
         onClick={() => router.push("/cart")}
-        className={`md:flex hover:bg-white shadow-white dark:hover:shadow-none hover:shadow-none hidden items-center rounded-full px-4 py-2 ${
+        className={`lg:flex hover:bg-white shadow-white dark:hover:shadow-none hover:shadow-none hidden items-center rounded-full px-4 py-2 ${
           isCartPage ? 'bg-yellow-300 text-black shadow-white' : 'bg-white '
         }`}
       >
@@ -65,7 +65,7 @@ const NavbarAction = () => {
       <Button
         variant="brutal"
         onClick={() => router.push("/myorder")}
-        className={`flex mb-5 hover:bg-white md:mb-0 shadow-white dark:hover:shadow-none hover:shadow-none items-center rounded-full px-4 py-2 ${
+        className={`flex mb-5 hover:bg-white lg:mb-0 shadow-white dark:hover:shadow-none hover:shadow-none items-center rounded-full px-4 py-2 ${
           isMyOrderPage ? 'bg-yellow-300 text-black shadow-white ' : 'bg-white'
         }`}
       >

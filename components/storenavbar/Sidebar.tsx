@@ -29,7 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ categories }) => {
   };
 
   return (
-    <div className="relative ml-4">
+    <div className="relative ml-4 ">
       {/* Toggle button */}
       <Button size="icon" variant="outline"
         onClick={toggleSidebar}
@@ -41,11 +41,11 @@ const Sidebar: React.FC<SidebarProps> = ({ categories }) => {
       {/* Sidebar */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-80"
+          className="fixed inset-0 z-40  bg-black bg-opacity-80"
           onClick={closeSidebar}
         >
           <div
-            className="absolute left-0 top-0 bottom-0 w-64 dark:bg-black/80 bg-white shadow-lg p-4 flex flex-col"
+            className="absolute left-0 top-0 bottom-0 w-64 overflow-auto dark:bg-black/80 bg-white shadow-lg p-4 flex flex-col"
             onClick={(e) => e.stopPropagation()} // Prevent click propagation
           >
             {/* Close button */}

@@ -21,7 +21,7 @@ const CartNavbarAction = () => {
   const isCartPage = pathname === "/cart";
 
   return (
-    <div className='ml-auto flex md:hidden items-center gap-x-4'>
+    <div className='ml-auto flex lg:hidden items-center gap-x-4'>
       <Button variant="brutal" onClick={() => router.push("/cart")} className={`flex bg-yellow-300 items-center rounded-full px-4 py-2${
           isCartPage ? 'bg-yellow-300 text-black' : 'bg-white'
         }`}>
