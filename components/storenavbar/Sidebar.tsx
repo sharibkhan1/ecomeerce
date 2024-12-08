@@ -72,7 +72,7 @@ const Sidebar: React.FC<SidebarProps> = ({ categories }) => {
             <div className='dark:text-white mt-4'>
               <ModeToggle/>
             </div>
-            <Button variant="default" onClick={()=>router.push("/settings")} className=' flex flex-row mt-5'>
+            <Button variant="default" onClick={()=>router.push("/setting")} className=' flex flex-row mt-5'>
               <Settings2Icon className="h-4 w-4 mr-2" />
               Settings
             </Button>
