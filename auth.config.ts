@@ -37,5 +37,5 @@ export default {
             }
         })
     ],
-    trustHost: true, // Add this if it's missing
+    trustHost: true, // Add this if it's missing  
 } satisfies NextAuthConfig
