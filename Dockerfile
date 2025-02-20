@@ -1,6 +1,8 @@
 # Use an official Node.js runtime as the base image
 FROM node:18-alpine
 
+RUN apk add --no-cache openssl1.1
+
 # Set the working directory
 WORKDIR /app
 
