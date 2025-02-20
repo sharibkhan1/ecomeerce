@@ -28,7 +28,7 @@ const ProductClient:React.FC<ProductClientProps> = ({
         />
         <Button className='dark:shadow-yellow-300' variant="brutal"  onClick={()=> router.push(`/${params.storeId}/products/673136c6efefd5ac6745b9f6`)} >
             <PlusIcon className='mr-2 h-4 w-4' />
-            Add New
+            Add Nes
         </Button>
         </div>
         <Separator/>
