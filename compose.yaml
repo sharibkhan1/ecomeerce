@@ -1,42 +1,34 @@
 version: '3.8'
 
 services:
+  # MongoDB database
+  db:
+    image: mongo:6
+    ports:
+      - '27017:27017'  # Expose port 27017 for MongoDB
+    environment:
+      MONGO_PASSWORD: Shanks0004000  # Persistent storage for MongoDB data
+
+
+
   # Next.js application
   web:
     build:
       context: .
-      dockerfile: Dockerfile
+    image: nextjs-dev
     ports:
       - '3000:3000'  # Expose port 3000 for the Next.js app
-    environment:
-      - NEXT_PUBLIC_MONGODB_URI=mongodb+srv://sharibkhan939:Shanks0004000@cluster0.hwf1a.mongodb.net/thread?retryWrites=true&w=majority&appName=Cluster0
-      - NEXT_PUBLIC_MYSQL_HOST=mysql
-      - NEXT_PUBLIC_MYSQL_USER=root
-      - NEXT_PUBLIC_MYSQL_PASSWORD=your_mysql_password
-      - NEXT_PUBLIC_MYSQL_DATABASE=your_mysql_database
     depends_on:
-      - mongodb
-      - mysql
-
-  # MongoDB database
-  mongodb:
-    image: mongo:6
-    ports:
-      - '27017:27017'  # Expose port 27017 for MongoDB
-    volumes:
-      - mongodb_data:/data/db  # Persistent storage for MongoDB data
-
-  # MySQL database
-  mysql:
-    image: mysql:8
+      - db
     environment:
-      MYSQL_ROOT_PASSWORD: your_mysql_password
-      MYSQL_DATABASE: your_mysql_database
-    ports:
-      - '3306:3306'  # Expose port 3306 for MySQL
-    volumes:
-      - mysql_data:/var/lib/mysql  # Persistent storage for MySQL data
+      DATABASE_URL: mongodb+srv://sharibkhan939:Shanks0004000@cluster0.hwf1a.mongodb.net/thread?retryWrites=true&w=majority&appName=Cluster0
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src 
+          ignore:
+            - node_modules/  
+        - action: rebuild
+          path: package.json
 
-volumes:
-  mongodb_data:
-  mysql_data:

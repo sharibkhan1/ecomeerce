@@ -8,13 +8,16 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+COPY prisma ./prisma
+
+RUN npm config set fetch-retries 5 && npm config set fetch-retry-mintimeout 20000 && npm config set fetch-retry-maxtimeout 120000 && npm install
+RUN npx prisma generate
 
 # Copy the rest of the application code
 COPY . .
 
 # Build the Next.js application
-RUN npm run dev
+RUN npm run build
 
 # Expose the application port
 EXPOSE 3000
