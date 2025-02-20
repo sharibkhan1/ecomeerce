@@ -3,6 +3,9 @@ FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app
+
+RUN apk add --no-cache openssl1.1-compat
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
