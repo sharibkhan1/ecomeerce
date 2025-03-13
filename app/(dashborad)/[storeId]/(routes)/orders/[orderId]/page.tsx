@@ -35,7 +35,7 @@
         }
         
         return (
-            <div className='flex-col dark:bg-[#09090B] h-max min-h-screen flex'>
+            <div className='flex-col dark:bg-[#09090B] overflow-y-auto h-max min-h-screen flex'>
                 <div className='flex-1 space-y-4 p-8 pt-6'>
                     
                     <OrderForm order={order} />
