@@ -38,4 +38,5 @@ export default {
         })
     ],
     trustHost: true, // Add this if it's missing  
+    secret: process.env.NEXTAUTH_SECRET,
 } satisfies NextAuthConfig

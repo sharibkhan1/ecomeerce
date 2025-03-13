@@ -8,7 +8,8 @@ services:
       - '27017:27017'  # Expose port 27017 for MongoDB
     environment:
       MONGO_PASSWORD: Shanks0004000  # Persistent storage for MongoDB data
-
+    networks:
+      - mynetwork
 
 
   # Next.js application
@@ -20,15 +21,14 @@ services:
       - '3000:3000'  # Expose port 3000 for the Next.js app
     depends_on:
       - db
+    volumes:
+      - .:/app
     environment:
       DATABASE_URL: mongodb+srv://sharibkhan939:Shanks0004000@cluster0.hwf1a.mongodb.net/thread?retryWrites=true&w=majority&appName=Cluster0
-    develop:
-      watch:
-        - action: sync
-          path: ./src
-          target: /app/src 
-          ignore:
-            - node_modules/  
-        - action: rebuild
-          path: package.json
-
+    command: npm run dev
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+networks:
+  mynetwork:
+    external: true

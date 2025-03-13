@@ -77,9 +77,9 @@ const NavbarAction = () => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      { role!=="USER" && role && (
+      { role!=="USER" && role!=="ADMIN" && role && (
         <Button variant="stretch" onClick={handleRoleNavigation} className='flex mb-3 items-center border-2 border-black hover:bg-yellow-300 rounded-full px-4 py-2'>
-          {role === 'ADMIN' ? 'Admin' : role === 'MAINADMIN' ? 'Main Admin' : ''}
+          {role === 'MAINADMIN' ? 'ADMIN': ""}
         </Button>
       )}
        <TooltipProvider>
